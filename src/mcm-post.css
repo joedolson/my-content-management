@@ -1,0 +1,33 @@
+#normal-sortables .mcm_field { float: left; width:50%; }
+#normal-sortables .mcm_post_fields .wp-editor-wrap { float: none; clear: both; }
+.mcm_post_fields .mcm-chooser-image { display: inline-block; position: relative; }
+.mcm_post_fields .mcm-delete { display: inline-block; background-color: rgba( 255, 255, 255, .7 ); padding: 2px; outline: 1px solid #fff; line-height: 1; }
+.mcm_post_fields .mcm-delete:hover { background-color: #fff; outline: 1px solid #933; }
+.mcm_post_fields .mcm-delete input { margin-left: 2px; margin-top: -1px;}
+.mcm_post_fields .mcm-chooser-image .mcm-delete { position: absolute; left: 0; width: 100%; padding: 2px 0; }
+.mcm_rich_text_area em { display: block; margin-bottom: 10px; }
+.mcm_rich_text_area { margin-bottom : 10px;}
+.mcm_post_fields .block:nth-of-type(even) { background: #fff;}
+
+.ui-autocomplete {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1000;
+    float: left;
+    display: none;
+    min-width: 160px;   
+    margin: 0 0 10px 25px;
+    list-style: none;
+	font-size: 1.2em;
+    border: 1px solid #ccc;
+}
+
+.ui-menu-item {
+	padding: .25em;
+}
+
+.ui-state-active, .ui-state-focus {
+    color: #ffffff;
+    background-color: #0088cc;
+}

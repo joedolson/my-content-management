@@ -1,0 +1,52 @@
+.mcm-settings legend { font-weight: 700; font-size: 1.1em; }
+.mcm-settings textarea { width: 100%; }
+.extra_fields{ padding: 10px; margin-bottom: 10px; border: 1px solid rgba( 0,0,0,.1 ); }
+.mcm_edit_post_type { -moz-column-count: 2; -webkit-column-count: 2; column-count: 2; background: #fefefe; padding: 15px; border: 1px solid #ddd; -moz-border-radius: 5px; }
+.mcm_edit_post_type p { line-height: 1.2; margin: 4px 0!important;}
+#support { text-align: center; }
+.buy { background: #233c7f; color: #fff; padding: 1em; margin: 0 -12px; border-top: 4px solid #79b3e1; border-bottom: 4px solid #79b3e1; }
+.buy a { font-weight: 700; display: block; color: #fff; font-size: 1.1em;line-height: 1.5; }
+.buy a:hover, .buy a:focus { color: #fff; text-decoration: none!important; }
+#mcm-settings legend { display: block; padding: 0; width: 12.5em; font-weight: 400;  font-size: 1em;  }
+.mcm_customfields li { margin: 0 0 2px; background: #f3f3f3; padding: 3px 0; }
+.mcm-settings .postbox { margin: 10px 10px 0 0;	}
+.mcm-settings .meta-box-sortables { min-height: 0; }
+.mcm-settings td label { position: absolute; left: -999em; } 
+.mcm-settings td input[type='text'] { width: 100%; }
+.mcm-settings tr.fade { background: #ff9; transition: background .5s ease-in-out; }
+.mcm-settings tr.fade:hover { background: #ffe; }
+.mcm-settings .up span, .mcm-settings .down span { position: absolute; left: -999em; }
+.mcm-settings .up { background: url(images/up.png); width: 24px; height: 24px; display: inline-block; }
+.mcm-settings .down { background: url(images/down.png); width: 24px; height: 24px; display: inline-block; }
+.mcm-settings td a { opacity: .5; }
+.mcm-settings td a:hover, .mcm-settings td a:focus { opacity: 1; }
+
+.mcm-settings .tabs { margin: 0; padding: 0 4px; position: relative; top: 1px; }
+.mcm-settings .tabs li { display: inline; margin: 0 auto; line-height: 1; }
+.mcm-settings .tabs a { display: inline-block; padding: 4px 8px; border-radius: 4px 4px 0 0; border: 1px solid #ccc; background: #f3f3f3; }
+.mcm-settings .tabs a.active { border-bottom: 1px solid #fefefe; background: #fefefe; }
+.mcm-settings .wptab { background: #fff; border: 1px solid #ddd; padding: 0 10px; }
+
+.mcm-notice { border-left: 4px solid #dd3d36; background: #f8f8f8; box-shadow: 0 1px 1px 0 rgba( 0,0,0,.1 ); padding: 1px 12px; margin: 8px 0; }
+.mcm-notice p { margin: .5em 0; padding: 2px; }
+
+.mcm_fieldset_options { background-color: rgba( 240,240,240,.8 ); padding: .5em 1em; border: 1px solid #ddd; border-bottom: 0px; }
+
+
+.mcm-support-me p {
+    font-size: 1.6em;
+    font-weight: 600;
+    background: #007eb3;
+    text-shadow: 1px 1px rgb( 35, 60, 127 );
+    padding: 1em;
+    text-align: center;
+    margin: 0 0 1em;
+}
+
+.mcm-support-me p, .mcm-support-me a {
+    color: #fff;
+}
+
+.mcm-support-me a:hover, .mcm-support-me a:focus {
+    text-decoration: none;
+}
