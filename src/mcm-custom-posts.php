@@ -345,7 +345,7 @@ function mcm_text_field( $args, $type='text' ) {
 	if ( $type == 'date' && $single ) {
 		$value = ( is_numeric( $value ) ) ? date( 'Y-m-d', $value ) : date( 'Y-m-d', strtotime( $value ) );
 	}
-	$value = esc_attr( $value );
+	$value = ( is_array( $value ) ) ? esc_attr( implode( ', ', $value ) ) : esc_attr( $value );
 	$output = "<div class='mcm_text_field mcm_field'>";
 	$output .=
 		'<p>
