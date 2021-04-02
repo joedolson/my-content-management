@@ -5,11 +5,11 @@ Plugin URI: http://www.joedolson.com/my-content-management/
 Description: Creates a set of common custom post types for extended content management: FAQ, Testimonials, people lists, term lists, etc.
 Author: Joseph C Dolson
 Author URI: http://www.joedolson.com
-Version: 1.6.1
+Version: 1.6.2
 Text Domain: my-content-management
 Domain Path: /lang
 */
-/*  Copyright 2011-2020  Joe Dolson (email : joe@joedolson.com)
+/*  Copyright 2011-2021  Joe Dolson (email : joe@joedolson.com)
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -27,7 +27,7 @@ Domain Path: /lang
 */
 if ( ! defined( 'ABSPATH' ) ) exit;
 
-$mcm_version = '1.6.1';
+$mcm_version = '1.6.2';
 // Enable internationalisation
 add_action( 'init', 'mcm_load_textdomain' );
 function mcm_load_textdomain() {
@@ -58,12 +58,26 @@ function mcm_enqueue_admin_scripts() {
 		}
 		wp_enqueue_style( 'mcm-posts', plugins_url( 'mcm-post.css', __FILE__ ) );
 		wp_enqueue_script( 'mcm-admin-script', plugins_url( 'js/uploader.js', __FILE__ ), array( 'jquery' ) );
-		wp_localize_script( 'mcm-admin-script', 'thumbHeight', get_option( 'thumbnail_size_h' ) );
+		wp_localize_script(
+			'mcm-admin-script',
+			'mcm_images',
+			array(
+				'thumbsize' => get_option( 'thumbnail_size_h' ),
+			)
+		);
 		wp_enqueue_script( 'jquery-ui-autocomplete' );
 		wp_enqueue_script( 'mcm.autocomplete', plugins_url( 'js/autocomplete.js', __FILE__ ), array( 'jquery', 'jquery-ui-autocomplete' ) );
-		wp_localize_script( 'mcm.autocomplete', 'mcm_post_ajax_action', 'mcm_post_lookup' );
-		wp_localize_script( 'mcm.autocomplete', 'mcm_user_ajax_action', 'mcm_user_lookup' );
-		wp_localize_script( 'mcm.autocomplete', ' mcm_i18n', array( 'selected' => __( 'Selected', 'my-content-management' ) ) );
+		wp_localize_script(
+			'mcm.autocomplete',
+			'mcm_ac',
+			array(
+				'post_action' => 'mcm_post_lookup',
+				'user_action' => 'mcm_user_lookup',
+				'i18n'        => array(
+					'selected' => __( 'Selected', 'my-content-management' ),
+				),
+			)
+		);
 	}
 }
 
@@ -551,8 +565,14 @@ function mcm_add_scripts() {
 	wp_register_script( 'addfields', plugins_url( 'js/jquery.addfields.js', __FILE__ ), array( 'jquery' ) );
 	wp_register_script( 'mcm.tabs', plugins_url( 'js/tabs.js', __FILE__ ), array( 'jquery' ) );
 	wp_enqueue_script( 'addfields' );
-	wp_localize_script( 'addfields', 'mcmWarning', __('Fieldset titles do not support quote characters.', 'my-content-management' ) );
-	wp_localize_script( 'addfields', 'mcmOK', __('Your Fieldset title is OK!', 'my-content-management' ) );
+	wp_localize_script(
+		'addfields',
+		'mcmi18n',
+		array( 
+			'mcmWarning' => __('Fieldset titles do not support quote characters.', 'my-content-management' ),
+			'mcmOK' => __('Your Fieldset title is OK!', 'my-content-management' ),
+		)
+	);
 	wp_enqueue_script( 'mcm.tabs' );
 	global $mcm_enabled;
 	$keys = $mcm_enabled;

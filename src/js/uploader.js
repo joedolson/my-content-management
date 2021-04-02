@@ -38,8 +38,8 @@ var mediaPopup = '';
 							width = '';
 						if( selection ) {
 							id = selection.first().attributes.id;
-							height = thumbHeight;
-							width = ( ( selection.first().attributes.width )/( selection.first().attributes.height ) )*thumbHeight;
+							height = mcm_images.thumbsize;
+							width = ( ( selection.first().attributes.width )/( selection.first().attributes.height ) )*height;
 							img = "<img src='"+selection.first().attributes.url+"' width='"+width+"' height='"+height+"' />";
 							$inpField.val( id );
 							$displayField.html( img );

@@ -146,10 +146,10 @@ function mcm_add_custom_boxes() {
 
 
 function mcm_add_custom_box( $fields, $post_type='post',$location='side', $show = true ) {
-    if ( function_exists( 'add_meta_box' ) ) {
+	if ( function_exists( 'add_meta_box' ) ) {
 		$location = apply_filters( 'mcm_set_location', $location, $fields, $post_type );
 		$priority = apply_filters( 'mcm_set_priority', 'default', $fields, $post_type );
-        foreach ( array_keys( $fields ) as $field ) {
+		foreach ( array_keys( $fields ) as $field ) {
 			$id = sanitize_title( $field );
 			$field = stripslashes( $field );
 			if ( apply_filters( 'mcm_filter_meta_box', $show, $post_type, $id ) ) {
@@ -345,6 +345,7 @@ function mcm_text_field( $args, $type='text' ) {
 	if ( $type == 'date' && $single ) {
 		$value = ( is_numeric( $value ) ) ? date( 'Y-m-d', $value ) : date( 'Y-m-d', strtotime( $value ) );
 	}
+	$value = esc_attr( $value );
 	$value = ( is_array( $value ) ) ? esc_attr( implode( ', ', $value ) ) : esc_attr( $value );
 	$output = "<div class='mcm_text_field mcm_field'>";
 	$output .=

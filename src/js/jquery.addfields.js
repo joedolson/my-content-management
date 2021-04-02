@@ -4,7 +4,7 @@ jQuery(document).ready(function($) {
 		var newNum  = new Number(num + 1);      // the numeric ID of the new input field being added
 		// create the new element via clone(), and manipulate it's ID using newNum value
 		var newElem = $('#field' + num).clone().attr('id', 'field' + newNum);
-		// manipulate the name/id values of the input inside the new element		
+		// manipulate the name/id values of the input inside the new element
 		// insert the new element after the last "duplicatable" input field
 		$('#field' + num).after(newElem);
 		// enable the "remove" button
@@ -48,9 +48,9 @@ jQuery(document).ready(function($) {
 	$('input[name=mcm_new_fieldset]').on('change',function() {
 		var regex = new RegExp( "(['])", 'g' );
 		if ( regex.exec($(this).val()) ) {
-			$('#warning').html( mcmWarning );
+			$('#warning').html( mcmi18n.mcmWarning );
 		} else {
-			$('#warning').html( mcmOK );
+			$('#warning').html( mcmi18n.mcmOK );
 		}	
 	});
 });
