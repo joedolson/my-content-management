@@ -1317,71 +1317,94 @@ function mcm_delete_custom_field_support( $fieldset, $post_type ) {
 	update_option( 'mcm_options', $option );
 }
 
-
-function mcm_fields( $show='assign',$post_type=false ) {
-	if ( isset( $_POST['mcm_custom_fields']) ) {
-		$nonce=$_REQUEST['_wpnonce'];
-		if (! wp_verify_nonce($nonce,'my-content-management-nonce') ) die('Security check failed');
+/**
+ * Show assigned fields for a given post type.
+ */
+function mcm_fields( $show = 'assign', $post_type = false ) {
+	if ( isset( $_POST['mcm_custom_fields'] ) ) {
+		$nonce = $_REQUEST['_wpnonce'];
+		if ( ! wp_verify_nonce( $nonce, 'my-content-management-nonce' ) ) {
+			die( 'Security check failed' );
+		}
 		$extras = $_POST['mcm_field_extras'];
 		foreach ( $extras as $key => $value ) {
-			if ( $value == 'on' ) {
+			if ( 'on' === $value ) {
 				mcm_add_custom_field_support( $key, $post_type );
 			} else {
 				mcm_delete_custom_field_support( $key, $post_type );
 			}
 		}
-		echo "<div class='updated fade'><p>".__('Custom fields for this post type updated', 'my-content-management' ).'</p></div>';
+		echo "<div class='updated fade'><p>" . __( 'Custom fields for this post type updated', 'my-content-management' ) . '</p></div>';
 	}
-	$option = get_option('mcm_options');
-	$extras = $option['extras'];
+	$option  = get_option( 'mcm_options' );
+	$extras  = $option['extras'];
 	$checked = '';
-	$return = '';
-	if ( is_array($extras) ) {
+	$return  = '';
+	if ( is_array( $extras ) ) {
 		foreach ( $extras as $key=>$value ) {
-			$page = $post_type;
+			$page        = $post_type;
 			$checked_off = ' checked="checked"';
 			if ( ! is_array( $value[0] ) ) {
-				$checked_on = ( $value[0] == $page )?' checked="checked"':'';
-			} elseif ( in_array( $page, $value[0] ) ) {
-				$checked_on = ( in_array( $page, $value[0] ) )?' checked="checked"':'';
+				$checked_on = ( $value[0] == $page ) ? ' checked="checked"' : '';
+			} elseif ( in_array( $page, $value[0], true ) ) {
+				$checked_on = ( in_array( $page, $value[0], true ) ) ? ' checked="checked"' : '';
 			} else {
 				$checked_off = ' checked="checked"';
-				$checked_on = '';
+				$checked_on  = '';
 			}
-			$k = urlencode($key);
+			$k      = urlencode($key);
 			$legend = stripslashes( $key );
-			$key = sanitize_text_field( $key );
-			if ( $show == 'assign' ) {
+			$key    = sanitize_key( $key );
+			if ( 'assign' === $show ) {
 				$return .= "<li><fieldset><legend>$legend</legend>
-				<input type='radio' value='off' name=\"mcm_field_extras[ $key ]\" id=\"mcm_off_$page\"$checked_off /> <label for='mcm_off_$page'>".__('Off', 'my-content-management' )."</label>
-				<input type='radio' value='on' name=\"mcm_field_extras[ $key ]\" id=\"mcm_off_$page\"$checked_on /> <label for='mcm_off_$page'>".__('On', 'my-content-management' )." <small><a href='".admin_url("options-general.php?page=mcm_custom_fields&mcm_fields_edit=$k")."'>".__('Edit', 'my-content-management' )."</a></small></label>
-				</fieldset></li>\n";
+				<input type='radio' value='off' name=\"mcm_field_extras[ $key ]\" id=\"mcm_off_$page\"$checked_off /> <label for='mcm_off_$page'>" . __( 'Off', 'my-content-management' ) . "</label>
+				<input type='radio' value='on' name=\"mcm_field_extras[ $key ]\" id=\"mcm_off_$page\"$checked_on /> <label for='mcm_off_$page'>" . __( 'On', 'my-content-management' ) . " <small><a href='" . admin_url( "options-general.php?page=mcm_custom_fields&mcm_fields_edit=$k" ) . "'>" . __( 'Edit', 'my-content-management' ) . '</a></small></label>
+				</fieldset></li>';
 			} else {
-				$return .= "<li><a href='".admin_url("options-general.php?page=mcm_custom_fields&mcm_fields_edit=$k")."'>".__('Edit', 'my-content-management' )." $legend</a></li>";
+				$return .= "<li><a href='" . admin_url( "options-general.php?page=mcm_custom_fields&mcm_fields_edit=$k" ) . "'>" . __( 'Edit', 'my-content-management' ) . " $legend</a></li>";
 			}
 		}
 	}
-	echo "<ul class='mcm_customfields'>".$return.'</ul>';
+	echo "<ul class='mcm_customfields'>" . $return . '</ul>';
 }
 
+/**
+ * Pass field update to function that handles that type of update.
+ */
 function mcm_fields_updater() {
-	// This is what I do to edit custom field sets or add new sets.
 	if ( ! isset( $_GET['mcm_fields_edit'] ) ) {
+		// Creating a new fieldset, so fetch the blank fieldset form.
 		mcm_get_fieldset();
 	}
-	if ( isset( $_POST['mcm_custom_field_sets']) ) {
+	if ( isset( $_POST['mcm_custom_field_sets'] ) ) {
+		// Updating a fieldset, so update the fieldset and get the update message.
 		$message = mcm_update_custom_fieldset( $_POST );
 	}
 	if ( isset( $_GET['mcm_fields_edit'] ) ) {
+		// Editing a fieldset, so get the completed fieldset form.
 		mcm_get_fieldset( $_GET['mcm_fields_edit'] );
 	}
 }
 
+/**
+ * Create post type relations chooser.
+ *
+ * @param string $key Field type.
+ * @param array  $choices Currently selected types.
+ *
+ * @return string
+ */
 function mcm_post_type_relation( $key, $choices ) {
-	$post_types = get_post_types( array( 'public'=>'true' ), 'names' );
-	$list = $output = '';
+	$post_types = get_post_types(
+		array(
+			'public' => 'true',
+		),
+		'names'
+	);
+	$list       = '';
+	$output     = '';
 	foreach ( $post_types as $types ) {
-		if ( $choices == $types ) {
+		if ( $choices === $types ) {
 			$selected = ' selected="selected"';
 		} else {
 			$selected = '';
@@ -1393,10 +1416,17 @@ function mcm_post_type_relation( $key, $choices ) {
 		<option value=''> -- </option>
 		$list
 	</select>";
+
 	return $output;
 }
 
-/* Clone of wp_dropdown_roles, except it returns. */
+/**
+ * Clone of wp_dropdown_roles, except it returns.
+ *
+ * @param string $selected Selected role.
+ *
+ * @return string
+ */
 function mcm_dropdown_roles( $selected = false ) {
 	$p = '';
 	$r = '';
@@ -1405,12 +1435,13 @@ function mcm_dropdown_roles( $selected = false ) {
 
 	foreach ( $editable_roles as $role => $details ) {
 		$name = translate_user_role( $details['name'] );
-		if ( $selected == $role ) {
-			$p = "\n\t<option selected='selected' value='" . esc_attr($role) . "'>$name</option>";
+		if ( $selected === $role ) {
+			$p = "\n\t<option selected='selected' value='" . esc_attr( $role ) . "'>$name</option>";
 		} else {
-			$r .= "\n\t<option value='" . esc_attr($role) . "'>$name</option>";
+			$r .= "\n\t<option value='" . esc_attr( $role ) . "'>$name</option>";
 		}
 	}
+
 	return $p . $r;
 }
 
