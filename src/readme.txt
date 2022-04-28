@@ -61,6 +61,10 @@ The "id" attribute is not supported in the [my_archive] shortcode. (That would b
 * Feature: Add user and post template tags to pick up data from related posts/users [todo]
 * Feature: Add event post type to integrate with My Tickets.
 
+= 1.6.3 =
+
+* Add 3rd taxonomy for all MCM post types.
+
 = 1.6.2 =
 
 * Update to use wp_localize_script correctly.

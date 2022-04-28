@@ -90,23 +90,36 @@ function mcm_taxonomies() {
 					"mcm_category_$cat_key",	// internal name = machine-readable taxonomy name
 					array( $key ),	// object type = post, page, link, or custom post-type
 					array(
-						'hierarchical' => true,
-						'label' => sprintf( __( "%s Categories", 'my-content-management' ), $value[2] ),	// the human-readable taxonomy name
-						'show_in_rest' => true,
-						'query_var' => true,	// enable taxonomy-specific querying
-						'rewrite' => array( 'slug' => "$cat_key-category" ),	// pretty permalinks for your taxonomy?
+						'hierarchical'      => true,
+						'label'             => apply_filters( 'mcm_tax_category_name', sprintf( __( "%s Categories", 'my-content-management' ), $value[2] ), $cat_key ),
+						'show_in_rest'      => true,
+						'show_admin_column' => true,
+						'query_var'         => true,	// enable taxonomy-specific querying
+						'rewrite'           => array( 'slug' => "$cat_key-category" ),	// pretty permalinks for your taxonomy?
+					)
+				);
+				register_taxonomy(
+					"mcm_type_$cat_key",	// internal name = machine-readable taxonomy name
+					array( $key ),	// object type = post, page, link, or custom post-type
+					array(
+						'hierarchical'      => false,
+						'label'             => apply_filters( 'mcm_tax_type_name', sprintf( __( "%s Types", 'my-content-management' ), $value[2] ), $cat_key ),
+						'show_in_rest'      => true,
+						'show_admin_column' => true,
+						'query_var'         => true,	// enable taxonomy-specific querying
+						'rewrite'           => array( 'slug' => "$cat_key-type" ),	// pretty permalinks for your taxonomy?
 					)
 				);
 				register_taxonomy(
 					"mcm_tag_$cat_key",	// internal name = machine-readable taxonomy name
 					array( $key ),	// object type = post, page, link, or custom post-type
 					array(
-						'hierarchical' => false,
-						'label' => sprintf( __( "%s Tags", 'my-content-management' ), $value[2] ),	// the human-readable taxonomy name
-						'show_in_rest' => true,
+						'hierarchical'      => false,
+						'label'             => apply_filters( 'mcm_tax_tag_name', sprintf( __( "%s Tags", 'my-content-management' ), $value[2] ), $cat_key ),
+						'show_in_rest'      => true,
 						'show_admin_column' => true,
-						'query_var' => true,	// enable taxonomy-specific querying
-						'rewrite' => array( 'slug' => "$cat_key-tag" ),	// pretty permalinks for your taxonomy?
+						'query_var'         => true,	// enable taxonomy-specific querying
+						'rewrite'           => array( 'slug' => "$cat_key-tag" ),	// pretty permalinks for your taxonomy?
 					)
 				);
 			}
