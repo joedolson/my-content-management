@@ -623,11 +623,15 @@ function mcm_add_scripts() {
 	if ( is_array( $keys ) && ! empty( $keys ) ) {
 		$mcm_selected = ( is_string( $keys[0] ) ) ? $keys[0] . '-container' : 'undefined-container';
 	} else {
-		$mcm_selected = '';
+		$mcm_selected = 'disabled';
 	}
-	if ( $mcm_selected ) {
-		wp_localize_script( 'mcm.tabs', 'firstItem', $mcm_selected );
-	}
+	wp_localize_script(
+		'mcm.tabs',
+		'firstItem',
+		array(
+			'selected' => $mcm_selected,
+		),
+	);
 }
 
 /**
@@ -784,11 +788,11 @@ function mcm_enabler() {
 						$checked = '';
 					}
 				}
-				$return .= "<li><input type='checkbox' value='$key' name='mcm_posttypes[]' id='mcm_$key'$checked /> <label for='mcm_$key'>$value[3] (<code>$key</code>) <small><a href='" . admin_url( "options-general.php?page=my-content-management/my-content-management.php&mcm_edit=$key" ) . "'>" . __( 'Edit', 'my-content-management' ) . " '$value[3]'</a> &bull; <a href='" . admin_url( "options-general.php?page=my-content-management/my-content-management.php&mcm_delete=$key" ) . "'>" . __( 'Delete', 'my-content-management' ) . "  '$value[3]'</a></small></label></li>\n";
+				$return .= "<li><input type='checkbox' value='$key' name='mcm_posttypes[]' id='mcm_$key'$checked /> <label for='mcm_$key'>$value[3] (<code>$key</code>) <a href='" . admin_url( "options-general.php?page=my-content-management/my-content-management.php&mcm_edit=$key" ) . "'>" . __( 'Edit', 'my-content-management' ) . " '$value[3]'</a> &bull; <a href='" . admin_url( "options-general.php?page=my-content-management/my-content-management.php&mcm_delete=$key" ) . "'>" . __( 'Delete', 'my-content-management' ) . "  '$value[3]'</a></label></li>\n";
 			}
 		}
 	}
-	echo "<ul class='mcm_posttypes'>" . $return . '</ul>';
+	echo '<h3>' . __( 'Available Post Types', 'my-content-management' ) . "</h3><ul class='mcm_posttypes'>" . $return . '</ul>';
 }
 
 /**
@@ -870,12 +874,12 @@ function mcm_updater() {
 	} else {
 		$type = 'new';
 	}
-	$before      = "<div class='mcm_edit_post_type'><form method='post' action='" . admin_url( 'options-general.php?page=my-content-management/my-content-management.php' ) . "'><div><input type='hidden' name='_wpnonce' value='" . wp_create_nonce( 'my-content-management-nonce' ) . "' /></div><div>";
+	// Translators: post type name.
+	$before      = "<div class='mcm_edit_post_type'><form method='post' action='" . admin_url( 'options-general.php?page=my-content-management/my-content-management.php' ) . "'><div><input type='hidden' name='_wpnonce' value='" . wp_create_nonce( 'my-content-management-nonce' ) . "' /></div><fieldset class='fields'><legend>" . sprintf( __( 'Edit "%s"', 'my-content-management' ), $type ) . '</legend>';
 	$post_typing = "<div><input type='hidden' name='mcm_type' value='$type' /></div>";
 	// Translators: Post type name.
-	$after  = "<p><input type='submit' value='" . sprintf( __( 'Edit type "%1$s"', 'my-content-management' ), $type ) . "' name='mcm_updater' class='button-primary' /> <a href='" . admin_url( 'options-general.php?page=my-content-management/my-content-management.php&mcm_add=new' ) . "'>" . __( 'Add new post type', 'my-content-management' ) . '</a>
+	$after  = "</fieldset><p><input type='submit' value='" . sprintf( __( 'Edit type "%1$s"', 'my-content-management' ), $type ) . "' name='mcm_updater' class='button-primary' /> <a href='" . admin_url( 'options-general.php?page=my-content-management/my-content-management.php&mcm_add=new' ) . "'>" . __( 'Add new post type', 'my-content-management' ) . '</a>
 				</p>
-				</div>
 			</form></div>';
 	$return = '';
 	if ( is_array( $types ) ) {

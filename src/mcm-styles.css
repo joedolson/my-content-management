@@ -1,12 +1,8 @@
 .mcm-settings legend { font-weight: 700; font-size: 1.1em; }
 .mcm-settings textarea { width: 100%; }
 .extra_fields{ padding: 10px; margin-bottom: 10px; border: 1px solid rgba( 0,0,0,.1 ); }
-.mcm_edit_post_type { -moz-column-count: 2; -webkit-column-count: 2; column-count: 2; background: #fefefe; padding: 15px; border: 1px solid #ddd; -moz-border-radius: 5px; }
-.mcm_edit_post_type p { line-height: 1.2; margin: 4px 0!important;}
+.mcm_edit_post_type .fields { column-count: 2; background: #fefefe; padding: 16px; border: 1px solid #ddd; border-radius: 5px; }
 #support { text-align: center; }
-.buy { background: #233c7f; color: #fff; padding: 1em; margin: 0 -12px; border-top: 4px solid #79b3e1; border-bottom: 4px solid #79b3e1; }
-.buy a { font-weight: 700; display: block; color: #fff; font-size: 1.1em;line-height: 1.5; }
-.buy a:hover, .buy a:focus { color: #fff; text-decoration: none!important; }
 #mcm-settings legend { display: block; padding: 0; width: 12.5em; font-weight: 400;  font-size: 1em;  }
 .mcm_customfields li { margin: 0 0 2px; background: #f3f3f3; padding: 3px 0; }
 .mcm-settings .postbox { margin: 10px 10px 0 0;	}
@@ -44,9 +40,9 @@
 }
 
 .mcm-support-me p, .mcm-support-me a {
-    color: #fff;
+	color: #fff;
 }
 
 .mcm-support-me a:hover, .mcm-support-me a:focus {
-    text-decoration: none;
+	text-decoration: none;
 }
