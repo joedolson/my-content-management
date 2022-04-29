@@ -679,18 +679,6 @@ function mcm_settings_page() {
 			</div>
 			<div class="metabox-holder">
 				<div class="mcm-settings ui-sortable meta-box-sortables">
-					<div class="mcm-template-guide postbox" id="mcm-companions">
-						<h2 class='hndle'><?php _e( 'Companion Plug-ins', 'my-content-management' ); ?></h2>
-						<div class="inside">
-							<ul>
-								<li><a href="http://wordpress.org/plugins/my-content-glossary/"><?php _e( 'My Content Glossary', 'my-content-management' ); ?></a> -- <?php _e( 'Additional functions to use with the Glossary custom post type', 'my-content-management' ); ?>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="metabox-holder">
-				<div class="mcm-settings ui-sortable meta-box-sortables">
 					<div class="mcm-template-guide postbox" id="get-support">
 						<h2 class='hndle'><?php _e( 'Basic Template Tags', 'my-content-management' ); ?></h2>
 						<div class="inside">
