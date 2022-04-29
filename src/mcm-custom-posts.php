@@ -1000,7 +1000,7 @@ function mcm_is_repeatable( $value ) {
  * @param string $value Value of meta field. Unused.
  * @param string $field Custom field name.
  *
- * return string
+ * @return string
  */
 function mcm_revision_field( $value, $field ) {
 	global $revision;
