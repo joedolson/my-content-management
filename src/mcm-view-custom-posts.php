@@ -19,7 +19,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @param string $type Post type.
  * @param int    $id Post ID.
  *
- * @return string 
+ * @return string
  */
 function mcm_get_single_post( $type, $id ) {
 	$args = array(
@@ -49,11 +49,11 @@ function mcm_process_custom_fields( $p, $custom_fields ) {
 			$p[ $key ] = ( $is_email ) ? apply_filters( 'mcm_munge', $value[0] ) : $value[0];
 		} else {
 			foreach ( $value as $val ) {
-				if ( $val != '' ) {
+				if ( '' !== $val ) {
 					$cfield[] = ( $is_email ) ? apply_filters( 'mcm_munge', $val ) : $val;
 				}
 			}
-			$p[ $key ] = implode( apply_filters( 'mcm_repeatable_separator', ", ", $key ), $cfield );
+			$p[ $key ] = implode( apply_filters( 'mcm_repeatable_separator', ', ', $key ), $cfield );
 		}
 	}
 
@@ -69,7 +69,7 @@ add_filter( 'mcm_custom_fields', 'mcm_process_custom_fields', 10, 2 );
  * $type, $display, $taxonomy, $term, $count, $order, $direction, $meta_key, $template, $cache, $offset, $id, $custom_wrapper, $custom, $operator, $year='', $month='', $week='', $day=''.
  *
  * @return string
-**/
+ */
 function mcm_get_show_posts( $atts ) {
 	$defaults = array(
 		'type'           => '',
@@ -93,7 +93,7 @@ function mcm_get_show_posts( $atts ) {
 		'day'            => '',
 		'post_filter'    => true,
 	);
-	$atts = wp_parse_args( $atts, $defaults );
+	$atts     = wp_parse_args( $atts, $defaults );
 	foreach ( $atts as $key => $att ) {
 		${$key} = $att;
 	}
@@ -108,9 +108,9 @@ function mcm_get_show_posts( $atts ) {
 	if ( $the_cache ) {
 		return $the_cache;
 	} else {
-		$keys = array_keys($types);
+		$keys = array_keys( $types );
 		$mcm  = true;
-		// check if this post type is coming from MCM
+		// check if this post type is coming from MCM.
 		$post_types = explode( ',', $type );
 		$types      = array();
 		foreach ( $post_types as $t ) {
@@ -157,7 +157,7 @@ function mcm_get_show_posts( $atts ) {
 		$return  = '';
 
 		if ( false === $id ) {
-			// set up arguments for loop
+			// set up arguments for loop.
 			wp_reset_query();
 			$args = array(
 				'post_type'      => $types,
@@ -178,7 +178,7 @@ function mcm_get_show_posts( $atts ) {
 				$args['w'] = (int) $week;
 			}
 			if ( false !== $offset ) {
-				$args['offset']= (int) $offset;
+				$args['offset'] = (int) $offset;
 			}
 			// if there is a taxonomy, and there's a term, but just one taxonomy.
 			if ( 'all' !== $taxonomy && false === strpos( $taxonomy, ',' ) ) {
@@ -189,7 +189,7 @@ function mcm_get_show_posts( $atts ) {
 						$term = explode( ',', $term );
 					}
 					if ( 'null' === $term ) {
-						$term = array(null);
+						$term = array( null );
 					}
 					$args['tax_query'] = array(
 						array(
@@ -197,17 +197,17 @@ function mcm_get_show_posts( $atts ) {
 							'field'    => 'slug',
 							'terms'    => $term,
 							'operator' => $operator,
-						)
+						),
 					);
 				}
 			}
-			// if there are multiple taxonomies and multiple terms
+			// if there are multiple taxonomies and multiple terms.
 			if ( false !== strpos( $taxonomy, ',' ) && false !== strpos( $term, ',' ) ) {
 				$terms     = explode( ',', $term );
 				$i         = 0;
 				$tax_query = array();
 				foreach ( $taxes as $t ) {
-					$array = array(
+					$array       = array(
 						'taxonomy' => $t,
 						'field'    => 'slug',
 						'terms'    => $terms[ $i ],
@@ -229,7 +229,7 @@ function mcm_get_show_posts( $atts ) {
 				$i         = 0;
 				$tax_query = array();
 				foreach ( $terms as $t ) {
-					$array = array(
+					$array       = array(
 						'taxonomy' => $taxonomy,
 						'field'    => 'slug',
 						'terms'    => $terms[ $i ],
@@ -250,7 +250,8 @@ function mcm_get_show_posts( $atts ) {
 			$last_term = false;
 			$last_post = false;
 			$first     = true;
-			while ( $loop->have_posts() ) : $loop->the_post();
+			while ( $loop->have_posts() ) :
+				$loop->the_post();
 				global $post;
 				$p                = array();
 				$id               = get_the_ID();
@@ -281,7 +282,7 @@ function mcm_get_show_posts( $atts ) {
 						)
 					);
 				}
-				$p['full']       = get_the_post_thumbnail(
+				$p['full']      = get_the_post_thumbnail(
 					$id,
 					'full',
 					array(
@@ -292,7 +293,7 @@ function mcm_get_show_posts( $atts ) {
 				);
 				$p['shortlink'] = wp_get_shortlink();
 				$p['modified']  = get_the_modified_date();
-				$p['date']      = get_the_time( get_option('date_format') );
+				$p['date']      = get_the_time( get_option( 'date_format' ) );
 				$p['fulldate']  = get_the_time( 'F j, Y' );
 				$p['author']    = get_the_author();
 				$p['edit_link'] = get_edit_post_link( $id ) ? "<a href='" . get_edit_post_link( $id ) . "'>" . __( 'Edit', 'my-content-management' ) . '</a>' : '';
@@ -343,8 +344,8 @@ function mcm_get_show_posts( $atts ) {
 				$p['content_raw'] = $the_post->post_content;
 				$sizes            = get_intermediate_image_sizes();
 				foreach ( $sizes as $size ) {
-					$class    = sanitize_title( 'mcm-' . $size );
-					$p[$size] = get_the_post_thumbnail(
+					$class      = sanitize_title( 'mcm-' . $size );
+					$p[ $size ] = get_the_post_thumbnail(
 						$the_post->ID,
 						$size,
 						array(
@@ -367,11 +368,11 @@ function mcm_get_show_posts( $atts ) {
 				$p['link_title'] = "<a href='" . get_permalink( $the_post->ID ) . "'>" . $the_post->post_title . '</a>';
 				$p['title']      = $the_post->post_title;
 				$p['shortlink']  = wp_get_shortlink( $the_post->ID );
-				$p['modified']   = date( get_option( 'date_format' ), strtotime( $the_post->post_modified ) );
-				$p['date']       = date( get_option( 'date_format' ), strtotime( $the_post->post_date ) );
-				$p['fulldate']   = date( 'F j, Y', strtotime( $the_post->post_date ) );
+				$p['modified']   = gmdate( get_option( 'date_format' ), strtotime( $the_post->post_modified ) );
+				$p['date']       = gmdate( get_option( 'date_format' ), strtotime( $the_post->post_date ) );
+				$p['fulldate']   = gmdate( 'F j, Y', strtotime( $the_post->post_date ) );
 				$p['author']     = get_the_author_meta( 'display_name', $the_post->post_author );
-				$p['edit_link']  = get_edit_post_link( $the_post->ID ) ? "<a href='" . get_edit_post_link($the_post->ID ) . "'>" . __( 'Edit', 'my-content-management' ) . '</a>' : '';
+				$p['edit_link']  = get_edit_post_link( $the_post->ID ) ? "<a href='" . get_edit_post_link( $the_post->ID ) . "'>" . __( 'Edit', 'my-content-management' ) . '</a>' : '';
 				$p['postclass']  = implode( ' ', get_post_class( '', $the_post->ID ) );
 				$p['terms']      = ( 'all' !== $taxonomy ) ? get_the_term_list( $the_post->ID, $taxonomy, '', ', ', '' ) : get_the_term_list( $id, "mcm_category_$primary", '', ', ', '' );
 				$custom_fields   = get_post_custom( $the_post->ID );
@@ -404,7 +405,7 @@ function mcm_get_show_posts( $atts ) {
 
 		if ( $return ) {
 			if ( 'custom' !== $display ) {
-			$return = "
+				$return = "
 				<div class='mcm_posts $primary $display'>
 					$front
 					$return
@@ -596,7 +597,7 @@ function mcm_default_fields() {
 /**
  * Process simple templates.
  *
- * @param array $array Data to structure.
+ * @param array  $array Data to structure.
  * @param string $template Template to assign.
  *
  * @return string
@@ -609,7 +610,7 @@ function mcm_simple_template( $array = array(), $template = false ) {
 	foreach ( $array as $key => $value ) {
 		if ( ! in_array( $key, $defaults, true ) ) {
 			$is_chooser = mcm_is_chooser( $key );
-			$richtext = ( mcm_is_richtext( $key ) ) ? true : false;
+			$richtext   = ( mcm_is_richtext( $key ) ) ? true : false;
 		} else {
 			$is_chooser = false;
 			$richtext   = false;
@@ -653,9 +654,9 @@ function mcm_simple_template( $array = array(), $template = false ) {
  * @return string
  */
 function mcm_draw_template( $array = array(), $template = '' ) {
-	$template = stripcslashes($template);
+	$template = stripcslashes( $template );
 	$defaults = mcm_default_fields();
-	$fallback ='';
+	$fallback = '';
 	$before   = '';
 	$after    = '';
 	$size     = '';
@@ -663,7 +664,7 @@ function mcm_draw_template( $array = array(), $template = '' ) {
 	$format   = '';
 	$template = mcm_simple_template( $array, $template );
 	$has_tags = strpos( $template, '{' );
-	if ( $has_tags === false ) { // if there are no longer any tags, this is done.
+	if ( false === $has_tags ) { // if there are no longer any tags, this is done.
 		return stripslashes( trim( mc_clean_template( $template ) ) );
 	}
 	foreach ( $array as $key => $value ) {
@@ -674,7 +675,7 @@ function mcm_draw_template( $array = array(), $template = '' ) {
 			$is_chooser = false;
 			$richtext   = false;
 		}
-		if ( ! is_object($value) ) {
+		if ( ! is_object( $value ) ) {
 			if ( false !== strpos( $template, '{' . $key ) ) { // only check for tag parts that exist
 				preg_match_all( '/{' . $key . '[^}]*+}/i', $template, $result );
 				if ( $result ) {
@@ -684,19 +685,19 @@ function mcm_draw_template( $array = array(), $template = '' ) {
 						if ( $matches ) {
 							foreach ( $matches[1] as $k => $v ) {
 								if ( 'fallback' === $v ) {
-									$fallback = $matches[2][$k];
+									$fallback = $matches[2][ $k ];
 								}
 								if ( 'before' === $v ) {
-									$before = $matches[2][$k];
+									$before = $matches[2][ $k ];
 								}
 								if ( 'after' === $v ) {
-									$after = $matches[2][$k];
+									$after = $matches[2][ $k ];
 								}
 								if ( 'size' === $v ) {
-									$size = $matches[2][$k];
+									$size = $matches[2][ $k ];
 								}
 								if ( 'format' === $v ) {
-									$format = $matches[2][$k];
+									$format = $matches[2][ $k ];
 								}
 							}
 							if ( is_array( $value ) ) {
@@ -795,7 +796,7 @@ function mcm_is_user_relation( $key ) {
  * @return bool
  */
 function mcm_is_type( $key, $type ) {
-	// determine whether a given key is a specific data type
+	// determine whether a given key is a specific data type.
 	global $mcm_fields;
 	$check = false;
 	$found = false;
@@ -828,7 +829,7 @@ function mc_clean_template( $template ) {
 	preg_match_all( '/{\w[^}]*+}/i', $template, $matches, PREG_PATTERN_ORDER );
 	if ( $matches ) {
 		foreach ( $matches[0] as $match ) {
-		$template = str_replace( $match, '', $template );
+			$template = str_replace( $match, '', $template );
 		}
 	}
 
@@ -876,7 +877,7 @@ function mcm_search_form( $post_type ) {
 function mcm_searchfilter( $query ) {
 	if ( isset( $_GET['customsearch'] ) ) {
 		if ( $query->is_search ) {
-			// Insert the specific post type you want to search
+			// Insert the specific post type you want to search.
 			$post_type = esc_attr( $_GET['customsearch'] );
 			$query->set( 'post_type', $post_type );
 		}
@@ -900,7 +901,7 @@ function mcm_munge( $address ) {
 	$mixedkey      = '';
 	$unshuffled    = strlen( $unmixedkey );
 	for ( $i = 0; $i <= strlen( $unmixedkey ); $i++ ) {
-		$ranpos        = rand( 0, $unshuffled-1 );
+		$ranpos        = rand( 0, $unshuffled - 1 );
 		$nextchar      = ( isset( $inprogresskey[ $ranpos ] ) ) ? $inprogresskey[ $ranpos ] : '';
 		$mixedkey     .= $nextchar;
 		$before        = substr( $inprogresskey, 0, $ranpos );
@@ -909,7 +910,7 @@ function mcm_munge( $address ) {
 		$unshuffled   -= 1;
 	}
 	$cipher = $mixedkey;
-	$shift  = strlen($address);
+	$shift  = strlen( $address );
 	$txt    = "<script type=\"text/javascript\">\n<!--\n";
 	for ( $j = 0; $j < strlen( $address ); $j++ ) {
 		if ( -1 === strpos( $cipher, $address[ $j ] ) ) {
@@ -921,25 +922,7 @@ function mcm_munge( $address ) {
 		}
 	}
 
-	$txt .= "\ncoded = \"" . $coded . "\"\n" .
-	"  key = \"" . $cipher . "\"\n".
-	"  shift=coded.length\n" . 
-	"  link=\"\"\n" . 
-	"  for (i=0; i<coded.length; i++) {\n" .
-	"    if (key.indexOf(coded.charAt(i))==-1) {\n" .
-	"      ltr = coded.charAt(i)\n" .
-	"      link += (ltr)\n" .
-	"    }\n" .
-	"    else {     \n".
-	"      ltr = (key.indexOf(coded.charAt(i))-
-shift+key.length) % key.length\n".
-	"      link += (key.charAt(ltr))\n".
-	"    }\n".
-	"  }\n".
-	"document.write(\"<a href='mailto:\"+link+\"'>\"+link+\"</a>\")\n" .
-	"\n".
-	"//-"."->\n" .
-	'</script>';
+	$txt .= "\ncoded = \"" . $coded . "\"\n" . "  key = \"" . $cipher . "\"\n" . "  shift=coded.length\n" . "  link=\"\"\n" .  "  for (i=0; i<coded.length; i++) {\n" . "    if (key.indexOf(coded.charAt(i))==-1) {\n" . "      ltr = coded.charAt(i)\n" . "      link += (ltr)\n" . "    }\n" . "    else {     \n" . "      ltr = (key.indexOf(coded.charAt(i))-shift+key.length) % key.length\n" . "      link += (key.charAt(ltr))\n" . "    }\n" . "  }\n" . "document.write(\"<a href='mailto:\"+link+\"'>\"+link+\"</a>\")\n" . "\n" . '//-' . "->\n" . '</script>';
 
 	return $txt;
 }

@@ -33,32 +33,32 @@ function mcm_posttypes() {
 					// Translators: post type name.
 					'add_new_item'       => sprintf( __( 'Add New %s', 'my-content-management' ), $value[2] ),
 					// Translators: post type name.
-					'edit_item'          => sprintf( __( 'Edit %s','my-content-management' ), $value[2] ),
+					'edit_item'          => sprintf( __( 'Edit %s', 'my-content-management' ), $value[2] ),
 					// Translators: post type name.
-					'new_item'           => sprintf( __( 'New %s','my-content-management' ), $value[2] ),
+					'new_item'           => sprintf( __( 'New %s', 'my-content-management' ), $value[2] ),
 					// Transltoars: post type name.
-					'view_item'          => sprintf( __( 'View %s','my-content-management' ), $value[2] ),
+					'view_item'          => sprintf( __( 'View %s', 'my-content-management' ), $value[2] ),
 					// Translators: post type plural name.
-					'search_items'       => sprintf( __( 'Search %s','my-content-management' ), $value[3] ),
+					'search_items'       => sprintf( __( 'Search %s', 'my-content-management' ), $value[3] ),
 					// Translators: post type name.
 					'not_found'          => sprintf( __( 'No %s found', 'my-content-management' ), $value[1] ),
 					// Translators: post type name.
-					'not_found_in_trash' => sprintf( __( 'No %s found in Trash','my-content-management' ), $value[1] ),
-					'parent_item_colon'  => ''
+					'not_found_in_trash' => sprintf( __( 'No %s found in Trash', 'my-content-management' ), $value[1] ),
+					'parent_item_colon'  => '',
 				);
 				$labels = apply_filters( 'mcm_post_type_labels', $labels, $value );
 				$raw    = $value[4];
 				$slug   = ( ! isset( $raw['slug'] ) || '' === $raw['slug'] ) ? $key : $raw['slug'];
 				$icon   = ( is_ssl() ) ? str_replace( 'http://', 'https://', $raw['menu_icon'] ) : $raw['menu_icon'];
 				$icon   = ( null === $raw['menu_icon'] ) ? plugins_url( 'images', __FILE__ ) . "/$key.png" : $icon;
-				$args = array(
+				$args   = array(
 					'labels'              => $labels,
 					'public'              => $raw['public'],
 					'publicly_queryable'  => $raw['publicly_queryable'],
 					'exclude_from_search' => $raw['exclude_from_search'],
 					'show_ui'             => $raw['show_ui'],
 					'show_in_menu'        => $raw['show_in_menu'],
-					'menu_icon'           => ( '' === $icon ) ? plugins_url( 'images', __FILE__) . '/mcm_resources.png' : $icon,
+					'menu_icon'           => ( '' === $icon ) ? plugins_url( 'images', __FILE__ ) . '/mcm_resources.png' : $icon,
 					'query_var'           => true,
 					'rewrite'             => array(
 						'slug'       => $slug,
@@ -70,7 +70,7 @@ function mcm_posttypes() {
 					'supports'            => $raw['supports'],
 					'map_meta_cap'        => true,
 					'capability_type'     => 'post', // capability type is post type.
-					'taxonomies'          => array( 'post_tag' )
+					'taxonomies'          => array( 'post_tag' ),
 				);
 
 				register_post_type( $key, $args );
@@ -88,11 +88,12 @@ function mcm_posttypes() {
  */
 function mcm_posttypes_messages( $messages ) {
 	global $post, $post_ID, $mcm_types, $mcm_enabled;
-	$types = $mcm_types; $enabled = $mcm_enabled;
+	$types   = $mcm_types;
+	$enabled = $mcm_enabled;
 	if ( is_array( $enabled ) ) {
 		foreach ( $enabled as $key ) {
-			$value = $types[$key];
-			$messages[$key] = array(
+			$value            = $types[$key];
+			$messages[ $key ] = array(
 				0  => '', // Unused. Messages start at index 1.
 				// Translators: 1 Post type singular name, 2 link to listing.
 				1  => sprintf( __( '%1$s Listing updated. <a href="%2$s">View %1$s listing</a>', 'my-content-management' ), $value[2], esc_url( get_permalink( $post_ID ) ) ),
@@ -100,7 +101,7 @@ function mcm_posttypes_messages( $messages ) {
 				3  => __( 'Custom field deleted.', 'my-content-management' ),
 				// Translators: post type name.
 				4  => sprintf( __( '%s listing updated.', 'my-content-management' ), $value[2] ),
-				// translators: Post type name, revision title
+				// translators: Post type name, revision title.
 				5  => isset( $_GET['revision'] ) ? sprintf( __( '%1$s restored to revision from %2$ss', 'my-content-management' ), $value[2], wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
 				// Translators: Post type name, link, post type lowercase name.
 				6  => sprintf( __( '%1$s published. <a href="%2$s">View %3$s listing</a>', 'my-content-management' ), $value[2], esc_url( get_permalink( $post_ID ) ), $value[0] ),
@@ -109,7 +110,7 @@ function mcm_posttypes_messages( $messages ) {
 				// Translators: Post type name, link to preview, post type lower case name.
 				8  => sprintf( __( '%1$s listing submitted. <a target="_blank" href="%2$s">Preview %3$s listing</a>', 'my-content-management' ), $value[2], esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ), $value[0] ),
 				// Translators: Post type name, date scheduled, preview link, post type lowercase name.
-				9  => sprintf( __('%1$s listing scheduled for: <strong>%2$s</strong>. <a target="_blank" href="%3$s">Preview %4$s</a>', 'my-content-management' ), $value[2], date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ), esc_url( get_permalink( $post_ID ) ), $value[0] ),
+				9  => sprintf( __( '%1$s listing scheduled for: <strong>%2$s</strong>. <a target="_blank" href="%3$s">Preview %4$s</a>', 'my-content-management' ), $value[2], date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ), esc_url( get_permalink( $post_ID ) ), $value[0] ),
 				// Translators: Post type name, preview link, post type lowercase.
 				10 => sprintf( __( '%1$s draft updated. <a target="_blank" href="%2$s">Preview %3$s listing</a>', 'my-content-management' ), $value[2], esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ), $value[0] ),
 			);
@@ -137,7 +138,7 @@ function mcm_taxonomies() {
 					array(
 						'hierarchical'      => true,
 						// Translators: taxonomy name.
-						'label'             => apply_filters( 'mcm_tax_category_name', sprintf( __( "%s Categories", 'my-content-management' ), $value[2] ), $cat_key ),
+						'label'             => apply_filters( 'mcm_tax_category_name', sprintf( __( '%s Categories', 'my-content-management' ), $value[2] ), $cat_key ),
 						'show_in_rest'      => true,
 						'show_admin_column' => true,
 						'query_var'         => true, // enable taxonomy-specific querying.
@@ -152,7 +153,7 @@ function mcm_taxonomies() {
 					array(
 						'hierarchical'      => false,
 						// Translators: taxonomy name.
-						'label'             => apply_filters( 'mcm_tax_type_name', sprintf( __( "%s Types", 'my-content-management' ), $value[2] ), $cat_key ),
+						'label'             => apply_filters( 'mcm_tax_type_name', sprintf( __( '%s Types', 'my-content-management' ), $value[2] ), $cat_key ),
 						'show_in_rest'      => true,
 						'show_admin_column' => true,
 						'query_var'         => true, // enable taxonomy-specific querying.
@@ -167,12 +168,12 @@ function mcm_taxonomies() {
 					array(
 						'hierarchical'      => false,
 						// Translators: taxonomy name.
-						'label'             => apply_filters( 'mcm_tax_tag_name', sprintf( __( "%s Tags", 'my-content-management' ), $value[2] ), $cat_key ),
+						'label'             => apply_filters( 'mcm_tax_tag_name', sprintf( __( '%s Tags', 'my-content-management' ), $value[2] ), $cat_key ),
 						'show_in_rest'      => true,
 						'show_admin_column' => true,
-						'query_var'         => true, // enable taxonomy-specific querying,
+						'query_var'         => true, // enable taxonomy-specific querying.
 						'rewrite'           => array(
-							'slug' => "$cat_key-tag"
+							'slug' => "$cat_key-tag",
 						), // pretty permalinks for your taxonomy.
 					)
 				);
@@ -274,7 +275,7 @@ function mcm_test_context( $show ) {
  */
 function mcm_build_custom_box( $post, $fields ) {
 	static $nonce_flag = false;
-	// Run once
+	// Run once.
 	$id = addslashes( $fields['title'] );
 	echo "<div class='mcm_post_fields'>";
 	if ( ! $nonce_flag ) {
@@ -282,7 +283,7 @@ function mcm_build_custom_box( $post, $fields ) {
 		$nonce_flag = true;
 	}
 	mcm_echo_hidden( $fields['args'][ $id ], $id );
-	// Generate box contents
+	// Generate box contents.
 	echo apply_filters( 'mcm_build_custom_box', '', $post, $fields );
 	$i = 0;
 	foreach ( $fields['args'][ $id ] as $key => $field ) {
@@ -344,12 +345,12 @@ function mcm_upload_field( $args ) {
 		$single = false;
 	}
 	$args[2] = get_post_meta( $post->ID, $args[0], $single );
-	if ( ! empty($args[2]) && '0' !== $args[2] ) {
+	if ( ! empty( $args[2] ) && '0' !== $args[2] ) {
 		if ( $single ) {
 			$download = '<div><a href="' . $args[2] . '">View ' . $args[1] . '</a></div>';
 		} else {
 			$download = '<ul>';
-			$i = 0;
+			$i        = 0;
 			foreach ( $args[2] as $file ) {
 				if ( '' !== $file ) {
 					$short     = str_replace( site_url(), '', $file );
@@ -402,13 +403,13 @@ function mcm_chooser_field( $args ) {
 		'height' => 80,
 		'width'  => 80,
 	);
-    if ( ! empty($args[2]) && '0' !== $args[2] ) {
+	if ( ! empty( $args[2] ) && '0' !== $args[2] ) {
 		if ( $single ) {
 			$value     = '%3$s';
 			$url       = wp_get_attachment_url( $args[2] );
 			$img       = wp_get_attachment_image( $args[2], array( 80, 80 ), true, $attr );
 			$download .= '<div class="mcm-chooser-image"><a href="' . $url . '">' . $img . '</a><span class="mcm-delete"><input type="checkbox" id="del-' . $args[0] . '" name="mcm_delete[' . $args[0] . '][]" value="' . $args[2] . '" /> <label for="del-' . $args[0] . '">' . __( 'Delete', 'my-content-management' ) . '</label></span></div>';
-			$copy      = __('Change Media', 'my-content-management' );
+			$copy      = __( 'Change Media', 'my-content-management' );
 		} else {
 			$value = '';
 			$i     = 0;
@@ -420,7 +421,7 @@ function mcm_chooser_field( $args ) {
 			}
 			$copy = __( 'Add Media', 'my-content-management' );
 		}
-    } else {
+	} else {
 		$copy = __( 'Choose Media', 'my-content-management' );
 	}
 	$label_format  = '<div class="mcm_chooser_field mcm_field field-holder"><label for="%1$s"><strong>%2$s</strong></label> ' . '<input type="hidden" name="%1$s" value="' . $value . '" class="textfield" id="%1$s" /> <a href="#" class="button textfield-field">' . $copy . '</a><br />';
@@ -448,7 +449,7 @@ function mcm_text_field( $args, $type = 'text' ) {
 	if ( 'mcm_text_field' === $type ) {
 		$type = 'text';
 	} else {
-		$type = ( in_array( $type, $types ) ) ? $type : 'text';
+		$type = ( in_array( $type, $types, true ) ) ? $type : 'text';
 	}
 	global $post;
 	$name        = $args[0];
@@ -456,38 +457,34 @@ function mcm_text_field( $args, $type = 'text' ) {
 	$description = $args[2];
 	// adjust data.
 	$single = true;
-	if ( isset( $args[4] ) && 'true' == $args[4] ) {
+	if ( isset( $args[4] ) && 'true' === $args[4] ) {
 		$single = false;
 	}
 	$meta  = get_post_meta( $post->ID, $name, $single );
 	$value = ( $single ) ? $meta : '';
 	if ( 'date' === $type && $single ) {
-		$value = ( is_numeric( $value ) ) ? date( 'Y-m-d', $value ) : date( 'Y-m-d', strtotime( $value ) );
+		$value = ( is_numeric( $value ) ) ? date( 'Y-m-d', $value ) : date( 'Y-m-d', strtotime( $value ) ); // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
 	}
 	$value   = esc_attr( $value );
 	$value   = ( is_array( $value ) ) ? esc_attr( implode( ', ', $value ) ) : esc_attr( $value );
 	$output  = "<div class='mcm_text_field mcm_field'>";
-	$output .=
-		'<p>
-			<label for="' . $name . '"><strong>' . $label . '</strong></label><br />
-			<input style="width: 80%;" type="' . $type . '" name="' . $name . '" value="' . $value . '" id="' . $name . '" />
-		</p>';
-		if ( is_array( $meta ) ) {
-			$i       = 1;
-			$output .= '<ul>';
-			foreach ( $meta as $field ) {
-				if ( '' !== $field ) {
-					$field = htmlentities($field);
-					if ( 'date' === $type ) {
-						$field = ( is_numeric( $field ) ) ? date( 'Y-m-d', $field ) : date( 'Y-m-d', strtotime( $field ) );
-					}
-					$field   = esc_attr( $field );
-					$output .= '<li><span class="mcm-delete"><input type="checkbox" id="del-' . $name . $i . '" name="mcm_delete[' . $name . '][]" value="' . $field . '" /> <label for="del-' . $name . $i . '"><span>' . __( 'Delete', 'my-content-management' ) . '</span> - ' . $field . '</label></span></li>';
-					$i++;
+	$output .= '<p><label for="' . $name . '"><strong>' . $label . '</strong></label><br /><input style="width: 80%;" type="' . $type . '" name="' . $name . '" value="' . $value . '" id="' . $name . '" /></p>';
+	if ( is_array( $meta ) ) {
+		$i       = 1;
+		$output .= '<ul>';
+		foreach ( $meta as $field ) {
+			if ( '' !== $field ) {
+				$field = htmlentities($field);
+				if ( 'date' === $type ) {
+					$field = ( is_numeric( $field ) ) ? date( 'Y-m-d', $field ) : date( 'Y-m-d', strtotime( $field ) );
 				}
+				$field   = esc_attr( $field );
+				$output .= '<li><span class="mcm-delete"><input type="checkbox" id="del-' . $name . $i . '" name="mcm_delete[' . $name . '][]" value="' . $field . '" /> <label for="del-' . $name . $i . '"><span>' . __( 'Delete', 'my-content-management' ) . '</span> - ' . $field . '</label></span></li>';
+				$i++;
 			}
-			$output .= '</ul>';
 		}
+		$output .= '</ul>';
+	}
 	if ( '' !== $description ) {
 		$output .= '<em>' . $description . '</em>';
 	}
@@ -593,7 +590,7 @@ function mcm_post_relation( $args ) {
  *
  * @param array $args Field arguments.
  *
- * @return
+ * @return string
  */
 function mcm_user_relation( $args ) {
 	global $post;
@@ -636,7 +633,7 @@ function mcm_choose_posts( $type, $chosen = false ) {
 	$posts  = get_posts( $args );
 	$select = '';
 	foreach ( $posts as $post ) {
-		$selected = ( $chosen && ( $post->ID == $chosen ) ) ? ' selected="selected"' : '';
+		$selected = ( $chosen && ( $post->ID === $chosen ) ) ? ' selected="selected"' : '';
 		$select  .= "<option value='$post->ID'$selected>$post->post_title</option>\n";
 	}
 
@@ -652,7 +649,7 @@ function mcm_choose_posts( $type, $chosen = false ) {
  * @return string
  */
 function mcm_choose_users( $type, $chosen = false ) {
-	$args = apply_filters(
+	$args   = apply_filters(
 		'mcm_user_relations',
 		array(
 			'role'   => $type,
@@ -666,7 +663,7 @@ function mcm_choose_users( $type, $chosen = false ) {
 	$users  = get_users( $args );
 	$select = '';
 	foreach ( $users as $user ) {
-		$selected = ( $chosen && ( $user->ID == $chosen ) ) ? ' selected="selected"' : '';
+		$selected = ( $chosen && ( $user->ID === $chosen ) ) ? ' selected="selected"' : '';
 		$select  .= "<option value='$user->ID'$selected>$user->user_login</option>\n";
 	}
 
@@ -697,7 +694,7 @@ function mcm_create_options( $choices, $selected, $type = 'select' ) {
 				} else {
 					$chosen = ( $v === $selected ) ? ' checked="checked"' : '';
 				}
-				$id     = esc_attr(  sanitize_title( $v . '_' . $type ) );
+				$id      = esc_attr(  sanitize_title( $v . '_' . $type ) );
 				$return .= "<li><input type='checkbox' name='$type" . '[]' . "' value='$v' id='$id' $chosen /> <label for='$id'>$display</label></li>";
 			}
 		}
@@ -727,20 +724,19 @@ function mcm_text_area( $args ) {
 	$meta    = get_post_meta( $post->ID, $name, $single );
 	$value   = ( $single ) ? $meta : '';
 	$output  = "<div class='mcm_textarea mcm_field'>";
-	$output .= '<p><label for="' . $name . '"><strong>' . $label . '</strong></label><br /><textarea style="width: 90%;" name="' . $name . '" id="' . $name . '">' . $value . '</textarea>
-		</p>';
-		if ( is_array( $meta ) ) {
-			$i       = 1;
-			$output .= '<ul>';
-			foreach ( $meta as $field ) {
-				if ( '' !== $field ) {
-					$field   = htmlentities( $field );
-					$output .= '<li><span class="mcm-delete"><input type="checkbox" id="del-' . $name . $i . '" name="mcm_delete[' . $name . '][]" value="' . $field . '" /> <label for="del-' . $name . $i . '">' . __( 'Delete', 'my-content-management' ) . '</span>' . $field . '</label></li>';
-					$i++;
-				}
+	$output .= '<p><label for="' . $name . '"><strong>' . $label . '</strong></label><br /><textarea style="width: 90%;" name="' . $name . '" id="' . $name . '">' . $value . '</textarea></p>';
+	if ( is_array( $meta ) ) {
+		$i       = 1;
+		$output .= '<ul>';
+		foreach ( $meta as $field ) {
+			if ( '' !== $field ) {
+				$field   = htmlentities( $field );
+				$output .= '<li><span class="mcm-delete"><input type="checkbox" id="del-' . $name . $i . '" name="mcm_delete[' . $name . '][]" value="' . $field . '" /> <label for="del-' . $name . $i . '">' . __( 'Delete', 'my-content-management' ) . '</span>' . $field . '</label></li>';
+				$i++;
 			}
-			$output .= '</ul>';
 		}
+		$output .= '</ul>';
+	}
 	if ( '' !== $description ) {
 		$output .= '<em>' . $description . '</em>';
 	}
@@ -753,10 +749,8 @@ function mcm_text_area( $args ) {
  * Generate a rich text editor area.
  *
  * @param array $args Field arguments.
- *
- * @return string
  */
-function mcm_rich_text_area ( $args ) {
+function mcm_rich_text_area( $args ) {
 	global $post;
 	// adjust data.
 	$single      = true;
@@ -772,9 +766,9 @@ function mcm_rich_text_area ( $args ) {
 		'mcm_filter_editor_args',
 		array(
 			'textarea_name' => $args[0],
-			'editor_css'    => '<style>.wp_themeSkin iframe { background: #fff; color: #222; }</style>', 'editor_class'  => 'mcm_rich_text_editor'
+			'editor_css'    => '<style>.wp_themeSkin iframe { background: #fff; color: #222; }</style>', 'editor_class'  => 'mcm_rich_text_editor',
 		),
-		$args,
+		$args
 	);
 	echo "<div class='mcm_rich_text_area'><label for='$id'><strong>$args[1]</strong></label><br /><em>$description</em>";
 	wp_editor( $meta, $id, $editor_args );
@@ -871,10 +865,10 @@ function mcm_save_postdata( $post_id, $post ) {
 								'post_title'     => addslashes( $title ),
 								'post_content'   => '',
 								'post_status'    => 'inherit',
-								'post_parent'    => $post->ID
+								'post_parent'    => $post->ID,
 							);
-							$attach_id = wp_insert_attachment( $attachment, $upload['file'] );
-							$url       = wp_get_attachment_url( $attach_id );
+							$attach_id  = wp_insert_attachment( $attachment, $upload['file'] );
+							$url        = wp_get_attachment_url( $attach_id );
 							if ( ! $repeatable ) {
 								if ( $parent_id ) {
 									$parent    = get_post( $parent_id );
@@ -926,12 +920,11 @@ add_action( 'save_post', 'mcm_save_postdata', 1, 2 );
  *
  * @param int $post_id Post ID.
  * @param int $revision_id Revision ID.
- *
  */
 function mcm_restore_revision( $post_id, $revision_id ) {
-	$post         = get_post( $post_id );
-	$revision     = get_post( $revision_id );
-	$meta_fields  = get_metadata( 'post', $revision->ID );
+	$post        = get_post( $post_id );
+	$revision    = get_post( $revision_id );
+	$meta_fields = get_metadata( 'post', $revision->ID );
 
 	if ( is_array( $meta_fields ) ) {
 		foreach ( $meta_fields as $this_field => $this_value ) {
@@ -960,7 +953,7 @@ function mcm_revision_fields( $fields ) {
 	foreach ( $mcm_fields as $set => $field ) {
 		foreach ( $field as $key => $value ) {
 			// Cannot save array values into revisions.
-			if ( 'checkboxes' == $value[3] ) {
+			if ( 'checkboxes' === $value[3] ) {
 				continue;
 			}
 			$custom_field_name            = $value[0];
@@ -996,7 +989,7 @@ add_filter( '_wp_post_revision_field_my_meta', 'mcm_revision_field', 10, 2 );
  *
  * @param array $value Field arguments.
  *
- * @param boolean
+ * @return boolean
  */
 function mcm_is_repeatable( $value ) {
 	if ( is_array( $value ) ) {
@@ -1004,8 +997,8 @@ function mcm_is_repeatable( $value ) {
 			return true;
 		}
 	} else {
-		$options = get_option( 'mcm_options' );
-		$mcm_fields = isset( $options['simplified'] ) ? $options['simplified'] : array() ;
+		$options    = get_option( 'mcm_options' );
+		$mcm_fields = isset( $options['simplified'] ) ? $options['simplified'] : array();
 		if ( is_array( $mcm_fields ) ) {
 			foreach ( $mcm_fields as $set ) {
 				if ( isset( $set['repetition'] ) && 'true' === $set['repetition'] ) {
@@ -1027,7 +1020,9 @@ function mcm_is_repeatable( $value ) {
  */
 function mcm_is_richtext( $value ) {
 	if ( is_string( $value ) ) { // if this isn't a custom field, ignore it.
-		if ( 0 !== strpos( $value, '_' ) ) { return false; }
+		if ( 0 !== strpos( $value, '_' ) ) {
+			return false;
+		}
 	}
 	if ( is_array( $value ) ) {
 		if ( isset( $value[3] ) && 'richtext' === $value[3] ) {
@@ -1035,11 +1030,11 @@ function mcm_is_richtext( $value ) {
 		}
 	} else {
 		$options    = get_option( 'mcm_options' );
-		$mcm_fields = isset( $options['simplified'] ) ? $options['simplified'] : array() ;
+		$mcm_fields = isset( $options['simplified'] ) ? $options['simplified'] : array();
 		if ( is_array( $mcm_fields ) ) {
 			foreach ( $mcm_fields as $set ) {
-				if ( isset( $set['type'] ) && 'richtext' === $set['type'] && isset( $set['key'] ) && $set['key'] == $value ) {
-					return true; 
+				if ( isset( $set['type'] ) && 'richtext' === $set['type'] && isset( $set['key'] ) && $set['key'] === $value ) {
+					return true;
 				}
 			}
 		}
@@ -1081,7 +1076,7 @@ function mcm_echo_nonce() {
  * Echo hidden fields.
  *
  * @param array $fields Fields.
- * @param int   $id Current post ID? Fieldset ID?
+ * @param int   $id Current post ID? Fieldset ID?.
  */
 function mcm_echo_hidden( $fields, $id ) {
 	// finish when I add hidden fields.
@@ -1114,14 +1109,14 @@ $d_mcm_args = array(
 
 // Default post types.
 $default_mcm_types = array(
-	'mcm_faq' => array(
+	'mcm_faq'          => array(
 		__( 'faq', 'my-content-management' ),
 		__( 'faqs', 'my-content-management' ),
 		__( 'FAQ', 'my-content-management' ),
 		__( 'FAQs', 'my-content-management' ),
 		$d_mcm_args,
 	),
-	'mcm_people' => array(
+	'mcm_people'       => array(
 		__( 'person', 'my-content-management' ),
 		__( 'people', 'my-content-management' ),
 		__( 'Person', 'my-content-management' ),
@@ -1135,28 +1130,28 @@ $default_mcm_types = array(
 		__( 'Testimonials', 'my-content-management' ),
 		$d_mcm_args,
 	),
-	'mcm_locations' => array(
+	'mcm_locations'    => array(
 		__( 'location', 'my-content-management' ),
 		__( 'locations', 'my-content-management' ),
 		__( 'Location', 'my-content-management' ),
 		__( 'Locations', 'my-content-management' ),
 		$d_mcm_args,
 	),
-	'mcm_quotes' => array(
+	'mcm_quotes'       => array(
 		__( 'quote', 'my-content-management' ),
 		__( 'quotes', 'my-content-management' ),
 		__( 'Quote', 'my-content-management' ),
 		__( 'Quotes', 'my-content-management' ),
 		$d_mcm_args,
 	),
-	'mcm_glossary' => array(
+	'mcm_glossary'     => array(
 		__( 'glossary term', 'my-content-management' ),
 		__( 'glossary terms', 'my-content-management' ),
 		__( 'Glossary Term', 'my-content-management' ),
 		__( 'Glossary Terms', 'my-content-management' ),
 		$d_mcm_args,
 	),
-	'mcm_portfolio' => array(
+	'mcm_portfolio'    => array(
 		__( 'portfolio item', 'my-content-management' ),
 		__( 'portfolio items', 'my-content-management' ),
 		__( 'Portfolio Item', 'my-content-management' ),
@@ -1176,15 +1171,15 @@ $default_mcm_types = array(
 // @post_type string post_type.
 // @location string side/normal/advanced.
 // add custom fields to the custom post types.
-$default_mcm_fields = array (
-	__('Personal Information', 'my-content-management' ) => array (
+$default_mcm_fields = array(
+	__('Personal Information', 'my-content-management' ) => array(
 		array( '_title', __( 'Title', 'my-content-management' ), '', 'mcm_text_field' ),
 		array( '_subtitle', __( 'Subtitle', 'my-content-management' ), '', 'mcm_text_field' ),
-		array( '_business', __( 'Business', 'my-content-management' ),'', 'mcm_text_field' ),
-		array( '_phone', __( 'Phone Number', 'my-content-management' ), '', 'tel', 'true'),
+		array( '_business', __( 'Business', 'my-content-management' ), '', 'mcm_text_field' ),
+		array( '_phone', __( 'Phone Number', 'my-content-management' ), '', 'tel', 'true' ),
 		array( '_email', __( 'E-mail', 'my-content-management' ), '', 'email' ),
 	),
-	__( 'Location Info', 'my-content-management' ) => array (
+	__( 'Location Info', 'my-content-management' )       => array(
 		array( '_street', __( 'Street Address', 'my-content-management' ), '', 'mcm_text_field' ),
 		array( '_city', __( 'City', 'my-content-management' ), '', 'mcm_text_field' ),
 		array( '_neighborhood', __( 'Neighborhood', 'my-content-management' ), '', 'mcm_text_field' ),
@@ -1196,17 +1191,17 @@ $default_mcm_fields = array (
 		array( '_business', __( 'Business Name', 'my-content-management' ), '', 'mcm_text_field' ),
 		array( '_email', __( 'Contact Email', 'my-content-management' ), '', 'email' ),
 	),
-	__( 'Quotation Info', 'my-content-management' ) => array (
+	__( 'Quotation Info', 'my-content-management' )      => array(
 		array( '_url', __( 'URL', 'my-content-management' ), '', 'url'),
 		array( '_title', __( 'Title', 'my-content-management' ), '', 'mcm_text_field'),
 		array( '_location', __( 'Location', 'my-content-management' ), '', 'mcm_text_field'),
 	),
-	__( 'Testimonial Info', 'my-content-management' ) => array (
+	__( 'Testimonial Info', 'my-content-management' )    => array(
 		array( '_url', __( 'URL', 'my-content-management' ), '', 'url' ),
 		array( '_title', __( 'Title', 'my-content-management' ), '', 'mcm_text_field' ),
 		array( '_location', __( 'Location', 'my-content-management' ), '', 'mcm_text_field' ),
 	),
-	__( 'Portfolio Info', 'my-content-management' ) => array (
+	__( 'Portfolio Info', 'my-content-management' )      => array(
 		array( '_medium', __( 'Medium', 'my-content-management' ), '', 'mcm_text_field' ),
 		array( '_width', __( 'Width', 'my-content-management' ), '', 'mcm_text_field' ),
 		array( '_height', __( 'Height', 'my-content-management' ), '', 'mcm_text_field' ),
@@ -1214,7 +1209,7 @@ $default_mcm_fields = array (
 		array( '_price', __( 'Price', 'my-content-management' ), '', 'mcm_text_field' ),
 		array( '_year', __( 'Year', 'my-content-management' ), '', 'mcm_text_field' ),
 	),
-	__( 'Resource Info', 'my-content-management' ) => array (
+	__( 'Resource Info', 'my-content-management' )       => array(
 		array( '_authors', __( 'Additional Authors', 'my-content-management' ), '', 'mcm_text_field', 'true' ),
 		array( '_licensing', __( 'License Terms', 'my-content-management' ), '', 'mcm_text_area' ),
 		array( '_show', __( 'Show on', 'my-content-management' ), 'This is a label for advanced use in themes', 'mcm_text_field' ),

@@ -23,7 +23,10 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @license   GPLv2 or later
  * @version   1.0
  */
-class mcm_search_widget extends WP_Widget {
+class Mcm_Search_Widget extends WP_Widget {
+	/**
+	 * Construct.
+	 */
 	function __construct() {
 		parent::__construct( false, $name = __( 'Custom Post Search','my-content-management' ), array( 'customize_selective_refresh' => true ) );
 	}
@@ -35,7 +38,8 @@ class mcm_search_widget extends WP_Widget {
 	 * @param array $instance Instance.
 	 */
 	function widget( $args, $instance ) {
-		extract( $args );
+		// TODO: eliminate extract.
+		extract( $args ); // phpcs:ignore WordPress.PHP.DontExtract.extract_extract
 		$the_title    = apply_filters( 'widget_title', $instance['title'] );
 		$widget_title = empty( $the_title ) ? '' : $the_title;
 		$widget_title = ( '' !== $widget_title ) ? $before_title . $widget_title . $after_title : '';
@@ -57,15 +61,15 @@ class mcm_search_widget extends WP_Widget {
 		$title     = isset( $instance['title'] ) ? esc_attr( $instance['title'] ) : '';
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id('title'); ?>"><?php _e( 'Title', 'my-content-management' ); ?>:</label><br />
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'my-content-management' ); ?>:</label><br />
 			<input class="widefat" type="text" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" value="<?php echo esc_attr( $title ); ?>"/>
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'mcm_widget_post_type' ); ?>"><?php _e( 'Post type to search','my-content-management' ); ?></label> <select id="<?php echo $this->get_field_id( 'mcm_widget_post_type' ); ?>" name="<?php echo $this->get_field_name('mcm_widget_post_type'); ?>">
+			<label for="<?php echo $this->get_field_id( 'mcm_widget_post_type' ); ?>"><?php _e( 'Post type to search', 'my-content-management' ); ?></label> <select id="<?php echo $this->get_field_id( 'mcm_widget_post_type' ); ?>" name="<?php echo $this->get_field_name( 'mcm_widget_post_type' ); ?>">
 			<?php
 			$posts      = get_post_types(
 				array(
-					'public' => 'true'
+					'public' => 'true',
 				),
 				'object'
 			);
@@ -110,7 +114,10 @@ class mcm_search_widget extends WP_Widget {
  * @license   GPLv2 or later
  * @version   1.0
  */
-class mcm_posts_widget extends WP_Widget {
+class Mcm_Posts_Widget extends WP_Widget {
+	/**
+	 * Construct.
+	 */
 	function __construct() {
 		parent::__construct( false, $name = __( 'Custom Post List', 'my-content-management' ), array( 'customize_selective_refresh' => true ) );
 	}
@@ -124,7 +131,8 @@ class mcm_posts_widget extends WP_Widget {
 	function widget( $args, $instance ) {
 		global $mcm_types;
 		$types = array_keys( $mcm_types );
-		extract( $args );
+		// TODO: eliminate extract.
+		extract( $args ); // phpcs:ignore WordPress.PHP.DontExtract.extract_extract
 		$the_title    = apply_filters( 'widget_title', $instance['title'] );
 		$widget_title = empty( $the_title ) ? '' : $the_title;
 		$widget_title = ( '' !== $widget_title ) ? $before_title . $widget_title . $after_title : '';
@@ -135,7 +143,7 @@ class mcm_posts_widget extends WP_Widget {
 			$display = 'custom';
 		}
 		$count     = ( '' === $instance['count'] ) ? -1 : (int) $instance['count'];
-		$template  = ( '' === $instance['template'] ) ? "<li>{link_title}</li>" : $instance['template'];
+		$template  = ( '' === $instance['template'] ) ? '<li>{link_title}</li>' : $instance['template'];
 		$wrapper   = ( '' === $instance['wrapper'] ) ? '<ul>' : '<' . $instance['wrapper'] . '>';
 		$unwrapper = ( '' === $instance['wrapper'] ) ? '</ul>' : '</' . $instance['wrapper'] . '>';
 		$order     = ( '' === $instance['order'] ) ? 'menu_order' : $instance['order'];
@@ -157,7 +165,7 @@ class mcm_posts_widget extends WP_Widget {
 			$wrapper   = '';
 			$unwrapper = '';
 		}
-		$args = array(
+		$args   = array(
 			'type'           => $post_type,
 			'display'        => $display,
 			'taxonomy'       => $taxonomy,
@@ -189,14 +197,14 @@ class mcm_posts_widget extends WP_Widget {
 		$display   = isset( $instance['display'] ) ? esc_attr( $instance['display'] ) : '';
 		$count     = isset( $instance['count'] ) ? (int) $instance['count'] : -1;
 		$direction = isset( $instance['direction'] ) ? esc_attr( $instance['direction'] ) : 'asc';
-		$order     = isset( $instance['order'] )? esc_attr( $instance['order'] ) : '';
+		$order     = isset( $instance['order'] ) ? esc_attr( $instance['order'] ) : '';
 		$title     = isset( $instance['title'] ) ? esc_attr( $instance['title'] ) : '';
 		$term      = isset( $instance['term'] ) ? esc_attr( $instance['term'] ) : '';
 		$template  = isset( $instance['template'] ) ? esc_attr( $instance['template'] ) : '';
 		$wrapper   = isset( $instance['wrapper'] ) ? esc_attr( $instance['wrapper'] ) : '';
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title','my-content-management' ); ?>:</label><br />
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'my-content-management' ); ?>:</label><br />
 			<input class="widefat" type="text" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" value="<?php echo $title; ?>"/>
 		</p>
 		<p>
@@ -220,46 +228,46 @@ class mcm_posts_widget extends WP_Widget {
 			</select>
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'display' ); ?>"><?php _e( 'Template Model','my-content-management' ); ?></label> <select id="<?php echo $this->get_field_id( 'display' ); ?>" name="<?php echo $this->get_field_name( 'display' ); ?>">
-			<option value='list'<?php selected( $display, 'list' ); ?>><?php _e( 'List','my-content-management' ); ?></option>
-			<option value='excerpt'<?php selected( $display, 'excerpt' ); ?>><?php _e( 'Excerpt','my-content-management' ); ?></option>
-			<option value='full'<?php selected( $display, 'full' ); ?>><?php _e( 'Full','my-content-management' ); ?></option>
-			<option value='custom'<?php selected( $display, 'custom' ); ?>><?php _e( 'Custom','my-content-management' ); ?></option>
+			<label for="<?php echo $this->get_field_id( 'display' ); ?>"><?php _e( 'Template Model', 'my-content-management' ); ?></label> <select id="<?php echo $this->get_field_id( 'display' ); ?>" name="<?php echo $this->get_field_name( 'display' ); ?>">
+			<option value='list'<?php selected( $display, 'list' ); ?>><?php _e( 'List', 'my-content-management' ); ?></option>
+			<option value='excerpt'<?php selected( $display, 'excerpt' ); ?>><?php _e( 'Excerpt', 'my-content-management' ); ?></option>
+			<option value='full'<?php selected( $display, 'full' ); ?>><?php _e( 'Full', 'my-content-management' ); ?></option>
+			<option value='custom'<?php selected( $display, 'custom' ); ?>><?php _e( 'Custom', 'my-content-management' ); ?></option>
 			</select>
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'order' ); ?>"><?php _e( 'Display order','my-content-management' ); ?></label> <select id="<?php echo $this->get_field_id( 'order' ); ?>" name="<?php echo $this->get_field_name( 'order' ); ?>">
-			<option value='menu_order'<?php selected( $order, 'menu_order' ); ?>><?php _e( 'Menu Order','my-content-management' ); ?></option>
-			<option value='none'<?php selected( $order, 'none' ); ?>><?php _e( 'None','my-content-management' ); ?></option>
-			<option value='ID'<?php selected( $order, 'id' ); ?>><?php _e( 'Post ID','my-content-management' ); ?></option>
-			<option value='author'<?php selected( $order, 'author' ); ?>><?php _e( 'Author','my-content-management' ); ?></option>
-			<option value='title'<?php selected( $order, 'title' ); ?>><?php _e( 'Post Title','my-content-management' ); ?></option>
-			<option value='date'<?php selected( $order, 'date' ); ?>><?php _e( 'Post Date','my-content-management' ); ?></option>
-			<option value='modified'<?php selected( $order, 'modified' ); ?>><?php _e( 'Post Modified Date','my-content-management' ); ?></option>
-			<option value='rand'<?php selected( $order, 'rand' ); ?>><?php _e( 'Random','my-content-management' ); ?></option>
-			<option value='comment_count'<?php selected( $order, 'comment_count' ); ?>><?php _e( 'Number of comments','my-content-management' ); ?></option>
+		<label for="<?php echo $this->get_field_id( 'order' ); ?>"><?php _e( 'Display order', 'my-content-management' ); ?></label> <select id="<?php echo $this->get_field_id( 'order' ); ?>" name="<?php echo $this->get_field_name( 'order' ); ?>">
+			<option value='menu_order'<?php selected( $order, 'menu_order' ); ?>><?php _e( 'Menu Order', 'my-content-management' ); ?></option>
+			<option value='none'<?php selected( $order, 'none' ); ?>><?php _e( 'None', 'my-content-management' ); ?></option>
+			<option value='ID'<?php selected( $order, 'id' ); ?>><?php _e( 'Post ID', 'my-content-management' ); ?></option>
+			<option value='author'<?php selected( $order, 'author' ); ?>><?php _e( 'Author', 'my-content-management' ); ?></option>
+			<option value='title'<?php selected( $order, 'title' ); ?>><?php _e( 'Post Title', 'my-content-management' ); ?></option>
+			<option value='date'<?php selected( $order, 'date' ); ?>><?php _e( 'Post Date', 'my-content-management' ); ?></option>
+			<option value='modified'<?php selected( $order, 'modified' ); ?>><?php _e( 'Post Modified Date', 'my-content-management' ); ?></option>
+			<option value='rand'<?php selected( $order, 'rand' ); ?>><?php _e( 'Random', 'my-content-management' ); ?></option>
+			<option value='comment_count'<?php selected( $order, 'comment_count' ); ?>><?php _e( 'Number of comments', 'my-content-management' ); ?></option>
 		</select>
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'count' ); ?>"><?php _e( 'Number to display','my-content-management' ); ?></label> <input type="text" size="3" id="<?php echo $this->get_field_id( 'count' ); ?>" name="<?php echo $this->get_field_name( 'count' ); ?>" value="<?php echo $count; ?>" /><br /><span>(<?php _e( '-1 to display all posts','my-content-management' ); ?>)</span>
+		<label for="<?php echo $this->get_field_id( 'count' ); ?>"><?php _e( 'Number to display','my-content-management' ); ?></label> <input type="text" size="3" id="<?php echo $this->get_field_id( 'count' ); ?>" name="<?php echo $this->get_field_name( 'count' ); ?>" value="<?php echo $count; ?>" /><br /><span>(<?php _e( '-1 to display all posts', 'my-content-management' ); ?>)</span>
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'direction' ); ?>"><?php _e( 'Order direction','my-content-management' ); ?></label> <select id="<?php echo $this->get_field_id( 'direction' ); ?>" name="<?php echo $this->get_field_name( 'direction' ); ?>">
-		<option value='asc'<?php echo ( 'asc' === $direction ) ? ' selected="selected"' : ''; ?>><?php _e( 'Ascending (A-Z)','my-content-management' ); ?></option>
-		<option value='desc'<?php echo ( 'desc' === $direction ) ? ' selected="selected"' : ''; ?>><?php _e( 'Descending (Z-A)','my-content-management' ); ?></option>
+		<label for="<?php echo $this->get_field_id( 'direction' ); ?>"><?php _e( 'Order direction', 'my-content-management' ); ?></label> <select id="<?php echo $this->get_field_id( 'direction' ); ?>" name="<?php echo $this->get_field_name( 'direction' ); ?>">
+		<option value='asc'<?php echo ( 'asc' === $direction ) ? ' selected="selected"' : ''; ?>><?php _e( 'Ascending (A-Z)', 'my-content-management' ); ?></option>
+		<option value='desc'<?php echo ( 'desc' === $direction ) ? ' selected="selected"' : ''; ?>><?php _e( 'Descending (Z-A)', 'my-content-management' ); ?></option>
 		</select>
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'term' ); ?>"><?php _e( 'Category (single term or comma-separated list)','my-content-management' ); ?>:</label><br />
+		<label for="<?php echo $this->get_field_id( 'term' ); ?>"><?php _e( 'Category (single term or comma-separated list)', 'my-content-management' ); ?>:</label><br />
 		<input class="widefat" type="text" id="<?php echo $this->get_field_id( 'term' ); ?>" name="<?php echo $this->get_field_name( 'term' ); ?>" value="<?php echo $term; ?>"/>
 		</p>
 		<?php
 		if ( 'custom' === $display ) {
 			?>
 		<fieldset>
-		<legend><strong><?php _e( 'Custom Templating','my-content-management' ); ?></strong></legend>
+		<legend><strong><?php _e( 'Custom Templating', 'my-content-management' ); ?></strong></legend>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'wrapper' ); ?>"><?php _e( 'Wrapper','my-content-management' ); ?>:</label><br />
+		<label for="<?php echo $this->get_field_id( 'wrapper' ); ?>"><?php _e( 'Wrapper', 'my-content-management' ); ?>:</label><br />
 		<select id="<?php echo $this->get_field_id( 'wrapper' ); ?>" name="<?php echo $this->get_field_name( 'wrapper' ); ?>">
 			<option value=''><?php _e( 'None', 'my-content-management' ); ?></option>
 			<option value='ul'<?php selected( 'ul', $wrapper ); ?>><?php _e( 'Unordered list', 'my-content-management' ); ?></option>
@@ -315,7 +323,10 @@ class mcm_posts_widget extends WP_Widget {
  * @license   GPLv2 or later
  * @version   1.0
  */
-class mcm_meta_widget extends WP_Widget {
+class Mcm_Meta_Widget extends WP_Widget {
+	/**
+	 * Construct.
+	 */
 	function __construct() {
 		parent::__construct(
 			false,
@@ -401,7 +412,7 @@ class mcm_meta_widget extends WP_Widget {
 			</select>
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'display' ); ?>"><?php _e( 'Display style', 'my-content-management' ); ?></label> <select id="<?php echo $this->get_field_id( 'display' ); ?>" name="<?php echo $this->get_field_name( 'display'); ?>">
+			<label for="<?php echo $this->get_field_id( 'display' ); ?>"><?php _e( 'Display style', 'my-content-management' ); ?></label> <select id="<?php echo $this->get_field_id( 'display' ); ?>" name="<?php echo $this->get_field_name( 'display' ); ?>">
 				<option value='list'<?php selected( $display, 'list' ); ?>><?php _e( 'List', 'my-content-management' ); ?></option>
 				<option value='table'<?php selected( $display, 'table' ); ?>><?php _e( 'Table', 'my-content-management' ); ?></option>
 				<option value='custom'<?php selected( $display, 'custom' ); ?>><?php _e( 'Custom', 'my-content-management' ); ?></option>
@@ -419,7 +430,7 @@ class mcm_meta_widget extends WP_Widget {
 			<input class="widefat" type="text" id="<?php echo $this->get_field_id( 'right_column' ); ?>" name="<?php echo $this->get_field_name( 'right_column' ); ?>" value="<?php echo $right_column; ?>"/>
 			</p>
 			<?php
-		} 
+		}
 		if ( 'custom' === $display ) {
 			?>
 			<p>
@@ -430,7 +441,7 @@ class mcm_meta_widget extends WP_Widget {
 		}
 		?>
 		</fieldset>
-	<?php
+		<?php
 	}
 
 	/**
@@ -499,11 +510,13 @@ function mcm_get_fieldset_values( $fieldset, $id = false ) {
  * @param string $template Template value.
  *
  * @return string
- */ 
+ */
 function mcm_format_fieldset( $values, $display, $headers, $fieldset, $template = false ) {
-	$label = $headers['label'];
-	$value = $headers['values'];
-	$list  = $before = $after = '';
+	$label  = $headers['label'];
+	$value  = $headers['values'];
+	$list   = '';
+	$before = '';
+	$after  = '';
 	if ( 'custom' !== $display ) {
 		if ( 'table' === $display ) {
 			$before = '<table class="mcm_display_fieldset">
@@ -521,7 +534,7 @@ function mcm_format_fieldset( $values, $display, $headers, $fieldset, $template 
 			if ( ! empty( $value['value'] ) ) {
 				if ( is_array( $value['value'] ) ) {
 					$i = 1;
-					foreach( $value['value'] as $val ) {
+					foreach ( $value['value'] as $val ) {
 						$label  = apply_filters( 'mcm_widget_data_label', esc_html( stripslashes( $value['label'] ) ), $val, $display, $fieldset );
 						$output = apply_filters( 'mcm_widget_data_value', mcm_format_value( $val, $value['type'], $value['label'] ), $val, $display, $fieldset );
 						if ( 'table' === $display ) {
@@ -548,7 +561,7 @@ function mcm_format_fieldset( $values, $display, $headers, $fieldset, $template 
 		} else {
 			$after = '</ul>';
 		}
-	} else if ( 'custom' === $display ) {
+	} elseif ( 'custom' === $display ) {
 		if ( $template ) {
 			$values = mcm_flatten_array( $values );
 			$list   = mcm_draw_template( $values, $template );
@@ -574,13 +587,13 @@ function mcm_format_fieldset( $values, $display, $headers, $fieldset, $template 
 /**
  * Take raw output for MCM Widget and flatten to pass through mcm_draw_template
  *
- * @param array $values multidimensional array
+ * @param array $values multidimensional array.
  *
  * @return array single dimensional array
  */
 function mcm_flatten_array( $values ) {
 	$array = array();
-	foreach( $values as $key => $value ) {
+	foreach ( $values as $key => $value ) {
 		$array[ $key ] = $value['value'];
 	}
 
@@ -590,7 +603,7 @@ function mcm_flatten_array( $values ) {
 /**
  * Test a chooser field data type.
  *
- * @param int $id Post ID.
+ * @param int    $id Post ID.
  * @param string $url URL.
  * @param string $type Field type.
  * @param string $label Field label.
@@ -620,7 +633,7 @@ function mcm_test_chooser_field( $id = false, $url = false, $type = false, $labe
 				'thumbnail',
 				true,
 				array(
-					'class' => 'mcm-attachment-chooser'
+					'class' => 'mcm-attachment-chooser',
 				)
 			) : "<img src='$url' alt='' />";
 		case 'mp3':
@@ -645,7 +658,7 @@ function mcm_test_chooser_field( $id = false, $url = false, $type = false, $labe
 		case 'application/pdf':
 		case 'application/msword':
 		case 'application/vnd.ms-powerpoint':
-		//case 'application/vnd.ms-excel':
+			// case 'application/vnd.ms-excel'.
 		case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document':
 		case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet':
 		case 'application/vnd.openxmlformats-officedocument.presentationml.presentation':
@@ -690,9 +703,9 @@ function mcm_inverse_color( $color ) {
  * @return string
  */
 function mcm_format_value( $value, $type, $label ) {
-	switch( $type ) {
+	switch ( $type ) {
 		case 'color':
-			$value  = ( preg_match('|^#([A-Fa-f0-9]{3}){1,2}$|', $value ) ) ? $value : '';
+			$value  = ( preg_match( '|^#([A-Fa-f0-9]{3}){1,2}$|', $value ) ) ? $value : '';
 			$invert = mcm_inverse_color( $value );
 			$return = '<div class="mcm-color-output" style="background: ' . $value . '; color: ' . $invert . '">' . $value . '</div>';
 			break;
@@ -707,15 +720,15 @@ function mcm_format_value( $value, $type, $label ) {
 		case 'richtext':
 			$return = wpautop( stripslashes( $value ) );
 			break;
-		case 'upload' :
+		case 'upload':
 			$components = parse_url( $value );
 			$path       = pathinfo( $components['path'] );
 			$extension  = $path['extension'];
 			$return     = mcm_test_chooser_field( false, $value, $extension, $label );
-			// try to figure out upload type; img or link
+			// try to figure out upload type; img or link.
 			break;
 		case 'chooser':
-			// use mimetype to produce img link or shortcode
+			// use mimetype to produce img link or shortcode.
 			$value  = intval( $value );
 			$return = mcm_test_chooser_field( $value );
 			break;
@@ -729,13 +742,13 @@ function mcm_format_value( $value, $type, $label ) {
 			// if is timestamp, convert to date; otherwise, display as is.
 			break; // timestamp? convert to date format?
 		case 'url':
-			$return = "<a href='" . esc_url( $value ) . "'><span class='mcm_url mcm_text'>Link</span> <span class='mcm_url screen-reader-text'>" . esc_html( $value ) . "</span></a>";
+			$return = "<a href='" . esc_url( $value ) . "'><span class='mcm_url mcm_text'>Link</span> <span class='mcm_url screen-reader-text'>" . esc_html( $value ) . '</span></a>';
 			break;
 		case 'post-relation':
-			$post = ( is_numeric( $value ) ) ? get_post( $value ) : false;
-			$return = ( $post ) ? "<a href='" . get_permalink( $value ) . "'>" . get_the_title( $value ) . "</a>" : '';
-			break; // get post name and link
-		case 'user-relation' :
+			$post   = ( is_numeric( $value ) ) ? get_post( $value ) : false;
+			$return = ( $post ) ? "<a href='" . get_permalink( $value ) . "'>" . get_the_title( $value ) . '</a>' : '';
+			break; // get post name and link.
+		case 'user-relation':
 			$user   = ( is_numeric( $value ) ) ? get_user_by( 'id', $value ) : false;
 			$return = ( is_object( $user ) ) ? $user->display_name : '';
 			$return = ( $return ) ? $return : $user->user_login; // if user does not have display name, use login.
