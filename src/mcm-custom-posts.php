@@ -970,10 +970,10 @@ add_filter( '_wp_post_revision_fields', 'mcm_revision_fields' );
 /**
  * Get revision data.
  *
- * @param mixed  $value Value of meta field.
- * @param string $field Custom field name.
+ * @param mixed string|int $value Value of meta field. Unused.
+ * @param string           $field Custom field name.
  *
- * return mixed
+ * return mixed string|int
  */
 function mcm_revision_field( $value, $field ) {
 	global $revision;

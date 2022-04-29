@@ -62,7 +62,7 @@ add_shortcode( 'my_archive', 'mcm_show_archive' );
 add_shortcode( 'email', 'mcm_munger' );
 add_shortcode( 'my_terms', 'mcm_terms' );
 // Filters.
-add_filter( 'pre_get_posts','mcm_searchfilter' );
+add_filter( 'pre_get_posts', 'mcm_searchfilter' );
 add_filter( 'post_updated_messages', 'mcm_posttypes_messages' );
 
 // Actions.
@@ -281,7 +281,7 @@ function mcm_show_archive( $atts ) {
 			$taxo      = $term->name;
 			$tax       = $term->slug;
 			$tax_class = sanitize_title( $tax );
-			if ( ( ! empty( $exclude ) && '' !== $exclude[0] && ! in_array( $tax, $exclude, true ) ) || ( ! empty( $include) && '' !== $include[0] && in_array( $tax, $include, true ) ) || '' === $exclude[0] && '' === $include[0] ) {
+			if ( ( ! empty( $exclude ) && '' !== $exclude[0] && ! in_array( $tax, $exclude, true ) ) || ( ! empty( $include ) && '' !== $include[0] && in_array( $tax, $include, true ) ) || '' === $exclude[0] && '' === $include[0] ) {
 				$linker .= "<li><a href='#$tax_class'>$taxo</a></li>";
 				$output .= "\n<div class='archive-group'>";
 				$output .= "<h2 class='$tax_class' id='$tax_class'>$taxo</h2>";
@@ -1031,18 +1031,18 @@ function mcm_template_setter() {
 	$list      = array( 'div', 'ul', 'ol', 'dl', 'section' );
 	$item      = array( 'div', 'li', 'article' );
 	$default   = array(
-		'full'        => '
+		'full'    => '
 <h2>{title}</h2>
 {content}
 
 <p>{link_title}</p>',
-		'excerpt'     => '
+		'excerpt' => '
 <h3>{title}</h3>
 {excerpt}
 
 <p>{link_title}</p>',
-		'list'        => '{link_title}',
-		'wrapper'     => array(
+		'list'    => '{link_title}',
+		'wrapper' => array(
 			'item' => array(
 				'full'    => 'div',
 				'excerpt' => 'div',
