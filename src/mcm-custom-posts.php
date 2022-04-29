@@ -1,33 +1,56 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) exit;
+/**
+ * Create post types and custom field editing.
+ *
+ * @category Views
+ * @package  My Content Management
+ * @author   Joe Dolson
+ * @license  GPLv2 or later
+ * @link     https://www.joedolson.com/my-content-management/
+ */
 
-global $mcm_types,$mcm_fields,$mcm_extras,$mcm_enabled,$mcm_templates,$default_mcm_types,$default_mcm_fields,$default_mcm_extras;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
+global $mcm_types, $mcm_fields, $mcm_extras, $mcm_enabled, $mcm_templates, $default_mcm_types, $default_mcm_fields, $default_mcm_extras;
+
+/**
+ * Create post types.
+ */
 function mcm_posttypes() {
 	global $mcm_types, $mcm_enabled;
-	$types = $mcm_types; $enabled = $mcm_enabled;
+	$types   = $mcm_types;
+	$enabled = $mcm_enabled;
 	if ( is_array( $enabled ) ) {
 		foreach ( $enabled as $key ) {
-			$value =& $types[$key];
+			$value =& $types[ $key ];
 			if ( is_array( $value ) && ! empty( $value ) ) {
 				$labels = array(
-					'name' => $value[3],
-					'singular_name' => $value[2],
-					'add_new' => __('Add New', 'my-content-management' ),
-					'add_new_item' => sprintf( __('Add New %s', 'my-content-management' ), $value[2] ),
-					'edit_item' => sprintf( __('Edit %s','my-content-management' ), $value[2] ),
-					'new_item' => sprintf( __('New %s','my-content-management' ), $value[2] ),
-					'view_item' => sprintf( __('View  %s','my-content-management' ), $value[2] ),
-					'search_items' => sprintf( __('Search %s','my-content-management' ), $value[3] ),
-					'not_found' =>  sprintf( __('No %s found', 'my-content-management' ), $value[1] ),
-					'not_found_in_trash' => sprintf( __('No %s found in Trash','my-content-management' ), $value[1] ),
-					'parent_item_colon' => ''
+					'name'               => $value[3],
+					'singular_name'      => $value[2],
+					'add_new'            => __( 'Add New', 'my-content-management' ),
+					// Translators: post type name.
+					'add_new_item'       => sprintf( __( 'Add New %s', 'my-content-management' ), $value[2] ),
+					// Translators: post type name.
+					'edit_item'          => sprintf( __( 'Edit %s','my-content-management' ), $value[2] ),
+					// Translators: post type name.
+					'new_item'           => sprintf( __( 'New %s','my-content-management' ), $value[2] ),
+					// Transltoars: post type name.
+					'view_item'          => sprintf( __( 'View %s','my-content-management' ), $value[2] ),
+					// Translators: post type plural name.
+					'search_items'       => sprintf( __( 'Search %s','my-content-management' ), $value[3] ),
+					// Translators: post type name.
+					'not_found'          => sprintf( __( 'No %s found', 'my-content-management' ), $value[1] ),
+					// Translators: post type name.
+					'not_found_in_trash' => sprintf( __( 'No %s found in Trash','my-content-management' ), $value[1] ),
+					'parent_item_colon'  => ''
 				);
 				$labels = apply_filters( 'mcm_post_type_labels', $labels, $value );
-				$raw  = $value[4];
-				$slug = ( ! isset($raw['slug']) || $raw['slug'] == '' ) ? $key : $raw['slug'];
-				$icon = ( is_ssl() ) ? str_replace( 'http://', 'https://', $raw['menu_icon'] ) : $raw['menu_icon'];
-				$icon = ( $raw['menu_icon'] == null ) ? plugins_url( 'images', __FILE__ )."/$key.png" : $icon;
+				$raw    = $value[4];
+				$slug   = ( ! isset( $raw['slug'] ) || '' === $raw['slug'] ) ? $key : $raw['slug'];
+				$icon   = ( is_ssl() ) ? str_replace( 'http://', 'https://', $raw['menu_icon'] ) : $raw['menu_icon'];
+				$icon   = ( null === $raw['menu_icon'] ) ? plugins_url( 'images', __FILE__ ) . "/$key.png" : $icon;
 				$args = array(
 					'labels'              => $labels,
 					'public'              => $raw['public'],
@@ -35,23 +58,34 @@ function mcm_posttypes() {
 					'exclude_from_search' => $raw['exclude_from_search'],
 					'show_ui'             => $raw['show_ui'],
 					'show_in_menu'        => $raw['show_in_menu'],
-					'menu_icon'           => ( $icon == '' ) ? plugins_url('images',__FILE__)."/mcm_resources.png" : $icon,
+					'menu_icon'           => ( '' === $icon ) ? plugins_url( 'images', __FILE__) . '/mcm_resources.png' : $icon,
 					'query_var'           => true,
-					'rewrite'             => array('slug'=>$slug,'with_front'=>false),
+					'rewrite'             => array(
+						'slug'       => $slug,
+						'with_front' => false,
+					),
 					'hierarchical'        => $raw['hierarchical'],
 					'has_archive'         => true,
 					'show_in_rest'        => ( isset( $raw['show_in_rest'] ) ? $raw['show_in_rest'] : false ),
 					'supports'            => $raw['supports'],
 					'map_meta_cap'        => true,
-					'capability_type'     => 'post', // capability type is post type
+					'capability_type'     => 'post', // capability type is post type.
 					'taxonomies'          => array( 'post_tag' )
 				);
+
 				register_post_type( $key, $args );
 			}
 		}
 	}
 }
 
+/**
+ * Set up post type message strings.
+ *
+ * @param array $messages Array of messages.
+ *
+ * @return array
+ */
 function mcm_posttypes_messages( $messages ) {
 	global $post, $post_ID, $mcm_types, $mcm_enabled;
 	$types = $mcm_types; $enabled = $mcm_enabled;
@@ -59,67 +93,87 @@ function mcm_posttypes_messages( $messages ) {
 		foreach ( $enabled as $key ) {
 			$value = $types[$key];
 			$messages[$key] = array(
-				0 => '', // Unused. Messages start at index 1.
-				1 => sprintf( __('%1$s Listing updated. <a href="%2$s">View %1$s listing</a>', 'my-content-management' ), $value[2], esc_url( get_permalink( $post_ID ) ) ),
-				2 => __('Custom field updated.', 'my-content-management' ),
-				3 => __('Custom field deleted.', 'my-content-management' ),
-				4 => sprintf( __('%s listing updated.', 'my-content-management' ), $value[2] ),
-				/* translators: %s: date and time of the revision */
-				5 => isset($_GET['revision']) ? sprintf( __('%1$s restored to revision from %2$ss', 'my-content-management' ), $value[2], wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
-				6 => sprintf( __('%1$s published. <a href="%2$s">View %3$s listing</a>', 'my-content-management' ), $value[2], esc_url( get_permalink($post_ID) ), $value[0] ),
-				7 => sprintf( __('%s listing saved.', 'my-content-management' ), $value[2] ),
-				8 => sprintf( __('%1$s listing submitted. <a target="_blank" href="%2$s">Preview %3$s listing</a>', 'my-content-management' ), $value[2], esc_url( add_query_arg( 'preview', 'true', get_permalink($post_ID) ) ), $value[0] ),
-				9 => sprintf( __('%1$s listing scheduled for: <strong>%2$s</strong>. <a target="_blank" href="%3$s">Preview %4$s</a>', 'my-content-management' ),
-				  $value[2], date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ), esc_url( get_permalink($post_ID) ), $value[0] ),
-				10 => sprintf( __('%1$s draft updated. <a target="_blank" href="%2$s">Preview %3$s listing</a>', 'my-content-management' ), $value[2], esc_url( add_query_arg( 'preview', 'true', get_permalink($post_ID) ) ), $value[0] ),
+				0  => '', // Unused. Messages start at index 1.
+				// Translators: 1 Post type singular name, 2 link to listing.
+				1  => sprintf( __( '%1$s Listing updated. <a href="%2$s">View %1$s listing</a>', 'my-content-management' ), $value[2], esc_url( get_permalink( $post_ID ) ) ),
+				2  => __( 'Custom field updated.', 'my-content-management' ),
+				3  => __( 'Custom field deleted.', 'my-content-management' ),
+				// Translators: post type name.
+				4  => sprintf( __( '%s listing updated.', 'my-content-management' ), $value[2] ),
+				// translators: Post type name, revision title
+				5  => isset( $_GET['revision'] ) ? sprintf( __( '%1$s restored to revision from %2$ss', 'my-content-management' ), $value[2], wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+				// Translators: Post type name, link, post type lowercase name.
+				6  => sprintf( __( '%1$s published. <a href="%2$s">View %3$s listing</a>', 'my-content-management' ), $value[2], esc_url( get_permalink( $post_ID ) ), $value[0] ),
+				// Translators: Post type name.
+				7  => sprintf( __( '%s listing saved.', 'my-content-management' ), $value[2] ),
+				// Translators: Post type name, link to preview, post type lower case name.
+				8  => sprintf( __( '%1$s listing submitted. <a target="_blank" href="%2$s">Preview %3$s listing</a>', 'my-content-management' ), $value[2], esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ), $value[0] ),
+				// Translators: Post type name, date scheduled, preview link, post type lowercase name.
+				9  => sprintf( __('%1$s listing scheduled for: <strong>%2$s</strong>. <a target="_blank" href="%3$s">Preview %4$s</a>', 'my-content-management' ), $value[2], date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ), esc_url( get_permalink( $post_ID ) ), $value[0] ),
+				// Translators: Post type name, preview link, post type lowercase.
+				10 => sprintf( __( '%1$s draft updated. <a target="_blank" href="%2$s">Preview %3$s listing</a>', 'my-content-management' ), $value[2], esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ), $value[0] ),
 			);
 		}
 	}
+
 	return $messages;
 }
 
+/**
+ * Define custom taxonomies.
+ */
 function mcm_taxonomies() {
-	global $mcm_types,$mcm_enabled;
-	$types = $mcm_types; $enabled = $mcm_enabled;
+	global $mcm_types, $mcm_enabled;
+	$types   = $mcm_types;
+	$enabled = $mcm_enabled;
 	if ( is_array( $enabled ) ) {
 		foreach ( $enabled as $key ) {
-			$value =& $types[$key];
+			$value =& $types[ $key ];
 			if ( is_array( $value ) && ! empty( $value ) ) {
-				$cat_key = str_replace( 'mcm_','', $key );
+				$cat_key = str_replace( 'mcm_', '', $key );
 				register_taxonomy(
-					"mcm_category_$cat_key",	// internal name = machine-readable taxonomy name
-					array( $key ),	// object type = post, page, link, or custom post-type
+					"mcm_category_$cat_key", // internal name = machine-readable taxonomy name.
+					array( $key ), // object type = post, page, link, or custom post-type.
 					array(
 						'hierarchical'      => true,
+						// Translators: taxonomy name.
 						'label'             => apply_filters( 'mcm_tax_category_name', sprintf( __( "%s Categories", 'my-content-management' ), $value[2] ), $cat_key ),
 						'show_in_rest'      => true,
 						'show_admin_column' => true,
-						'query_var'         => true,	// enable taxonomy-specific querying
-						'rewrite'           => array( 'slug' => "$cat_key-category" ),	// pretty permalinks for your taxonomy?
+						'query_var'         => true, // enable taxonomy-specific querying.
+						'rewrite'           => array(
+							'slug' => "$cat_key-category",
+						), // pretty permalinks for your taxonomy.
 					)
 				);
 				register_taxonomy(
-					"mcm_type_$cat_key",	// internal name = machine-readable taxonomy name
-					array( $key ),	// object type = post, page, link, or custom post-type
+					"mcm_type_$cat_key", // internal name = machine-readable taxonomy name.
+					array( $key ), // object type = post, page, link, or custom post-type.
 					array(
 						'hierarchical'      => false,
+						// Translators: taxonomy name.
 						'label'             => apply_filters( 'mcm_tax_type_name', sprintf( __( "%s Types", 'my-content-management' ), $value[2] ), $cat_key ),
 						'show_in_rest'      => true,
 						'show_admin_column' => true,
-						'query_var'         => true,	// enable taxonomy-specific querying
-						'rewrite'           => array( 'slug' => "$cat_key-type" ),	// pretty permalinks for your taxonomy?
+						'query_var'         => true, // enable taxonomy-specific querying.
+						'rewrite'           => array(
+							'slug' => "$cat_key-type",
+						), // pretty permalinks for your taxonomy.
 					)
 				);
 				register_taxonomy(
-					"mcm_tag_$cat_key",	// internal name = machine-readable taxonomy name
-					array( $key ),	// object type = post, page, link, or custom post-type
+					"mcm_tag_$cat_key", // internal name = machine-readable taxonomy name.
+					array( $key ), // object type = post, page, link, or custom post-type.
 					array(
 						'hierarchical'      => false,
+						// Translators: taxonomy name.
 						'label'             => apply_filters( 'mcm_tax_tag_name', sprintf( __( "%s Tags", 'my-content-management' ), $value[2] ), $cat_key ),
 						'show_in_rest'      => true,
 						'show_admin_column' => true,
-						'query_var'         => true,	// enable taxonomy-specific querying
-						'rewrite'           => array( 'slug' => "$cat_key-tag" ),	// pretty permalinks for your taxonomy?
+						'query_var'         => true, // enable taxonomy-specific querying,
+						'rewrite'           => array(
+							'slug' => "$cat_key-tag"
+						), // pretty permalinks for your taxonomy.
 					)
 				);
 			}
@@ -127,27 +181,35 @@ function mcm_taxonomies() {
 	}
 }
 
+/**
+ * Set up post meta boxes.
+ */
 function mcm_add_custom_boxes() {
 	global $mcm_fields, $mcm_extras;
-	$fields = $mcm_fields; $extras = $mcm_extras;
-	if ( is_array($fields) ) {
-		foreach ( $fields as $key=>$value ) {
-			if ( isset( $extras[$key] ) && is_array( $extras[$key][0] ) ) {
-				foreach ( $extras[$key][0] as $k ) {
-					$fields = array( $key => $value );
+	$fields = $mcm_fields;
+	$extras = $mcm_extras;
+	if ( is_array( $fields ) ) {
+		foreach ( $fields as $key => $value ) {
+			if ( isset( $extras[ $key ] ) && is_array( $extras[ $key ][0] ) ) {
+				foreach ( $extras[ $key ][0] as $k ) {
+					$fields    = array(
+						$key => $value,
+					);
 					$post_type = $k;
-					$location  = $extras[$key][1];
-					$show      = isset( $extras[$key][2] ) ? $extras[$key][2] : true;
+					$location  = $extras[ $key ][1];
+					$show      = isset( $extras[ $key ][2] ) ? $extras[ $key ][2] : true;
 					$show      = mcm_test_context( $show );
 					mcm_add_custom_box( $fields, $post_type, $location, $show );
 				}
 			} else {
-				if ( isset( $extras[$key] ) ) {
-					if ( ! empty( $extras[$key][0] ) ) {
-						$fields = array( $key => $value );
-						$post_type = $extras[$key][0];
-						$location  = $extras[$key][1];
-						$show      = isset( $extras[$key][2] ) ? $extras[$key][2] : true;
+				if ( isset( $extras[ $key ] ) ) {
+					if ( ! empty( $extras[ $key ][0] ) ) {
+						$fields    = array(
+							$key => $value,
+						);
+						$post_type = $extras[ $key ][0];
+						$location  = $extras[ $key ][1];
+						$show      = isset( $extras[ $key ][2] ) ? $extras[ $key ][2] : true;
 						$show      = mcm_test_context( $show );
 						mcm_add_custom_box( $fields, $post_type, $location, $show );
 					}
@@ -157,13 +219,20 @@ function mcm_add_custom_boxes() {
 	}
 }
 
-
-function mcm_add_custom_box( $fields, $post_type='post',$location='side', $show = true ) {
+/**
+ * Add custom meta boxes.
+ *
+ * @param array  $fields Fields to set up.
+ * @param string $post_type Post type to set up for.
+ * @param string $location Location in classic editor.
+ * @param bool   $show True to show.
+ */
+function mcm_add_custom_box( $fields, $post_type = 'post', $location = 'side', $show = true ) {
 	if ( function_exists( 'add_meta_box' ) ) {
 		$location = apply_filters( 'mcm_set_location', $location, $fields, $post_type );
 		$priority = apply_filters( 'mcm_set_priority', 'default', $fields, $post_type );
 		foreach ( array_keys( $fields ) as $field ) {
-			$id = sanitize_title( $field );
+			$id    = sanitize_title( $field );
 			$field = stripslashes( $field );
 			if ( apply_filters( 'mcm_filter_meta_box', $show, $post_type, $id ) ) {
 				add_meta_box( $id, $field, 'mcm_build_custom_box', $post_type, $location, $priority, $fields );

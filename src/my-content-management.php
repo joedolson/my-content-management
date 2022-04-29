@@ -9,7 +9,7 @@ Version: 1.6.2
 Text Domain: my-content-management
 Domain Path: /lang
 */
-/*  Copyright 2011-2021  Joe Dolson (email : joe@joedolson.com)
+/*  Copyright 2011-2022  Joe Dolson (email : joe@joedolson.com)
 
 	This program is free software; you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
