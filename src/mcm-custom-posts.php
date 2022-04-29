@@ -971,7 +971,7 @@ add_filter( '_wp_post_revision_fields', 'mcm_revision_fields' );
  * Get revision data.
  *
  * @param mixed  $value Value of meta field.
- * @param string $field Name of field.
+ * @param string $field Custom field name.
  *
  * return mixed
  */
@@ -1180,7 +1180,7 @@ $default_mcm_fields = array(
 		array( '_phone', __( 'Phone Number', 'my-content-management' ), '', 'tel', 'true' ),
 		array( '_email', __( 'E-mail', 'my-content-management' ), '', 'email' ),
 	),
-	__( 'Location Info', 'my-content-management' )       => array(
+	__( 'Location Info', 'my-content-management' )        => array(
 		array( '_street', __( 'Street Address', 'my-content-management' ), '', 'mcm_text_field' ),
 		array( '_city', __( 'City', 'my-content-management' ), '', 'mcm_text_field' ),
 		array( '_neighborhood', __( 'Neighborhood', 'my-content-management' ), '', 'mcm_text_field' ),
@@ -1192,17 +1192,17 @@ $default_mcm_fields = array(
 		array( '_business', __( 'Business Name', 'my-content-management' ), '', 'mcm_text_field' ),
 		array( '_email', __( 'Contact Email', 'my-content-management' ), '', 'email' ),
 	),
-	__( 'Quotation Info', 'my-content-management' )      => array(
+	__( 'Quotation Info', 'my-content-management' )       => array(
 		array( '_url', __( 'URL', 'my-content-management' ), '', 'url' ),
 		array( '_title', __( 'Title', 'my-content-management' ), '', 'mcm_text_field' ),
 		array( '_location', __( 'Location', 'my-content-management' ), '', 'mcm_text_field' ),
 	),
-	__( 'Testimonial Info', 'my-content-management' )    => array(
+	__( 'Testimonial Info', 'my-content-management' )     => array(
 		array( '_url', __( 'URL', 'my-content-management' ), '', 'url' ),
 		array( '_title', __( 'Title', 'my-content-management' ), '', 'mcm_text_field' ),
 		array( '_location', __( 'Location', 'my-content-management' ), '', 'mcm_text_field' ),
 	),
-	__( 'Portfolio Info', 'my-content-management' )      => array(
+	__( 'Portfolio Info', 'my-content-management' )       => array(
 		array( '_medium', __( 'Medium', 'my-content-management' ), '', 'mcm_text_field' ),
 		array( '_width', __( 'Width', 'my-content-management' ), '', 'mcm_text_field' ),
 		array( '_height', __( 'Height', 'my-content-management' ), '', 'mcm_text_field' ),
@@ -1210,7 +1210,7 @@ $default_mcm_fields = array(
 		array( '_price', __( 'Price', 'my-content-management' ), '', 'mcm_text_field' ),
 		array( '_year', __( 'Year', 'my-content-management' ), '', 'mcm_text_field' ),
 	),
-	__( 'Resource Info', 'my-content-management' )       => array(
+	__( 'Resource Info', 'my-content-management' )        => array(
 		array( '_authors', __( 'Additional Authors', 'my-content-management' ), '', 'mcm_text_field', 'true' ),
 		array( '_licensing', __( 'License Terms', 'my-content-management' ), '', 'mcm_text_area' ),
 		array( '_show', __( 'Show on', 'my-content-management' ), 'This is a label for advanced use in themes', 'mcm_text_field' ),
