@@ -273,7 +273,7 @@ function mcm_show_archive( $atts ) {
 	$args    = apply_filters( 'mcm_archive_taxonomies', array(), $atts );
 	$terms   = get_terms( $taxonomy, $args );
 	$output  = '';
-	$linke r = "<ul class='archive-links'>";
+	$linker  = "<ul class='archive-links'>";
 	$exclude = explode( ',', $exclude );
 	$include = explode( ',', $include );
 	if ( is_array( $terms ) ) {
@@ -462,7 +462,8 @@ function mcm_munger( $atts ) {
  * @return string
  */
 function mcm_terms( $atts, $content ) {
-	extract
+	// TODO: remove extract.
+	extract( // phpcs:ignore WordPress.PHP.DontExtract.extract_extract
 		shortcode_atts(
 			array(
 				'taxonomy'   => '',
@@ -831,7 +832,7 @@ function mcm_updater() {
 					'show_in_rest'        => ( isset( $ns['show_in_rest'] ) && 1 === (int) $ns['show_in_rest'] ) ? true : false,
 					'menu_icon'           => ( ! isset( $ns['menu_icon'] ) || '' === $ns['menu_icon'] ) ? null : $ns['menu_icon'],
 					'supports'            => $supports,
-					'slug'                => $ns['slug'],
+					'slug'                => ( isset( $ns['slug'] ) ) ? sanitize_key( $ns['slug'] ) : '',
 				),
 			);
 
@@ -915,9 +916,9 @@ function mcm_updater() {
 				if ( is_bool( $value ) ) {
 					$checked = ( true === (bool) $value ) ? ' checked="checked"' : '';
 					if ( 'show_in_rest' !== $key ) {
-						$return .= "<p><input type='checkbox' name='${type}[ $key ]' value='1' id='$key'$checked /> <label for='$key'>" . ucwords( str_replace( '_', ' ', $key ) ) . '</label></p>';
+						$return .= "<p><input type='checkbox' name='${type}[$key]' value='1' id='$key'$checked /> <label for='$key'>" . ucwords( str_replace( '_', ' ', $key ) ) . '</label></p>';
 					} else {
-						$return .= "<p><input type='checkbox' name='${type}[ $key ]' value='1' id='$key'$checked /> <label for='$key'>" . __( 'Show in REST API and enable Block Editor', 'my-content-management' ) . '</label></p>';
+						$return .= "<p><input type='checkbox' name='${type}[$key]' value='1' id='$key'$checked /> <label for='$key'>" . __( 'Show in REST API and enable Block Editor', 'my-content-management' ) . '</label></p>';
 					}
 				} elseif ( is_array( $value ) ) {
 					$return  .= "<p><label for='$key'>" . ucwords( str_replace( '_', ' ', $key ) ) . "</label><br /><select multiple='multiple' name='${type}[${key}][]' id='$key'>";
@@ -932,7 +933,7 @@ function mcm_updater() {
 					if ( ! $value && in_array( $type, $defaults, true ) && 'menu_icon' === $key ) {
 						$value = plugins_url( 'images', __FILE__ ) . "/$type.png";
 					}
-					$return .= "<p><label for='$key'>" . ucwords( str_replace( '_', ' ', $key ) ) . "</label> <input type='text' name='${type}[ $key ]' size='32' value='$value' /></p>";
+					$return .= "<p><label for='$key'>" . ucwords( str_replace( '_', ' ', $key ) ) . "</label> <input type='text' name='${type}[$key]' size='32' value='$value' /></p>";
 				}
 			}
 			$return .= $after;
@@ -1155,7 +1156,7 @@ function mcm_template_setter() {
 							<p>
 								<label for='mcm_list_wrapper_$value'>" . __( 'List Template', 'my-content-management' ) . "</label><br /> <textarea name='templates[$value][list]' id='mcm_list_wrapper_$value' rows='1' cols='60'>" . stripslashes( esc_textarea( $template['list'] ) ) . '</textarea>
 							</p>
-						</fieldset>'
+						</fieldset>';
 					// Translators: Template name.
 					$return .= "<p><input type='submit' value='" . sprintf( __( 'Update %s Templates', 'my-content-management' ), $label[2] ) . "' name='mcm_save_templates' class='button-primary' />
 						</p>
