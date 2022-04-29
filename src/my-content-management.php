@@ -54,6 +54,17 @@ add_action( 'init', 'mcm_taxonomies', 0);
 add_action( 'init', 'mcm_posttypes' );
 add_action( 'admin_menu', 'mcm_add_custom_boxes' );
 
+add_action( 'widgets_init', 'mcm_register_widgets' );
+/**
+ * Register My Content Management Widgets
+ */
+function mcm_register_widgets() {
+	register_widget( 'mcm_search_widget' );
+	register_widget( 'mcm_posts_widget' );
+	register_widget( 'mcm_meta_widget' );
+}
+
+
 if ( ! get_option( 'mcm_version' ) ) {
 	mcm_install_plugin();
 }
