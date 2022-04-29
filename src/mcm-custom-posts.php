@@ -997,10 +997,10 @@ function mcm_is_repeatable( $value ) {
 /**
  * Get revision data for a My Content Management custom field.
  *
- * @param mixed string|int $value Value of meta field. Unused.
- * @param string           $field Custom field name.
+ * @param string $value Value of meta field. Unused.
+ * @param string $field Custom field name.
  *
- * return mixed string|int
+ * return string
  */
 function mcm_revision_field( $value, $field ) {
 	global $revision;
