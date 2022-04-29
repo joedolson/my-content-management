@@ -676,7 +676,7 @@ function mcm_draw_template( $array = array(), $template = '' ) {
 			$richtext   = false;
 		}
 		if ( ! is_object( $value ) ) {
-			if ( false !== strpos( $template, '{' . $key ) ) { // only check for tag parts that exist
+			if ( false !== strpos( $template, '{' . $key ) ) { // only check for tag parts that exist.
 				preg_match_all( '/{' . $key . '[^}]*+}/i', $template, $result );
 				if ( $result ) {
 					foreach ( $result as $pass ) {
@@ -922,7 +922,7 @@ function mcm_munge( $address ) {
 		}
 	}
 
-	$txt .= "\ncoded = \"" . $coded . "\"\n" . "  key = \"" . $cipher . "\"\n" . "  shift=coded.length\n" . "  link=\"\"\n" .  "  for (i=0; i<coded.length; i++) {\n" . "    if (key.indexOf(coded.charAt(i))==-1) {\n" . "      ltr = coded.charAt(i)\n" . "      link += (ltr)\n" . "    }\n" . "    else {     \n" . "      ltr = (key.indexOf(coded.charAt(i))-shift+key.length) % key.length\n" . "      link += (key.charAt(ltr))\n" . "    }\n" . "  }\n" . "document.write(\"<a href='mailto:\"+link+\"'>\"+link+\"</a>\")\n" . "\n" . '//-' . "->\n" . '</script>';
+	$txt .= "\ncoded = \"" . $coded . "\"\n" . '  key = "' . $cipher . "\"\n" . "  shift=coded.length\n" . "  link=\"\"\n" . "  for (i=0; i<coded.length; i++) {\n" . "    if (key.indexOf(coded.charAt(i))==-1) {\n" . "      ltr = coded.charAt(i)\n" . "      link += (ltr)\n" . "    }\n" . "    else {     \n" . "      ltr = (key.indexOf(coded.charAt(i))-shift+key.length) % key.length\n" . "      link += (key.charAt(ltr))\n" . "    }\n" . "  }\n" . "document.write(\"<a href='mailto:\"+link+\"'>\"+link+\"</a>\")\n" . "\n" . '//-' . "->\n" . '</script>';
 
 	return $txt;
 }

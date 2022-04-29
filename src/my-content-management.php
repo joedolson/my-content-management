@@ -1,15 +1,27 @@
 <?php
+/**
+ * My Content Management, Custom Post Type manager for WordPress
+ *
+ * @package     MyContentManagement
+ * @author      Joe Dolson
+ * @copyright   2011-2022 Joe Dolson
+ * @license     GPL-2.0+
+ *
+ * @wordpress-plugin
+ * Plugin Name: My Content Management
+ * Plugin URI:  http://www.joedolson.com/my-content-management/
+ * Description: Creates a set of common custom post types for extended content management: FAQ, Testimonials, people lists, term lists, etc.
+ * Author:      Joseph C Dolson
+ * Author URI:  http://www.joedolson.com
+ * Text Domain: my-content-management
+ * License:     GPL-2.0+
+ * License URI: http://www.gnu.org/license/gpl-2.0.txt
+ * Domain Path: lang
+ * Version:     1.6.2
+ */
+
 /*
-Plugin Name: My Content Management
-Plugin URI: http://www.joedolson.com/my-content-management/
-Description: Creates a set of common custom post types for extended content management: FAQ, Testimonials, people lists, term lists, etc.
-Author: Joseph C Dolson
-Author URI: http://www.joedolson.com
-Version: 1.6.2
-Text Domain: my-content-management
-Domain Path: /lang
-*/
-/*  Copyright 2011-2022  Joe Dolson (email : joe@joedolson.com)
+	Copyright 2011-2022  Joe Dolson (email : joe@joedolson.com)
 
 	This program is free software; you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -25,32 +37,37 @@ Domain Path: /lang
 	along with this program; if not, write to the Free Software
 	Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
-if ( ! defined( 'ABSPATH' ) ) exit;
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 $mcm_version = '1.6.2';
-// Enable internationalisation
-add_action( 'init', 'mcm_load_textdomain' );
+/**
+ * Enable internationalisation
+ */
 function mcm_load_textdomain() {
 	load_plugin_textdomain( 'my-content-management', false, dirname( plugin_basename( __FILE__ ) ) . '/lang' );
 }
+add_action( 'init', 'mcm_load_textdomain' );
 
 include( dirname( __FILE__ ) . '/mcm-custom-posts.php' );
 include( dirname( __FILE__ ) . '/mcm-view-custom-posts.php' );
 include( dirname( __FILE__ ) . '/mcm-widgets.php' );
 
 // Shortcodes
-add_shortcode('my_content','mcm_show_posts');
-add_shortcode('custom_search','mcm_search_custom');
-add_shortcode('my_archive','mcm_show_archive');
-add_shortcode('email','mcm_munger');
-add_shortcode('my_terms','mcm_terms' );
+add_shortcode( 'my_content', 'mcm_show_posts' );
+add_shortcode( 'custom_search', 'mcm_search_custom' );
+add_shortcode( 'my_archive', 'mcm_show_archive' );
+add_shortcode( 'email', 'mcm_munger' );
+add_shortcode( 'my_terms', 'mcm_terms' );
 // Filters
 //add_filter('the_content', 'mcm_pre_process_shortcode', 7);
-add_filter('pre_get_posts','mcm_searchfilter');
-add_filter( 'post_updated_messages', 'mcm_posttypes_messages');
+add_filter( 'pre_get_posts','mcm_searchfilter' );
+add_filter( 'post_updated_messages', 'mcm_posttypes_messages' );
 
 // Actions
-add_action( 'init', 'mcm_taxonomies', 0);
+add_action( 'init', 'mcm_taxonomies', 0 );
 add_action( 'init', 'mcm_posttypes' );
 add_action( 'admin_menu', 'mcm_add_custom_boxes' );
 
@@ -68,7 +85,7 @@ function mcm_register_widgets() {
 if ( ! get_option( 'mcm_version' ) ) {
 	mcm_install_plugin();
 }
-if ( version_compare( get_option('mcm_version'), $mcm_version, '<' ) ) {
+if ( version_compare( get_option( 'mcm_version' ), $mcm_version, '<' ) ) {
 	mcm_upgrade_plugin();
 }
 
@@ -120,10 +137,10 @@ add_action( 'admin_enqueue_scripts', 'mcm_enqueue_admin_scripts' );
 function mcm_post_lookup() {
 	if ( isset( $_REQUEST['term'] ) ) {
 		$args = array(
-			's' => $_REQUEST['term']
+			's' => sanitize_text_field( $_REQUEST['term'] )
 		);
-		if ( isset( $_REQUEST['post_type'] ) && $_REQUEST['post_type'] != '' ) {
-			$args['post_type'] = $_REQUEST['post_type'];
+		if ( isset( $_REQUEST['post_type'] ) && '' !== $_REQUEST['post_type'] ) {
+			$args['post_type'] = sanitize_text_field( $_REQUEST['post_type'] );
 		}
 		$posts       = get_posts( apply_filters( 'mcm_filter_posts_autocomplete', $args ) );
 		$suggestions = array();
@@ -135,7 +152,7 @@ function mcm_post_lookup() {
 			$suggestions[]       = $suggestion;
 		}
 
-		echo $_GET["callback"] . "(" . json_encode( $suggestions ) . ")";
+		echo $_GET['callback'] . '(' . json_encode( $suggestions ) . ')';
 		exit;
 	}
 }
@@ -148,8 +165,8 @@ add_action( 'wp_ajax_mcm_user_lookup', 'mcm_user_lookup' );
 function mcm_user_lookup() {
 	if ( isset( $_REQUEST['term'] ) ) {
 		$args = array();
-		if ( isset( $_REQUEST['role'] ) && $_REQUEST['role'] != '' ) {
-			$args['role'] = $_REQUEST['role'];
+		if ( isset( $_REQUEST['role'] ) && '' !== $_REQUEST['role'] ) {
+			$args['role'] = sanitize_text_field( $_REQUEST['role'] );
 		}
 		$args        = apply_filters( 'mcm_filter_user_autocomplete', $args );
 		$users       = get_users( $args );
@@ -161,7 +178,7 @@ function mcm_user_lookup() {
 			$suggestions[]       = $suggestion;
 		};
 
-		echo $_GET["callback"] . "(" . json_encode( $suggestions ) . ")";
+		echo $_GET['callback'] . '(' . json_encode( $suggestions ) . ')';
 		exit;
 	}
 }
@@ -213,7 +230,7 @@ function mcm_show_posts( $atts ) {
 function mcm_post_edit_form_tag() {
 	echo ' enctype="multipart/form-data"';
 }
-add_action('post_edit_form_tag', 'mcm_post_edit_form_tag');
+add_action( 'post_edit_form_tag', 'mcm_post_edit_form_tag' );
 
 /**
  * Output archive content.
@@ -222,8 +239,9 @@ add_action('post_edit_form_tag', 'mcm_post_edit_form_tag');
  *
  * @return string
  */
-function mcm_show_archive($atts) {
-	extract(
+function mcm_show_archive( $atts ) {
+	// TODO: remove extract.
+	extract( // phpcs:ignore WordPress.PHP.DontExtract.extract_extract
 		shortcode_atts(
 			array(
 				'type'           => false,
@@ -257,18 +275,18 @@ function mcm_show_archive($atts) {
 	$terms   = get_terms( $taxonomy, $args );
 	$output  = '';
 	$linke r = "<ul class='archive-links'>";
-	$exclude = explode( ',',$exclude );
-	$include = explode( ',',$include );
+	$exclude = explode( ',', $exclude );
+	$include = explode( ',', $include );
 	if ( is_array( $terms ) ) {
 		foreach ( $terms as $term ) {
 			$taxo      = $term->name;
 			$tax       = $term->slug;
-			$tax_class = sanitize_title($tax);
-			if ( ( ! empty( $exclude) && '' !== $exclude[0] && ! in_array( $tax, $exclude ) ) || (! empty( $include) && '' !== $include[0] && in_array( $tax, $include ) ) || '' === $exclude[0] && '' === $include[0] ) {
+			$tax_class = sanitize_title( $tax );
+			if ( ( ! empty( $exclude) && '' !== $exclude[0] && ! in_array( $tax, $exclude, true ) ) || ( ! empty( $include) && '' !== $include[0] && in_array( $tax, $include, true ) ) || '' === $exclude[0] && '' === $include[0] ) {
 				$linker .= "<li><a href='#$tax_class'>$taxo</a></li>";
 				$output .= "\n<div class='archive-group'>";
 				$output .= "<h2 class='$tax_class' id='$tax_class'>$taxo</h2>";
-				$args = array(
+				$args    = array(
 					'type'           => $type,
 					'display'        => $display,
 					'taxonomy'       => $taxonomy,
@@ -296,7 +314,7 @@ function mcm_show_archive($atts) {
 		}
 		$linker .= '</ul>';
 	}
-	if ( $show_links == false ) {
+	if ( ! $show_links ) {
 		$linker = '';
 	} else {
 		$linker = $linker;
@@ -328,7 +346,7 @@ add_filter( 'mcm_filter_saved_data', 'mcm_transform_date_data', 10, 3 );
 /**
  * Convert saved timestamp into a date.
  *
- * @param array $data Field data.
+ * @param array  $data Field data.
  * @param string $key Post meta field.
  *
  * @return string
@@ -346,6 +364,8 @@ add_filter( 'mcm_filter_output_data', 'mcm_reverse_date_data', 10, 2 );
 /**
  * Check what template is currently in use.
  *
+ * @param string $template Template name.
+ *
  * @return string
  */
 function mcm_get_current_template( $template ) {
@@ -353,7 +373,7 @@ function mcm_get_current_template( $template ) {
 
 	return $template;
 }
-add_action('template_include', 'mcm_get_current_template', 1000);
+add_action( 'template_include', 'mcm_get_current_template', 1000 );
 
 /**
  * Replace post content with MCM template.
@@ -373,7 +393,7 @@ function mcm_replace_content( $content, $id = false ) {
 	if ( ! $post_type ) {
 		return $content;
 	}
-	$mcm_options = get_option('mcm_options');
+	$mcm_options = get_option( 'mcm_options' );
 	if ( false !== strpos( $template, $post_type ) ) {
 		return $content;
 	}
@@ -388,7 +408,7 @@ function mcm_replace_content( $content, $id = false ) {
 		return $content;
 	}
 }
-add_filter( 'the_content','mcm_replace_content', 10, 2 );
+add_filter( 'the_content', 'mcm_replace_content', 10, 2 );
 
 /**
  * Custom search shortcode.
@@ -398,10 +418,11 @@ add_filter( 'the_content','mcm_replace_content', 10, 2 );
  * @return string
  */
 function mcm_search_custom( $atts ) {
-	extract(
+	// TODO: remove extract.
+	extract( // phpcs:ignore WordPress.PHP.DontExtract.extract_extract
 		shortcode_atts(
 			array(
-				'type' => 'page'
+				'type' => 'page',
 			),
 			$atts,
 			'custom_search',
@@ -419,7 +440,8 @@ function mcm_search_custom( $atts ) {
  * @return string
  */
 function mcm_munger( $atts ) {
-	extract(
+	// TODO: remove extract.
+	extract( // phpcs:ignore WordPress.PHP.DontExtract.extract_extract
 		shortcode_atts(
 			array(
 				'address' => '',
@@ -446,7 +468,7 @@ function mcm_terms( $atts, $content ) {
 			array(
 				'taxonomy'   => '',
 				'hide_empty' => 'false',
-				'show_count' => 'false'.
+				'show_count' => 'false',
 			),
 			$atts,
 			'my_terms'
@@ -469,9 +491,9 @@ function mcm_list_terms( $taxonomy, $hide_empty, $show_count ) {
 	$hide_empty = ( 'true' === $hide_empty ) ? true : false;
 	$args       = array(
 		'taxonomy'   => $taxonomy,
-		'hide_empty' => $hide_empty
+		'hide_empty' => $hide_empty,
 	);
-	$terms      = get_terms( $taxonomy , $args);
+	$terms      = get_terms( $taxonomy, $args );
 	$count      = count( $terms );
 	$i          = 0;
 	$term_list  = '';
@@ -489,7 +511,8 @@ function mcm_list_terms( $taxonomy, $hide_empty, $show_count ) {
 }
 
 /**
- * Force theme support for thumbnails. 
+ * Force theme support for thumbnails.
+ *
  * Not having post thumbnails enabled can cause fatal errors when thumbnail is requested by info query.
  */
 function mcm_grant_support() {
@@ -506,10 +529,10 @@ function mcm_install_plugin() {
 	$templates = array();
 	if ( is_array( $types ) ) {
 		foreach ( $types as $key => $value ) {
-			$templates[ $key ]['full'] = '<h2>{title}</h2>
+			$templates[ $key ]['full']                       = '<h2>{title}</h2>
 {content}
 <p>{link_title}</p>';
-			$templates[ $key ]['excerpt'] = '<h3>{title}</h3>
+			$templates[ $key ]['excerpt']                    = '<h3>{title}</h3>
 {excerpt}
 <p>{link_title}</p>';
 			$templates[ $key ]['list']                       = '{link_title}';
@@ -537,9 +560,9 @@ function mcm_install_plugin() {
  * Run upgrades.
  */
 function mcm_upgrade_plugin() {
-	//  no upgrade routine for 1.2.0.
-	//  no upgrade routine for 1.3.0.
-	global $mcm_version,$default_mcm_types, $default_mcm_fields, $default_mcm_extras;;
+	// no upgrade routine for 1.2.0.
+	// no upgrade routine for 1.3.0.
+	global $mcm_version, $default_mcm_types, $default_mcm_fields, $default_mcm_extras;
 	$from = get_option( 'mcm_version' );
 	if ( $mcm_version === $from ) {
 		return;
@@ -621,15 +644,15 @@ function mcm_settings_page() {
 			<div class="metabox-holder">
 				<div class="mcm-settings ui-sortable meta-box-sortables">
 					<div class="postbox">
-						<h2 class='hndle'><?php _e( 'Enable Custom Post Types','my-content-management' ); ?></h2>
+						<h2 class='hndle'><?php _e( 'Enable Custom Post Types', 'my-content-management' ); ?></h2>
 						<div class="inside">
 						<?php mcm_updater(); ?>
 						<form method='post' action='<?php echo admin_url( 'options-general.php?page=my-content-management/my-content-management.php' ); ?>'>
-							<div><input type='hidden' name='_wpnonce' value='<?php echo wp_create_nonce('my-content-management-nonce' ); ?>' /></div>
+							<div><input type='hidden' name='_wpnonce' value='<?php echo wp_create_nonce( 'my-content-management-nonce' ); ?>' /></div>
 							<div>
 							<?php mcm_enabler(); ?>
 							<p>
-								<input type='submit' value='<?php _e( 'Update Enabled Post Types', 'my-content-management' ); ?>' name='mcm_enabler' class='button-primary' /> <a href="<?php echo admin_url('options-general.php?page=my-content-management/my-content-management.php&mcm_add=new' ); ?>"><?php _e( 'Add new post type', 'my-content-management' ); ?></a>
+								<input type='submit' value='<?php _e( 'Update Enabled Post Types', 'my-content-management' ); ?>' name='mcm_enabler' class='button-primary' /> <a href="<?php echo admin_url( 'options-general.php?page=my-content-management/my-content-management.php&mcm_add=new' ); ?>"><?php _e( 'Add new post type', 'my-content-management' ); ?></a>
 							</p>
 							</div>
 						</form>
@@ -647,7 +670,7 @@ function mcm_settings_page() {
 			<div class="metabox-holder">
 				<div class="mcm-settings ui-sortable meta-box-sortables">
 					<div class="mcm-template-guide postbox" id="get-support">
-						<h2 class='hndle'><?php _e('Support This Plug-in','my-content-management' ); ?></h2>
+						<h2 class='hndle'><?php _e( 'Support This Plug-in', 'my-content-management' ); ?></h2>
 						<div class="inside">
 							<?php mcm_show_support_box(); ?>
 						</div>
@@ -657,10 +680,10 @@ function mcm_settings_page() {
 			<div class="metabox-holder">
 				<div class="mcm-settings ui-sortable meta-box-sortables">
 					<div class="mcm-template-guide postbox" id="mcm-companions">
-						<h2 class='hndle'><?php _e('Companion Plug-ins','my-content-management' ); ?></h2>
+						<h2 class='hndle'><?php _e( 'Companion Plug-ins', 'my-content-management' ); ?></h2>
 						<div class="inside">
 							<ul>
-								<li><a href="http://wordpress.org/plugins/my-content-glossary/"><?php _e( 'My Content Glossary','my-content-management' ); ?></a> -- <?php _e( 'Additional functions to use with the Glossary custom post type','my-content-management' ); ?>
+								<li><a href="http://wordpress.org/plugins/my-content-glossary/"><?php _e( 'My Content Glossary', 'my-content-management' ); ?></a> -- <?php _e( 'Additional functions to use with the Glossary custom post type', 'my-content-management' ); ?>
 							</ul>
 						</div>
 					</div>
@@ -669,64 +692,63 @@ function mcm_settings_page() {
 			<div class="metabox-holder">
 				<div class="mcm-settings ui-sortable meta-box-sortables">
 					<div class="mcm-template-guide postbox" id="get-support">
-						<h2 class='hndle'><?php _e('Basic Template Tags','my-content-management' ); ?></h2>
+						<h2 class='hndle'><?php _e( 'Basic Template Tags', 'my-content-management' ); ?></h2>
 						<div class="inside">
 							<dl>
 								<dt><code>{id}</code></dt>
-								<dd><?php _e('Post ID','my-content-management' ); ?></dd>
+								<dd><?php _e( 'Post ID', 'my-content-management' ); ?></dd>
 
 								<dt><code>{slug}</code></dt>
-								<dd><?php _e('Post Slug','my-content-management' ); ?></dd>
+								<dd><?php _e( 'Post Slug', 'my-content-management' ); ?></dd>
 
 								<dt><code>{excerpt}</code></dt>
-								<dd><?php _e('Post excerpt (with auto paragraphs)','my-content-management' ); ?></dd>
+								<dd><?php _e( 'Post excerpt (with auto paragraphs)', 'my-content-management' ); ?></dd>
 
 								<dt><code>{excerpt_raw}</code></dt>
-								<dd><?php _e('Post excerpt (unmodified)','my-content-management' ); ?></dd>
+								<dd><?php _e( 'Post excerpt (unmodified)', 'my-content-management' ); ?></dd>
 
 								<dt><code>{content}</code></dt>
-								<dd><?php _e('Post content (with auto paragraphs and shortcodes processed)','my-content-management' ); ?></dd>
+								<dd><?php _e( 'Post content (with auto paragraphs and shortcodes processed)', 'my-content-management' ); ?></dd>
 
 								<dt><code>{content_raw}</code></dt>
-								<dd><?php _e('Post content (unmodified)','my-content-management' ); ?></dd>
+								<dd><?php _e( 'Post content (unmodified)', 'my-content-management' ); ?></dd>
 
 								<dt><code>{full}</code></dt>
-								<dd><?php _e('Featured image at original size.','my-content-management' ); ?></dd>
+								<dd><?php _e( 'Featured image at original size.', 'my-content-management' ); ?></dd>
 
 								<?php
-									$sizes = get_intermediate_image_sizes();
-									foreach ( $sizes as $size ) {
-										echo '	<dt><code>{'.$size.'}</code></dt>
-												<dd>'.sprintf( __('Featured image at %s size', 'my-content-management' ),$size ).'</dd>';
-									}
+								$sizes = get_intermediate_image_sizes();
+								foreach ( $sizes as $size ) {
+									echo '<dt><code>{' . $size . '}</code></dt><dd>' . sprintf( __( 'Featured image at %s size', 'my-content-management' ), $size ) . '</dd>';
+								}
 								?>
 
 								<dt><code>{permalink}</code></dt>
-								<dd><?php _e('Permalink URL for post','my-content-management' ); ?></dd>
+								<dd><?php _e( 'Permalink URL for post', 'my-content-management' ); ?></dd>
 
 								<dt><code>{link_title}</code></dt>
-								<dd><?php _e('Post title linked to permalink URL','my-content-management' ); ?></dd>
+								<dd><?php _e( 'Post title linked to permalink URL', 'my-content-management' ); ?></dd>
 
 								<dt><code>{title}</code></dt>
-								<dd><?php _e('Post title','my-content-management' ); ?></dd>
+								<dd><?php _e( 'Post title', 'my-content-management' ); ?></dd>
 
 								<dt><code>{shortlink}</code></dt>
 								<dd><?php _e('Post shortlink','my-content-management' ); ?></dd>
 
 								<dt><code>{modified}</code></dt>
-								<dd><?php _e('Post last modified date','my-content-management' ); ?></dd>
+								<dd><?php _e( 'Post last modified date', 'my-content-management' ); ?></dd>
 
 								<dt><code>{date}</code></dt>
-								<dd><?php _e('Post publication date','my-content-management' ); ?></dd>
+								<dd><?php _e( 'Post publication date', 'my-content-management' ); ?></dd>
 
 								<dt><code>{author}</code></dt>
-								<dd><?php _e('Post author display name','my-content-management' ); ?></dd>
+								<dd><?php _e( 'Post author display name', 'my-content-management' ); ?></dd>
 
 								<dt><code>{terms}</code></dt>
-								<dd><?php _e('List of taxonomy terms associated with post.','my-content-management' ); ?></dd>
+								<dd><?php _e( 'List of taxonomy terms associated with post.', 'my-content-management' ); ?></dd>
 
 								<dt><code>{edit_link}</code></dt>
-								<dd><?php _e('When logged in, display link to edit the current post.','my-content-management' ); ?></dd>
+								<dd><?php _e( 'When logged in, display link to edit the current post.', 'my-content-management' ); ?></dd>
 							</dl>
 							<p>
 							<?php
@@ -752,7 +774,7 @@ function mcm_enabler() {
 			die( 'Security check failed' );
 		}
 		$enable            = isset( $_POST['mcm_posttypes'] ) ? $_POST['mcm_posttypes'] : array();
-		$option            = get_option('mcm_options');
+		$option            = get_option( 'mcm_options' );
 		$option['enabled'] = $enable;
 		update_option( 'mcm_options', $option );
 		flush_rewrite_rules();
@@ -773,7 +795,7 @@ function mcm_enabler() {
 						$checked = '';
 					}
 				}
-				$return .= "<li><input type='checkbox' value='$key' name='mcm_posttypes[]' id='mcm_$key'$checked /> <label for='mcm_$key'>$value[3] (<code>$key</code>) <small><a href='" . admin_url("options-general.php?page=my-content-management/my-content-management.php&mcm_edit=$key") . "'>" . __( 'Edit', 'my-content-management' ) . " '$value[3]'</a> &bull; <a href='" . admin_url( "options-general.php?page=my-content-management/my-content-management.php&mcm_delete=$key" ) . "'>" . __( 'Delete', 'my-content-management' ) . "  '$value[3]'</a></small></label></li>\n";
+				$return .= "<li><input type='checkbox' value='$key' name='mcm_posttypes[]' id='mcm_$key'$checked /> <label for='mcm_$key'>$value[3] (<code>$key</code>) <small><a href='" . admin_url("options-general.php?page=my-content-management/my-content-management.php&mcm_edit=$key" ) . "'>" . __( 'Edit', 'my-content-management' ) . " '$value[3]'</a> &bull; <a href='" . admin_url( "options-general.php?page=my-content-management/my-content-management.php&mcm_delete=$key" ) . "'>" . __( 'Delete', 'my-content-management' ) . "  '$value[3]'</a></small></label></li>\n";
 			}
 		}
 	}
@@ -794,49 +816,51 @@ function mcm_updater() {
 			$option   = get_option( 'mcm_options' );
 			$ns       = $_POST[ $type ];
 			$supports = ( empty( $ns['supports']) ) ? array() : $ns['supports'];
-			$new     = array(
+			$new      = array(
 				$ns['pt1'],
 				$ns['pt2'],
 				$ns['pt3'],
 				$ns['pt4'],
 				array(
-					'public'              => ( isset( $ns['public'] ) && $ns['public'] == 1 ) ? true : false,
-					'publicly_queryable'  => ( isset( $ns['publicly_queryable']) && $ns['publicly_queryable'] == 1 ) ? true : false,
-					'exclude_from_search' => ( isset( $ns['exclude_from_search']) && $ns['exclude_from_search'] == 1 ) ? true : false,
-					'show_in_menu'        => ( isset( $ns['show_in_menu']) && $ns['show_in_menu'] == 1 ) ? true : false,
-					'show_ui'             => ( isset( $ns['show_ui']) && $ns['show_ui'] == 1 ) ? true : false,
-					'hierarchical'        => ( isset( $ns['hierarchical'] ) && $ns['hierarchical'] == 1 ) ? true : false,
-					'show_in_rest'        => ( isset( $ns['show_in_rest'] ) && $ns['show_in_rest'] == 1 ) ? true : false,
-					'menu_icon'           => ( ! isset( $ns['menu_icon'] ) || $ns['menu_icon']=='' ) ? null : $ns['menu_icon'],
+					'public'              => ( isset( $ns['public'] ) && 1 === (int) $ns['public'] ) ? true : false,
+					'publicly_queryable'  => ( isset( $ns['publicly_queryable']) && 1 === (int) $ns['publicly_queryable'] ) ? true : false,
+					'exclude_from_search' => ( isset( $ns['exclude_from_search']) && 1 === (int) $ns['exclude_from_search'] ) ? true : false,
+					'show_in_menu'        => ( isset( $ns['show_in_menu']) && 1 === (int) $ns['show_in_menu'] ) ? true : false,
+					'show_ui'             => ( isset( $ns['show_ui']) && 1 === (int) $ns['show_ui'] ) ? true : false,
+					'hierarchical'        => ( isset( $ns['hierarchical'] ) && 1 === (int) $ns['hierarchical'] ) ? true : false,
+					'show_in_rest'        => ( isset( $ns['show_in_rest'] ) && 1 === (int) $ns['show_in_rest'] ) ? true : false,
+					'menu_icon'           => ( ! isset( $ns['menu_icon'] ) || '' === $ns['menu_icon'] ) ? null : $ns['menu_icon'],
 					'supports'            => $supports,
 					'slug'                => $ns['slug'],
-				)
+				),
 			);
+
 			$option['types'][ $type ] = $new;
 			update_option( 'mcm_options', $option );
 			echo "<div class='updated fade'><p>" . __( 'Post type settings modified.', 'my-content-management' ) . '</p></div>';
 		} else {
-			$option = get_option('mcm_options');
+			$option = get_option( 'mcm_options' );
 			$ns     = $_POST['new'];
-			$type   = substr( 'mcm_'.sanitize_title($ns['pt1']), 0, 20 );
+			$type   = substr( 'mcm_' . sanitize_title( $ns['pt1'] ), 0, 20 );
 			$new    = array(
 				$ns['pt1'],
 				$ns['pt2'],
 				$ns['pt3'],
 				$ns['pt4'],
 				array(
-					'public'              => ( isset( $ns['public'] ) && $ns['public'] == 1 ) ? true : false,
-					'publicly_queryable'  => ( isset( $ns['publicly_queryable'] ) && $ns['publicly_queryable'] == 1 ) ? true : false,
-					'exclude_from_search' => ( isset( $ns['exclude_from_search'] ) && $ns['exclude_from_search'] == 1 ) ? true : false,
-					'show_in_menu'        => ( isset( $ns['show_in_menu'] ) && $ns['show_in_menu'] == 1 ) ? true : false,
-					'show_ui'             => ( isset( $ns['show_ui'] ) && $ns['show_ui'] == 1 ) ? true : false,
-					'hierarchical'        => ( isset( $ns['hierarchical'] ) && $ns['hierarchical'] == 1 ) ? true : false,
-					'show_in_rest'        => ( isset( $ns['show_in_rest'] ) && $ns['show_in_rest'] == 1 ) ? true : false,
-					'menu_icon'           => ( ! isset( $ns['menu_icon'] ) || $ns['menu_icon']=='' ) ? null : $ns['menu_icon'],
+					'public'              => ( isset( $ns['public'] ) && 1 === (int) $ns['public'] ) ? true : false,
+					'publicly_queryable'  => ( isset( $ns['publicly_queryable'] ) && 1 === (int) $ns['publicly_queryable'] ) ? true : false,
+					'exclude_from_search' => ( isset( $ns['exclude_from_search'] ) && 1 === (int) $ns['exclude_from_search'] ) ? true : false,
+					'show_in_menu'        => ( isset( $ns['show_in_menu'] ) && 1 === (int) $ns['show_in_menu'] ) ? true : false,
+					'show_ui'             => ( isset( $ns['show_ui'] ) && 1 === (int) $ns['show_ui'] ) ? true : false,
+					'hierarchical'        => ( isset( $ns['hierarchical'] ) && 1 === (int) $ns['hierarchical'] ) ? true : false,
+					'show_in_rest'        => ( isset( $ns['show_in_rest'] ) && 1 === (int) $ns['show_in_rest'] ) ? true : false,
+					'menu_icon'           => ( ! isset( $ns['menu_icon'] ) || '' === $ns['menu_icon'] ) ? null : $ns['menu_icon'],
 					'supports'            => $ns['supports'],
 					'slug'                => $ns['slug'],
 				)
 			);
+
 			$option['types'][ $type ] = $new;
 			update_option( 'mcm_options', $option );
 			echo "<div class='updated fade'><p>" . __( 'Added new custom post type.', 'my-content-management' ) . '</p></div>';
@@ -857,16 +881,14 @@ function mcm_updater() {
 	} else {
 		$type = 'new';
 	}
-	$before      = "<div class='mcm_edit_post_type'><form method='post' action='" . admin_url( 'options-general.php?page=my-content-management/my-content-management.php' ) . "'>
-				<div><input type='hidden' name='_wpnonce' value='" . wp_create_nonce('my-content-management-nonce' ) . "' /></div>
-				<div>";
+	$before      = "<div class='mcm_edit_post_type'><form method='post' action='" . admin_url( 'options-general.php?page=my-content-management/my-content-management.php' ) . "'><div><input type='hidden' name='_wpnonce' value='" . wp_create_nonce( 'my-content-management-nonce' ) . "' /></div><div>";
 	$post_typing = "<div><input type='hidden' name='mcm_type' value='$type' /></div>";
-	$after       = "<p>
-					<input type='submit' value='" . sprintf( __( 'Edit type "%1$s"', 'my-content-management' ), $type ) . "' name='mcm_updater' class='button-primary' /> <a href='" . admin_url( 'options-general.php?page=my-content-management/my-content-management.php&mcm_add=new' ) . "'>" . __( 'Add new post type', 'my-content-management' ) . '</a>
+	// Translators: Post type name.
+	$after  = "<p><input type='submit' value='" . sprintf( __( 'Edit type "%1$s"', 'my-content-management' ), $type ) . "' name='mcm_updater' class='button-primary' /> <a href='" . admin_url( 'options-general.php?page=my-content-management/my-content-management.php&mcm_add=new' ) . "'>" . __( 'Add new post type', 'my-content-management' ) . '</a>
 				</p>
 				</div>
 			</form></div>';
-	$return      = '';
+	$return = '';
 	if ( is_array( $types ) ) {
 		if ( 'new' !== $type ) {
 			$data = $types[ $type ];
@@ -886,7 +908,7 @@ function mcm_updater() {
 			<p><label for='pt4'>" . __( 'Plural Name, upper', 'my-content-management' ) . "</label><br /><input type='text' name='${type}[pt4]' id='pt4' value='$data[3]' /></p>";
 
 			$keys = array_keys( $data[4] );
-			if ( ! in_array( 'show_in_rest', $keys ) ) {
+			if ( ! in_array( 'show_in_rest', $keys, true ) ) {
 				$data[4]['show_in_rest'] = false;
 			}
 			foreach ( $data[4] as $key => $value ) {
@@ -907,8 +929,8 @@ function mcm_updater() {
 					$return .= '</select></p>';
 				} else {
 					$defaults = array( 'mcm_faqs', 'mcm_people', 'mcm_testimonials', 'mcm_locations', 'mcm_quotes', 'mcm_glossary', 'mcm_portfolio', 'mcm_resources' );
-					if ( ! $value && in_array( $type, $defaults ) && 'menu_icon' === $key ) {
-						$value = plugins_url( 'images', __FILE__  ) . "/$type.png";
+					if ( ! $value && in_array( $type, $defaults, true ) && 'menu_icon' === $key ) {
+						$value = plugins_url( 'images', __FILE__ ) . "/$type.png";
 					}
 					$return .= "<p><label for='$key'>" . ucwords( str_replace( '_', ' ', $key ) ) . "</label> <input type='text' name='${type}[ $key ]' size='32' value='$value' /></p>";
 				}
@@ -916,7 +938,7 @@ function mcm_updater() {
 			$return .= $after;
 		}
 	}
-	if ( 'new' === $type && isset( $_GET['mcm_add']) && 'new' === $_GET['mcm_add'] ) {
+	if ( 'new' === $type && isset( $_GET['mcm_add'] ) && 'new' === $_GET['mcm_add'] ) {
 		global $d_mcm_args;
 		$return  = $before;
 		$return .= "
@@ -928,10 +950,10 @@ function mcm_updater() {
 		foreach ( $d_mcm_args as $key => $value ) {
 			if ( is_bool( $value ) ) {
 				$checked = ( true === (bool) $value ) ? ' checked="checked"' : '';
-				if ( $key !== 'show_in_rest' ) {
-					$return .= "<p><input type='checkbox' name='new[ $key ]' value='1' id='$key'$checked /> <label for='$key'>" . ucwords( str_replace( '_', ' ', $key ) ) . "</label></p>";
+				if ( 'show_in_rest' !== $key ) {
+					$return .= "<p><input type='checkbox' name='new[ $key ]' value='1' id='$key'$checked /> <label for='$key'>" . ucwords( str_replace( '_', ' ', $key ) ) . '</label></p>';
 				} else {
-					$return .= "<p><input type='checkbox' name='new[ $key ]' value='1' id='$key'$checked /> <label for='$key'>" . __( 'Show in REST API and enable Block Editor', 'my-content-management' ) . "</label></p>";
+					$return .= "<p><input type='checkbox' name='new[ $key ]' value='1' id='$key'$checked /> <label for='$key'>" . __( 'Show in REST API and enable Block Editor', 'my-content-management' ) . '</label></p>';
 				}
 			} elseif ( is_array( $value ) ) {
 				$return  .= "<p><label for='$key'>" . ucwords( str_replace( '_', ' ', $key ) ) . "</label><br /><select multiple='multiple' name='new[${key}][]' id='$key'>";
@@ -957,6 +979,10 @@ function mcm_updater() {
 
 /**
  * Delete a post type.
+ *
+ * @param string $type Post type.
+ *
+ * @return string
  */
 function mcm_delete_type( $type ) {
 	$options   = get_option( 'mcm_options' );
@@ -966,14 +992,16 @@ function mcm_delete_type( $type ) {
 	if ( isset( $types[ $type ] ) ) {
 		unset( $options['types'][ $type ] );
 		unset( $options['templates'][ $type ] );
-		$key = array_search( $type, $enabled );
+		$key = array_search( $type, $enabled, true );
 		if ( $key ) {
 			unset( $options['enabled'][ $key ] );
 		}
 		update_option( 'mcm_options', $options );
+		// Translators: Custom post type name.
 		return "<div class='updated fade'><p>" . sprintf( __( 'Custom post type "%1$s" has been deleted.', 'my-content-management' ), $type ) . '</p></div>';
 	}
 
+	// Translators: Post type name.
 	return "<div class='error'><p>" . sprintf( __( 'Custom post type "%1$s" was not found, and could not be deleted.', 'my-content-management' ), $type ) . '</p></div>';
 }
 
@@ -987,7 +1015,7 @@ function mcm_template_setter() {
 			die( 'Security check failed' );
 		}
 		$type                         = $_POST['mcm_post_type'];
-		$option                       = get_option('mcm_options');
+		$option                       = get_option( 'mcm_options' );
 		$new                          = $_POST['templates'];
 		$option['templates'][ $type ] = $new[ $type ];
 		update_option( 'mcm_options', $option );
@@ -1003,18 +1031,18 @@ function mcm_template_setter() {
 	$list      = array( 'div', 'ul', 'ol', 'dl', 'section' );
 	$item      = array( 'div', 'li', 'article' );
 	$default   = array(
-		'full' => "
+		'full'     => '
 <h2>{title}</h2>
 {content}
 
-<p>{link_title}</p>",
-			'excerpt' => "
+<p>{link_title}</p>',
+			'excerpt' => '
 <h3>{title}</h3>
 {excerpt}
 
-<p>{link_title}</p>",
-		'list'    => '{link_title}',
-		'wrapper' => array(
+<p>{link_title}</p>',
+		'list'        => '{link_title}',
+		'wrapper'     => array(
 			'item' => array(
 				'full'    => 'div',
 				'excerpt' => 'div',
@@ -1025,19 +1053,19 @@ function mcm_template_setter() {
 				'excerpt' => 'div',
 				'list'    => 'ul',
 			),
-		)
+		),
 	);
 	if ( is_array( $enabled ) ) {
 
 		$return = "<div class='postbox' id='mcm-template-settings'>
 		<h2 class='hndle'><span>" . __( 'Template Manager', 'my-content-management' ) . "</span></h2>
 			<div class='inside'>";
-			$tabs = "<ul class='tabs'>";
-			foreach ( $enabled as $value ) {
-				$tabs .= "<li><a href='#$value-container'>" . $types[ $value ][2] . '</a></li>';
-			}
-			$tabs   .= '</ul>';
-			$return .= $tabs;
+		$tabs   = "<ul class='tabs'>";
+		foreach ( $enabled as $value ) {
+			$tabs .= "<li><a href='#$value-container'>" . $types[ $value ][2] . '</a></li>';
+		}
+		$tabs   .= '</ul>';
+		$return .= $tabs;
 		foreach ( $enabled as $value ) {
 			if ( isset( $types[ $value ] ) ) {
 				$pointer       = array();
@@ -1053,14 +1081,14 @@ function mcm_template_setter() {
 						if ( is_array( $v[0] ) ) {
 							foreach ( $v[0] as $ka => $va ) {
 								if ( $va === $value ) {
-									$extra_fields[] = $fields[$k];
+									$extra_fields[] = $fields[ $k ];
 									$pointer[]      = $value;
 								}
 							}
 						}
 					}
 				}
-				if ( ! in_array( $value, $pointer ) ) {
+				if ( ! in_array( $value, $pointer, true ) ) {
 					$extra_fields = false;
 				}
 				$show_fields = '';
@@ -1079,13 +1107,13 @@ function mcm_template_setter() {
 				}
 				$extension = '';
 				if ( 'mcm_glossary' === $value && function_exists( 'mcm_set_glossary' ) ) {
-					$extension = "<h4>Glossary Extension</h4>
-						<p>" . __( 'The glossary extension to My Content Management is enabled.', 'my-content-management' ) . "</p>
+					$extension = '<h4>Glossary Extension</h4>
+						<p>' . __( 'The glossary extension to My Content Management is enabled.', 'my-content-management' ) . "</p>
 						<ul>
 						<li><code>[alphabet numbers='true']</code>: " . __( 'displays list of linked first characters represented in your Glossary. (Roman alphabet only, including numbers 0-9 by default.)', 'my-content-management' ) . "</li>
-						<li><code>[term id='' term='']</code>: " . __( 'displays value of term attribute linked to glossary term with ID attribute.', 'my-content-management' ) . "</li>
-						<li><strong>" . __( 'Feature', 'my-content-management' ) . ':</strong> ' . __( 'Adds links throughout content for each term in your glossary.', 'my-content-management' ) . "</li>
-						<li><strong>" . __( 'Feature', 'my-content-management' ) . ':</strong> ' . __( 'Adds character headings to each section of your glossary list.', 'my-content-management' ) . '</li>
+						<li><code>[term id='' term='']</code>: " . __( 'displays value of term attribute linked to glossary term with ID attribute.', 'my-content-management' ) . '</li>
+						<li><strong>' . __( 'Feature', 'my-content-management' ) . ':</strong> ' . __( 'Adds links throughout content for each term in your glossary.', 'my-content-management' ) . '</li>
+						<li><strong>' . __( 'Feature', 'my-content-management' ) . ':</strong> ' . __( 'Adds character headings to each section of your glossary list.', 'my-content-management' ) . '</li>
 						</ul>';
 					}
 				if ( '' !== $show_fields ) {
@@ -1094,12 +1122,11 @@ function mcm_template_setter() {
 					$show_fields  = "<div class='extra_fields'><h3>" . __( 'Added custom fields:', 'my-content-management' ) . "</h3>$show_fields</div>";
 				}
 				$extension = ( '' !== $extension ) ? "<div class='extra_fields'>$extension</div>" : '';
-				$return   .= "
-					<div id='$value-container' class='wptab'>
-						<h3>" . sprintf( __( '%s Templates', 'my-content-management' ), $types[ $value ][2] ) . '</h3>
+				// Translators: Post type name.
+				$return .= "<div id='$value-container' class='wptab'><h3>" . sprintf( __( '%s Templates', 'my-content-management' ), $types[ $value ][2] ) . '</h3>
 						<p>' . __( 'Example shortcode:', 'my-content-management' ) . "<br /><code>[my_content type='$display_value' display='full' taxonomy='mcm_category_$display_value' order='menu_order']</code></p>
-						<form method='post' action='" . admin_url( 'options-general.php?page=my-content-management/my-content-management.php') . "'>
-						<div><input type='hidden' name='_wpnonce' value='" . wp_create_nonce('my-content-management-nonce' ) . "' /></div>
+						<form method='post' action='" . admin_url( 'options-general.php?page=my-content-management/my-content-management.php' ) . "'>
+						<div><input type='hidden' name='_wpnonce' value='" . wp_create_nonce( 'my-content-management-nonce' ) . "' /></div>
 						<div><input type='hidden' name='mcm_post_type' value='$value' /></div>
 						<div>
 						<fieldset>
@@ -1108,37 +1135,38 @@ function mcm_template_setter() {
 								<label for='mcm_full_list_wrapper_$value'>" . __( 'List Wrapper', 'my-content-management' ) . "</label> <select name='templates[$value][wrapper][list][full]' id='mcm_full_list_wrapper_$value'>" . mcm_option_list( $list, $template['wrapper']['list']['full'] ) . "</select> <label for='mcm_full_item_wrapper_$value'>" . __( 'Item Wrapper', 'my-content-management' ) . "</label> <select name='templates[$value][wrapper][item][full]' id='mcm_full_itemwrapper_$value'>" . mcm_option_list( $item, $template['wrapper']['item']['full'] ) . "</select>
 							</p>
 							<p>
-								<label for='mcm_full_wrapper_$value'>" . __( 'Full Template', 'my-content-management' ) . "</label><br /> <textarea name='templates[$value][full]' id='mcm_full_wrapper_$value' rows='7' cols='60'>" . stripslashes( esc_textarea( $template['full'] ) ) . "</textarea>
+								<label for='mcm_full_wrapper_$value'>" . __( 'Full Template', 'my-content-management' ) . "</label><br /> <textarea name='templates[$value][full]' id='mcm_full_wrapper_$value' rows='7' cols='60'>" . stripslashes( esc_textarea( $template['full'] ) ) . '</textarea>
 							</p>
 						</fieldset>
 						<fieldset>
-							<legend>" . __( 'Excerpt', 'my-content-management' ) . "</legend>
+							<legend>' . __( 'Excerpt', 'my-content-management' ) . "</legend>
 							<p>
 								<label for='mcm_excerpt_list_wrapper_$value'>" . __( 'List Wrapper', 'my-content-management' ) . "</label> <select name='templates[$value][wrapper][list][excerpt]' id='mcm_excerpt_list_wrapper_$value'>" . mcm_option_list( $list, $template['wrapper']['list']['excerpt'] ) . "</select> <label for='mcm_excerpt_item_wrapper_$value'>" . __( 'Item Wrapper', 'my-content-management' ) . "</label> <select name='templates[$value][wrapper][item][excerpt]' id='mcm_excerpt_item_wrapper_$value'>" . mcm_option_list( $item, $template['wrapper']['item']['excerpt'] ) . "</select>
 							</p>
 							<p>
-								<label for='mcm_excerpt_wrapper_$value'>" . __( 'Excerpt Template', 'my-content-management' ) . "</label><br /> <textarea name='templates[$value][excerpt]' id='mcm_excerpt_wrapper_$value' rows='3' cols='60'>" . stripslashes( esc_textarea( $template['excerpt'] ) ) . "</textarea>
+								<label for='mcm_excerpt_wrapper_$value'>" . __( 'Excerpt Template', 'my-content-management' ) . "</label><br /> <textarea name='templates[$value][excerpt]' id='mcm_excerpt_wrapper_$value' rows='3' cols='60'>" . stripslashes( esc_textarea( $template['excerpt'] ) ) . '</textarea>
 							</p>
 						</fieldset>
 						<fieldset>
-							<legend>" . __( 'List', 'my-content-management' ) . "</legend>
+							<legend>' . __( 'List', 'my-content-management' ) . "</legend>
 							<p>
 								<label for='mcm_list_list_wrapper_$value'>" . __( 'List Wrapper', 'my-content-management' ) . "</label> <select name='templates[$value][wrapper][list][list]' id='mcm_list_list_wrapper_$value'>" . mcm_option_list( $list, $template['wrapper']['list']['list'] ) . "</select> <label for='mcm_list_item_wrapper_$value'>" . __( 'Item Wrapper', 'my-content-management' ) . "</label> <select name='templates[$value][wrapper][item][list]' id='mcm_list_item_wrapper_$value'>" . mcm_option_list( $item, $template['wrapper']['item']['list'] ) . "</select>
 							</p>
 							<p>
-								<label for='mcm_list_wrapper_$value'>" . __( 'List Template', 'my-content-management' ) . "</label><br /> <textarea name='templates[$value][list]' id='mcm_list_wrapper_$value' rows='1' cols='60'>" . stripslashes(esc_textarea( $template['list'] ) ) . "</textarea>
+								<label for='mcm_list_wrapper_$value'>" . __( 'List Template', 'my-content-management' ) . "</label><br /> <textarea name='templates[$value][list]' id='mcm_list_wrapper_$value' rows='1' cols='60'>" . stripslashes( esc_textarea( $template['list'] ) ) . '</textarea>
 							</p>
-						</fieldset>
-						<p>
+						</fieldset>'
+					// Translators: Template name.
+					$return .= "<p>
 							<input type='submit' value='" . sprintf( __( 'Update %s Templates', 'my-content-management' ), $label[2] ) . "' name='mcm_save_templates' class='button-primary' />
 						</p>
 						</div>
 						</form>
 						$show_fields
 						$extension
-						<h3>" . __( 'Naming for theme templates', 'my-content-management' ) . "</h3>
+						<h3>" . __( 'Naming for theme templates', 'my-content-management' ) . '</h3>
 						<ul>
-							<li>" . __( 'Theme template for this taxonomy:', 'my-content-management' ) . " <code>taxonomy-mcm_category_$display_value.php</code></li>
+							<li>' . __( 'Theme template for this taxonomy:', 'my-content-management' ) . " <code>taxonomy-mcm_category_$display_value.php</code></li>
 							<li>" . __( 'Theme template for this custom post type:', 'my-content-management' ) . " <code>single-mcm_$display_value.php</code></li>
 							<li>" . __( 'Theme template for archive pages with this post type:', 'my-content-management' ) . " <code>archive-mcm_$display_value.php</code></li>
 						</ul>
@@ -1177,7 +1205,7 @@ function mcm_option_list( $array, $current ) {
  * Output support information box.
  */
 function mcm_show_support_box() {
-?>
+	?>
 	<div id="support">
 		<div class="resources">
 		<p>
@@ -1237,7 +1265,7 @@ function mcm_add_fields_pages() {
 		}
 	}
 }
-add_action( 'admin_menu', 'mcm_add_fields_pages');
+add_action( 'admin_menu', 'mcm_add_fields_pages' );
 
 /**
  * Assign custom field groups to post types.
@@ -1322,7 +1350,7 @@ function mcm_delete_custom_field_support( $fieldset, $post_type ) {
 		$array = array();
 	}
 	if ( in_array( $post_type, $array, true ) ) {
-		$key = array_search( $post_type, $array );
+		$key = array_search( $post_type, $array, true );
 		unset( $array[ $key ] );
 	}
 	$option['extras'][ $fieldset ][0] = $array;
@@ -1359,18 +1387,18 @@ function mcm_fields( $show = 'assign', $post_type = false, $echo = true ) {
 	$checked = '';
 	$return  = '';
 	if ( is_array( $extras ) ) {
-		foreach ( $extras as $key=>$value ) {
+		foreach ( $extras as $key => $value ) {
 			$page        = $post_type;
 			$checked_off = ' checked="checked"';
 			if ( ! is_array( $value[0] ) ) {
-				$checked_on = ( $value[0] == $page ) ? ' checked="checked"' : '';
+				$checked_on = ( $value[0] === $page ) ? ' checked="checked"' : '';
 			} elseif ( in_array( $page, $value[0], true ) ) {
 				$checked_on = ( in_array( $page, $value[0], true ) ) ? ' checked="checked"' : '';
 			} else {
 				$checked_off = ' checked="checked"';
 				$checked_on  = '';
 			}
-			$k      = urlencode($key);
+			$k      = urlencode( $key );
 			$legend = stripslashes( $key );
 			$key    = sanitize_key( $key );
 			if ( 'assign' === $show ) {
@@ -1467,13 +1495,22 @@ function mcm_dropdown_roles( $selected = false ) {
 	return $p . $r;
 }
 
+/**
+ * Create user relations chooser.
+ *
+ * @param string $key Field type.
+ * @param array  $choices Currently selected types.
+ *
+ * @return string
+ */
 function mcm_user_type_relation( $key, $choices ) {
-	$list = mcm_dropdown_roles( $choices );
+	$list   = mcm_dropdown_roles( $choices );
 	$output = "
 	<select id='mcm_field_options$key' name='mcm_field_options[]'>
 		<option value=''> -- </option>
 		$list
 	</select>";
+
 	return $output;
 }
 
@@ -1481,14 +1518,12 @@ function mcm_user_type_relation( $key, $choices ) {
  * Fetch a fieldset creation form.
  *
  * @param string $fieldset Saved fieldset key.
- *
- * @return string
  */
 function mcm_get_fieldset( $fieldset = false ) {
 	$option     = get_option( 'mcm_options' );
 	$posts      = get_post_types(
 		array(
-			'public' => 'true'
+			'public' => 'true',
 		),
 		'object'
 	);
@@ -1507,7 +1542,7 @@ function mcm_get_fieldset( $fieldset = false ) {
 		$name  = $value->name;
 		$label = $value->labels->name;
 		if ( $fieldset ) {
-			$checked = ( in_array( $name, $types ) ) ? ' checked="checked"' : '';
+			$checked = ( in_array( $name, $types, true ) ) ? ' checked="checked"' : '';
 		} else {
 			$checked = '';
 		}
@@ -1518,13 +1553,13 @@ function mcm_get_fieldset( $fieldset = false ) {
 			</p>
 			<p>
 				<label for='mcm_fieldset_location'>" . __( 'Fieldset Location', 'my-content-management' ) . "</label> <select id='mcm_fieldset_location' name='mcm_fieldset_location' />
-					<option value='side'" . selected( $location, 'side', false ) . ">" . __( 'Side', 'my-content-management' ) . "</option>
-					<option value='normal'" . selected( $location, 'normal', false ) . ">" . __( 'Normal', 'my-content-management' ) . "</option>
-					<option value='advanced'" . selected( $location, 'advanced', false ) . ">" . __( 'Advanced', 'my-content-management' ) . "</option>
+					<option value='side'" . selected( $location, 'side', false ) . '>' . __( 'Side', 'my-content-management' ) . "</option>
+					<option value='normal'" . selected( $location, 'normal', false ) . '>' . __( 'Normal', 'my-content-management' ) . "</option>
+					<option value='advanced'" . selected( $location, 'advanced', false ) . '>' . __( 'Advanced', 'my-content-management' ) . '</option>
 				</select>
 			</p>
 			<fieldset>
-				<legend>" . __( 'Attach to', 'my-content-management' ) . "</legend>
+				<legend>' . __( 'Attach to', 'my-content-management' ) . "</legend>
 				<p>
 				$post_types
 				</p>
@@ -1547,7 +1582,7 @@ function mcm_get_fieldset( $fieldset = false ) {
 				</tr>
 				</thead>
 				<tbody>';
-	$odd = 'odd';
+	$odd  = 'odd';
 	if ( isset( $option['fields'][ $fieldset ] ) ) {
 		$fields = ( $fieldset ) ? $option['fields'][ urldecode( $fieldset ) ] : '';
 	}
@@ -1579,20 +1614,20 @@ function mcm_get_fieldset( $fieldset = false ) {
 				}
 				$field_type_select = '';
 				foreach ( $field_types as $k => $v ) {
-					$selected           = ( $value[3] === $k  || ( 'text' === $k && 'mcm_text_field' === $value[3] ) ) ? ' selected="selected"' : '';
+					$selected           = ( $value[3] === $k || ( 'text' === $k && 'mcm_text_field' === $value[3] ) ) ? ' selected="selected"' : '';
 					$field_type_select .= "<option value='$k'$selected>$v</option>\n";
 				}
 				if ( 'select' === $value[3] ) {
 					$labeled      = __( 'Options', 'my-content-management' );
 					$choice_field = "<input type='text' name='mcm_field_options[]' id='mcm_field_options$key' value='$choices' />";
 				} elseif ('post-relation' === $value[3] ) {
-					$labeled = __( 'Related post type', 'my-content-management' );
+					$labeled      = __( 'Related post type', 'my-content-management' );
 					$choice_field = mcm_post_type_relation( $key, $choices );
 				} elseif ( 'user-relation' === $value[3] ) {
-					$labeled = __( 'Related user', 'my-content-management' );
+					$labeled      = __( 'Related user', 'my-content-management' );
 					$choice_field = mcm_user_type_relation( $key, $choices );
 				} else {
-					$labeled = __( 'Additional Text', 'my-content-management' );
+					$labeled      = __( 'Additional Text', 'my-content-management' );
 					$choice_field = "<input type='text' name='mcm_field_options[]' id='mcm_field_options$key' value='$choices' />";
 				}
 				if ( isset( $value[4] ) && 'true' === $value[4] ) {
@@ -1625,7 +1660,7 @@ function mcm_get_fieldset( $fieldset = false ) {
 						<label for='mcm_field_delete$key'>" . __( 'Delete', 'my-content-management' ) . "</label> <input type='checkbox' name='mcm_field_delete[ $key ]' id='mcm_field_delete$key' class='mcm-delete' value='delete' />
 					</td>
 				</tr>";
-				$odd = ( 'odd' === $odd ) ? 'even' : 'odd';
+				$odd   = ( 'odd' === $odd ) ? 'even' : 'odd';
 			}
 		} else {
 			// Translators: action to perform (html button).

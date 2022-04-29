@@ -36,7 +36,7 @@ function mcm_posttypes() {
 					'edit_item'          => sprintf( __( 'Edit %s', 'my-content-management' ), $value[2] ),
 					// Translators: post type name.
 					'new_item'           => sprintf( __( 'New %s', 'my-content-management' ), $value[2] ),
-					// Transltoars: post type name.
+					// Translators: post type name.
 					'view_item'          => sprintf( __( 'View %s', 'my-content-management' ), $value[2] ),
 					// Translators: post type plural name.
 					'search_items'       => sprintf( __( 'Search %s', 'my-content-management' ), $value[3] ),
@@ -92,7 +92,7 @@ function mcm_posttypes_messages( $messages ) {
 	$enabled = $mcm_enabled;
 	if ( is_array( $enabled ) ) {
 		foreach ( $enabled as $key ) {
-			$value            = $types[$key];
+			$value            = $types[ $key ];
 			$messages[ $key ] = array(
 				0  => '', // Unused. Messages start at index 1.
 				// Translators: 1 Post type singular name, 2 link to listing.
@@ -474,9 +474,9 @@ function mcm_text_field( $args, $type = 'text' ) {
 		$output .= '<ul>';
 		foreach ( $meta as $field ) {
 			if ( '' !== $field ) {
-				$field = htmlentities($field);
+				$field = htmlentities( $field );
 				if ( 'date' === $type ) {
-					$field = ( is_numeric( $field ) ) ? date( 'Y-m-d', $field ) : date( 'Y-m-d', strtotime( $field ) );
+					$field = ( is_numeric( $field ) ) ? gmdate( 'Y-m-d', $field ) : gmdate( 'Y-m-d', strtotime( $field ) );
 				}
 				$field   = esc_attr( $field );
 				$output .= '<li><span class="mcm-delete"><input type="checkbox" id="del-' . $name . $i . '" name="mcm_delete[' . $name . '][]" value="' . $field . '" /> <label for="del-' . $name . $i . '"><span>' . __( 'Delete', 'my-content-management' ) . '</span> - ' . $field . '</label></span></li>';
@@ -694,7 +694,7 @@ function mcm_create_options( $choices, $selected, $type = 'select' ) {
 				} else {
 					$chosen = ( $v === $selected ) ? ' checked="checked"' : '';
 				}
-				$id      = esc_attr(  sanitize_title( $v . '_' . $type ) );
+				$id      = esc_attr( sanitize_title( $v . '_' . $type ) );
 				$return .= "<li><input type='checkbox' name='$type" . '[]' . "' value='$v' id='$id' $chosen /> <label for='$id'>$display</label></li>";
 			}
 		}
@@ -766,7 +766,8 @@ function mcm_rich_text_area( $args ) {
 		'mcm_filter_editor_args',
 		array(
 			'textarea_name' => $args[0],
-			'editor_css'    => '<style>.wp_themeSkin iframe { background: #fff; color: #222; }</style>', 'editor_class'  => 'mcm_rich_text_editor',
+			'editor_css'    => '<style>.wp_themeSkin iframe { background: #fff; color: #222; }</style>',
+			'editor_class'  => 'mcm_rich_text_editor',
 		),
 		$args
 	);
@@ -1158,7 +1159,7 @@ $default_mcm_types = array(
 		__( 'Portfolio Items', 'my-content-management' ),
 		$d_mcm_args,
 	),
-	'mcm_resources' => array(
+	'mcm_resources'    => array(
 		__( 'resource', 'my-content-management' ),
 		__( 'resources', 'my-content-management' ),
 		__( 'Resource', 'my-content-management' ),
@@ -1172,7 +1173,7 @@ $default_mcm_types = array(
 // @location string side/normal/advanced.
 // add custom fields to the custom post types.
 $default_mcm_fields = array(
-	__('Personal Information', 'my-content-management' ) => array(
+	__( 'Personal Information', 'my-content-management' ) => array(
 		array( '_title', __( 'Title', 'my-content-management' ), '', 'mcm_text_field' ),
 		array( '_subtitle', __( 'Subtitle', 'my-content-management' ), '', 'mcm_text_field' ),
 		array( '_business', __( 'Business', 'my-content-management' ), '', 'mcm_text_field' ),
@@ -1192,9 +1193,9 @@ $default_mcm_fields = array(
 		array( '_email', __( 'Contact Email', 'my-content-management' ), '', 'email' ),
 	),
 	__( 'Quotation Info', 'my-content-management' )      => array(
-		array( '_url', __( 'URL', 'my-content-management' ), '', 'url'),
-		array( '_title', __( 'Title', 'my-content-management' ), '', 'mcm_text_field'),
-		array( '_location', __( 'Location', 'my-content-management' ), '', 'mcm_text_field'),
+		array( '_url', __( 'URL', 'my-content-management' ), '', 'url' ),
+		array( '_title', __( 'Title', 'my-content-management' ), '', 'mcm_text_field' ),
+		array( '_location', __( 'Location', 'my-content-management' ), '', 'mcm_text_field' ),
 	),
 	__( 'Testimonial Info', 'my-content-management' )    => array(
 		array( '_url', __( 'URL', 'my-content-management' ), '', 'url' ),
