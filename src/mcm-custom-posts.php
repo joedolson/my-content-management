@@ -968,24 +968,6 @@ function mcm_revision_fields( $fields ) {
 add_filter( '_wp_post_revision_fields', 'mcm_revision_fields' );
 
 /**
- * Get revision data.
- *
- * @param mixed string|int $value Value of meta field. Unused.
- * @param string           $field Custom field name.
- *
- * return mixed string|int
- */
-function mcm_revision_field( $value, $field ) {
-	global $revision;
-	if ( is_array( $field ) ) {
-		return;
-	}
-
-	return get_metadata( 'post', $revision->ID, $field, true );
-}
-add_filter( '_wp_post_revision_field_my_meta', 'mcm_revision_field', 10, 2 );
-
-/**
  * Test whether this field is a repeatable field.
  *
  * @param array $value Field arguments.
@@ -1011,6 +993,24 @@ function mcm_is_repeatable( $value ) {
 
 	return false;
 }
+
+/**
+ * Get revision data for a My Content Management custom field.
+ *
+ * @param mixed string|int $value Value of meta field. Unused.
+ * @param string           $field Custom field name.
+ *
+ * return mixed string|int
+ */
+function mcm_revision_field( $value, $field ) {
+	global $revision;
+	if ( is_array( $field ) ) {
+		return;
+	}
+
+	return get_metadata( 'post', $revision->ID, $field, true );
+}
+add_filter( '_wp_post_revision_field_my_meta', 'mcm_revision_field', 10, 2 );
 
 /**
  * Check whether a text field is rich text.
