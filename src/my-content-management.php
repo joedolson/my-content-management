@@ -1287,9 +1287,17 @@ add_action( 'admin_menu', 'mcm_add_fields_pages' );
  * Assign custom field groups to post types.
  */
 function mcm_assign_custom_fields() {
+	$type      = ( isset( $_GET['post_type'] ) ) ? $_GET['post_type'] : 'post';
+	$post_type = get_post_type_object( $type );
+	$type_name = $post_type->labels->name;
 	?>
 	<div class="wrap">
-		<h1><?php _e( 'My Content Management &raquo; Manage Custom Fields', 'my-content-management' ); ?></h1>
+		<h1>
+		<?php
+		// Translators: Post type plural name.
+		printf( __( 'My Content Management / %s / Manage Custom Fields', 'my-content-management' ), $type_name );
+		?>
+		</h1>
 		<div class="postbox-container" style="width: 70%">
 			<div class="metabox-holder">
 				<div class="mcm-settings ui-sortable meta-box-sortables">
@@ -1297,10 +1305,10 @@ function mcm_assign_custom_fields() {
 						<h2 class='hndle'><?php _e( 'Custom Fields Assigned to this post type', 'my-content-management' ); ?></h2>
 						<div class="inside">
 							<?php
-							$current_post_type = $_GET['page'];
-							$page              = ( isset( $_GET['post_type'] ) ) ? $_GET['post_type'] : 'post';
+							$page = sanitize_key( $_GET['page'] );
+							$type = ( isset( $_GET['post_type'] ) ) ? $_GET['post_type'] : 'post';
 							?>
-							<form method='post' action='<?php echo esc_url( admin_url( "edit.php?post_type=$page&page=$current_post_type" ) ); ?>'>
+							<form method='post' action='<?php echo esc_url( admin_url( "edit.php?post_type=$type&page=$page" ) ); ?>'>
 								<div><input type='hidden' name='_wpnonce' value='<?php echo wp_create_nonce( 'my-content-management-nonce' ); ?>' /></div>
 								<div>
 								<?php mcm_fields( 'assign', $page ); ?>
@@ -1407,7 +1415,7 @@ function mcm_fields( $show = 'assign', $post_type = false, $echo = true ) {
 			$key    = sanitize_key( $key );
 			if ( 'assign' === $show ) {
 				$return .= "<li><fieldset><legend>$legend</legend>
-				<p><span><input type='radio' value='off' name=\"mcm_field_extras[$key]\" id=\"mcm_off_$page\"$checked_off /> <label for='mcm_off_$page'>" . __( 'Off', 'my-content-management' ) . "</label><br /><input type='radio' value='on' name=\"mcm_field_extras[$key]\" id=\"mcm_on_$page\"$checked_on /> <label for='mcm_on_$page'>" . __( 'On', 'my-content-management' ) . "</label></span> <a class='button-secondary' href='" . esc_url( admin_url( "options-general.php?page=mcm_custom_fields&mcm_fields_edit=$k" ) ) . "'>" . __( 'Edit', 'my-content-management' ) . '<span class="screen-reader-text">' . $legend . '</span></a></p></fieldset></li>';
+				<p><span><input type='radio' value='off' name=\"mcm_field_extras[$key]\" id=\"mcm_off_$key\"$checked_off /> <label for='mcm_off_$key'>" . __( 'Off', 'my-content-management' ) . "</label><br /><input type='radio' value='on' name=\"mcm_field_extras[$key]\" id=\"mcm_on_$key\"$checked_on /> <label for='mcm_on_$key'>" . __( 'On', 'my-content-management' ) . "</label></span> <a class='button-secondary' href='" . esc_url( admin_url( "options-general.php?page=mcm_custom_fields&mcm_fields_edit=$k" ) ) . "'>" . __( 'Edit', 'my-content-management' ) . '<span class="screen-reader-text">' . $legend . '</span></a></p></fieldset></li>';
 			} else {
 				$current = '';
 				if ( isset( $_GET['mcm_fields_edit'] ) && urlencode( $_GET['mcm_fields_edit'] ) === $k ) {
@@ -1870,7 +1878,7 @@ function mcm_configure_custom_fields() {
 	$fields = mcm_fields( 'edit', false, false );
 	?>
 	<div class="wrap">
-		<h2 class='hndle'><?php _e( 'My Content Management &raquo; Manage Custom Fields', 'my-content-management' ); ?></h2>
+		<h2 class='hndle'><?php _e( 'My Content Management / Manage Custom Fields', 'my-content-management' ); ?></h2>
 		<div class="postbox-container" style="width: 70%">
 			<div class="metabox-holder">
 				<div class="mcm-settings ui-sortable meta-box-sortables">
