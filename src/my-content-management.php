@@ -1702,7 +1702,7 @@ function mcm_get_fieldset( $fieldset = false ) {
 	$form     .= '</tbody></table>';
 	$add_field = __( 'Add another field', 'my-content-management' );
 	$del_field = __( 'Remove last field', 'my-content-management' );
-	$form     .= '<p><input type="button" class="add_field" value="' . esc_attr( $add_field ) . '" class="button" /> <input type="button" class="del_field" value="' . esc_attr( $del_field ) . '" class="button" /></p>';
+	$form     .= '<p><input type="button" class="button-secondary add_field" value="' . esc_attr( $add_field ) . '" class="button" /> <input type="button" class="button-secondary del_field" value="' . esc_attr( $del_field ) . '" class="button" /></p>';
 
 	echo $form;
 }
@@ -1913,6 +1913,7 @@ function mcm_plugin_action( $links, $file ) {
 		$links[] = "<a href='options-general.php?page=my-content-management/my-content-management.php'>" . __( 'Settings', 'my-content-management' ) . '</a>';
 		$links[] = "<a href='http://www.joedolson.com/donate/'>" . __( 'Donate', 'my-content-management' ) . '</a>';
 	}
+
 	return $links;
 }
 add_filter( 'plugin_action_links', 'mcm_plugin_action', 10, 2 );
