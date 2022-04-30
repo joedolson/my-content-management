@@ -65,6 +65,10 @@ The "id" attribute is not supported in the [my_archive] shortcode. (That would b
 
 * Update code to meet PHPCS expectations.
 * Manage array values in displays.
+* Eliminate support form.
+* Add no support statement.
+* Refine layout.
+* Remove detectors for theme-defined front-end scripts & styles.
 * Add 3rd taxonomy for all MCM post types.
 
 = 1.6.2 =
