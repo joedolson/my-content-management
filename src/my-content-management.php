@@ -1296,7 +1296,6 @@ function mcm_assign_custom_fields() {
 					<div class="postbox" id="mcm-settings">
 						<h2 class='hndle'><?php _e( 'Custom Fields Assigned to this post type', 'my-content-management' ); ?></h2>
 						<div class="inside">
-							<p><?php _e( 'Select the sets of custom fields enabled for this post type', 'my-content-management' ); ?></p>
 							<?php
 							$current_post_type = $_GET['page'];
 							$page              = ( isset( $_GET['post_type'] ) ) ? $_GET['post_type'] : 'post';
@@ -1306,7 +1305,7 @@ function mcm_assign_custom_fields() {
 								<div>
 								<?php mcm_fields( 'assign', $page ); ?>
 								<p>
-									<input type='submit' value='<?php _e( 'Update Assignments', 'my-content-management' ); ?>' name='mcm_custom_fields' class='button-primary' /> <a href="<?php echo admin_url( 'options-general.php?page=mcm_custom_fields&mcm_fields_add=new' ); ?>"><?php _e( 'Add new custom field set', 'my-content-management' ); ?></a>
+									<input type='submit' value='<?php _e( 'Update Assignments', 'my-content-management' ); ?>' name='mcm_custom_fields' class='button-primary' /> <a class="button-secondary" href="<?php echo admin_url( 'options-general.php?page=mcm_custom_fields&mcm_fields_add=new' ); ?>"><?php _e( 'Add new custom field set', 'my-content-management' ); ?></a>
 								</p>
 								</div>
 							</form>
@@ -1408,15 +1407,13 @@ function mcm_fields( $show = 'assign', $post_type = false, $echo = true ) {
 			$key    = sanitize_key( $key );
 			if ( 'assign' === $show ) {
 				$return .= "<li><fieldset><legend>$legend</legend>
-				<input type='radio' value='off' name=\"mcm_field_extras[ $key ]\" id=\"mcm_off_$page\"$checked_off /> <label for='mcm_off_$page'>" . __( 'Off', 'my-content-management' ) . "</label>
-				<input type='radio' value='on' name=\"mcm_field_extras[ $key ]\" id=\"mcm_off_$page\"$checked_on /> <label for='mcm_off_$page'>" . __( 'On', 'my-content-management' ) . " <small><a href='" . esc_url( admin_url( "options-general.php?page=mcm_custom_fields&mcm_fields_edit=$k" ) ) . "'>" . __( 'Edit', 'my-content-management' ) . '</a></small></label>
-				</fieldset></li>';
+				<p><span><input type='radio' value='off' name=\"mcm_field_extras[$key]\" id=\"mcm_off_$page\"$checked_off /> <label for='mcm_off_$page'>" . __( 'Off', 'my-content-management' ) . "</label><br /><input type='radio' value='on' name=\"mcm_field_extras[$key]\" id=\"mcm_on_$page\"$checked_on /> <label for='mcm_on_$page'>" . __( 'On', 'my-content-management' ) . "</label></span> <a class='button-secondary' href='" . esc_url( admin_url( "options-general.php?page=mcm_custom_fields&mcm_fields_edit=$k" ) ) . "'>" . __( 'Edit', 'my-content-management' ) . '<span class="screen-reader-text">' . $legend . '</span></a></p></fieldset></li>';
 			} else {
 				$current = '';
 				if ( isset( $_GET['mcm_fields_edit'] ) && urlencode( $_GET['mcm_fields_edit'] ) === $k ) {
 					$current = ' aria-current="true"';
 				}
-				$return .= "<li><a$current href='" . admin_url( "options-general.php?page=mcm_custom_fields&mcm_fields_edit=$k" ) . "'>$legend</a></li>";
+				$return .= "<li><a class='button-secondary'$current href='" . admin_url( "options-general.php?page=mcm_custom_fields&mcm_fields_edit=$k" ) . "'>$legend</a></li>";
 			}
 		}
 	}

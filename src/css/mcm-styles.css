@@ -5,8 +5,7 @@
 #support { text-align: center; }
 #mcm-settings legend { display: block; padding: 0; width: 12.5em; font-weight: 400;  font-size: 1em; }
 .mcm_customfields { display: flex; flex-wrap: wrap; column-gap: 12px; row-gap: 12px; }
-.mcm_customfields a { background: #f3f5f7; padding: 6px; border-radius: 3px; border: 1px solid #aaa; }
-.mcm_customfields a:focus, .mcm_customfields a:hover { text-decoration: none; }
+.mcm_customfields p { display: flex; align-items: center; column-gap: 10px; }
 .mcm_customfields a[aria-current=true] { background: #227ab1; color: #fff; }
 .mcm-settings .postbox { margin: 10px 10px 0 0;	}
 .mcm-settings .meta-box-sortables { min-height: 0; }
