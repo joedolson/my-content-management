@@ -669,22 +669,10 @@ function mcm_settings_page() {
 					?>
 				</div>
 			</div>
-		</div>
-		<div class="postbox-container" style="width: 20%">
 			<div class="metabox-holder">
 				<div class="mcm-settings ui-sortable meta-box-sortables">
 					<div class="mcm-template-guide postbox" id="get-support">
-						<h2 class='hndle'><?php _e( 'Support This Plug-in', 'my-content-management' ); ?></h2>
-						<div class="inside">
-							<?php mcm_show_support_box(); ?>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="metabox-holder">
-				<div class="mcm-settings ui-sortable meta-box-sortables">
-					<div class="mcm-template-guide postbox" id="get-support">
-						<h2 class='hndle'><?php _e( 'Basic Template Tags', 'my-content-management' ); ?></h2>
+						<h2 class='hndle'><?php _e( 'Template Tags', 'my-content-management' ); ?></h2>
 						<div class="inside">
 							<dl>
 								<dt><code>{id}</code></dt>
@@ -753,6 +741,7 @@ function mcm_settings_page() {
 				</div>
 			</div>
 		</div>
+		<?php mcm_support_column(); ?>
 	</div>
 	<?php
 }
@@ -1204,18 +1193,46 @@ function mcm_show_support_box() {
 		<a href="https://twitter.com/intent/follow?screen_name=joedolson" class="twitter-follow-button" data-size="small" data-related="joedolson">Follow @joedolson</a>
 		<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if (!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 		</p>
-		<ul>
-			<li><form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-				<div>
-				<input type="hidden" name="cmd" value="_s-xclick" />
-				<input type="hidden" name="hosted_button_id" value="YP36SWZTDQAUL" />
-				<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" name="submit" alt="Make a gift to support My Content Management!" />
-				<img alt="" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1" />
+		<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+			<div>
+			<input type="hidden" name="cmd" value="_s-xclick" />
+			<input type="hidden" name="hosted_button_id" value="YP36SWZTDQAUL" />
+			<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" name="submit" alt="Make a gift to support My Content Management!" />
+			<img alt="" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1" />
+			</div>
+		</form>
+		</div>
+	</div>
+	<?php
+}
+
+/**
+ * Output support column.
+ */
+function mcm_support_column() {
+	?>
+	<div class="postbox-container" style="width: 25%">
+		<div class="metabox-holder">
+			<div class="mcm-settings ui-sortable meta-box-sortables">
+				<div class="mcm-template-guide postbox" id="get-support">
+					<h2 class='hndle'><?php _e( 'Support This Plug-in', 'my-content-management' ); ?></h2>
+					<div class="inside">
+						<?php mcm_show_support_box(); ?>
+					</div>
 				</div>
-			</form>
-			</li>
-			<li><a href="http://wordpress.org/support/view/plugin-reviews/my-content-management"><?php _e( 'Add a review', 'my-content-management' ); ?></a> &bull; <strong><a href="#get-support" rel="external"><?php _e( 'Get Support', 'my-content-management' ); ?></a></strong></li>
-		</ul>
+			</div>
+		</div>
+		<div class="metabox-holder">
+			<div class="mcm-settings ui-sortable meta-box-sortables">
+				<div class="mcm-template-guide postbox" id="get-support">
+					<h2 class='hndle'><?php _e( 'No support', 'my-content-management' ); ?></h2>
+					<div class="inside">
+						<?php
+							_e( 'My Content Management is available with no support. It is intended as a custom field and custom post type builder, and the templating functions are no longer maintained.', 'my-content-management' );
+						?>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 	<?php
@@ -1291,18 +1308,7 @@ function mcm_assign_custom_fields() {
 				</div>
 			</div>
 		</div>
-		<div class="postbox-container" style="width: 20%">
-			<div class="metabox-holder">
-				<div class="mcm-settings ui-sortable meta-box-sortables">
-					<div class="postbox" id="mcm-settings">
-						<h2 class='hndle'><?php _e( 'Support This Plug-in', 'my-content-management' ); ?></h2>
-						<div class="inside">
-							<?php mcm_show_support_box(); ?>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+		<?php mcm_support_column(); ?>
 	</div>
 	<?php
 }
@@ -1882,18 +1888,7 @@ function mcm_configure_custom_fields() {
 				</div>
 			</div>
 		</div>
-		<div class="postbox-container" style="width: 20%">
-			<div class="metabox-holder">
-				<div class="mcm-settings ui-sortable meta-box-sortables">
-					<div class="mcm-template-guide postbox" id="get-support">
-						<h2 class='hndle'><?php _e( 'Support This Plug-in', 'my-content-management' ); ?></h2>
-						<div class="inside">
-							<?php mcm_show_support_box(); ?>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+		<?php mcm_support_column(); ?>
 	</div>
 	<?php
 }
