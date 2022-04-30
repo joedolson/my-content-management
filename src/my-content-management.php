@@ -1399,7 +1399,11 @@ function mcm_fields( $show = 'assign', $post_type = false, $echo = true ) {
 				<input type='radio' value='on' name=\"mcm_field_extras[ $key ]\" id=\"mcm_off_$page\"$checked_on /> <label for='mcm_off_$page'>" . __( 'On', 'my-content-management' ) . " <small><a href='" . admin_url( "options-general.php?page=mcm_custom_fields&mcm_fields_edit=$k" ) . "'>" . __( 'Edit', 'my-content-management' ) . '</a></small></label>
 				</fieldset></li>';
 			} else {
-				$return .= "<li><a href='" . admin_url( "options-general.php?page=mcm_custom_fields&mcm_fields_edit=$k" ) . "'>" . __( 'Edit', 'my-content-management' ) . " $legend</a></li>";
+				$current = '';
+				if ( isset( $_GET['mcm_fields_edit'] ) && $k === urlencode( $_GET['mcm_fields_edit'] ) ) {
+					$current = ' aria-current="true"';
+				}
+				$return .= "<li><a$current href='" . admin_url( "options-general.php?page=mcm_custom_fields&mcm_fields_edit=$k" ) . "'>" . __( 'Edit', 'my-content-management' ) . " $legend</a></li>";
 			}
 		}
 	}
@@ -1529,6 +1533,9 @@ function mcm_get_fieldset( $fieldset = false ) {
 		$location = 'side';
 		$context  = '';
 		$types    = array();
+	}
+	if ( ! is_array( $types ) ) {
+		$types = array( $types );
 	}
 	foreach ( $posts as $value ) {
 		$name  = $value->name;
@@ -1849,7 +1856,7 @@ function mcm_configure_custom_fields() {
 	} else {
 		$append = '';
 	}
-	$config = mcm_fields( 'edit', false, false );
+	$fields = mcm_fields( 'edit', false, false );
 	?>
 	<div class="wrap">
 		<h2 class='hndle'><?php _e( 'My Content Management &raquo; Manage Custom Fields', 'my-content-management' ); ?></h2>
