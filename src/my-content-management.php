@@ -1400,7 +1400,7 @@ function mcm_fields( $show = 'assign', $post_type = false, $echo = true ) {
 				</fieldset></li>';
 			} else {
 				$current = '';
-				if ( isset( $_GET['mcm_fields_edit'] ) && $k === urlencode( $_GET['mcm_fields_edit'] ) ) {
+				if ( isset( $_GET['mcm_fields_edit'] ) && urlencode( $_GET['mcm_fields_edit'] ) === $k ) {
 					$current = ' aria-current="true"';
 				}
 				$return .= "<li><a$current href='" . admin_url( "options-general.php?page=mcm_custom_fields&mcm_fields_edit=$k" ) . "'>" . __( 'Edit', 'my-content-management' ) . " $legend</a></li>";
