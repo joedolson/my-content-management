@@ -1396,7 +1396,7 @@ function mcm_fields( $show = 'assign', $post_type = false, $echo = true ) {
 			if ( 'assign' === $show ) {
 				$return .= "<li><fieldset><legend>$legend</legend>
 				<input type='radio' value='off' name=\"mcm_field_extras[ $key ]\" id=\"mcm_off_$page\"$checked_off /> <label for='mcm_off_$page'>" . __( 'Off', 'my-content-management' ) . "</label>
-				<input type='radio' value='on' name=\"mcm_field_extras[ $key ]\" id=\"mcm_off_$page\"$checked_on /> <label for='mcm_off_$page'>" . __( 'On', 'my-content-management' ) . " <small><a href='" . admin_url( "options-general.php?page=mcm_custom_fields&mcm_fields_edit=$k" ) . "'>" . __( 'Edit', 'my-content-management' ) . '</a></small></label>
+				<input type='radio' value='on' name=\"mcm_field_extras[ $key ]\" id=\"mcm_off_$page\"$checked_on /> <label for='mcm_off_$page'>" . __( 'On', 'my-content-management' ) . " <small><a href='" . esc_url( admin_url( "options-general.php?page=mcm_custom_fields&mcm_fields_edit=$k" ) ) . "'>" . __( 'Edit', 'my-content-management' ) . '</a></small></label>
 				</fieldset></li>';
 			} else {
 				$current = '';
