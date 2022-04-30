@@ -96,7 +96,7 @@ $mcm_fields    = $mcm_options['fields'];
 $mcm_extras    = $mcm_options['extras'];
 
 /**
- * Enqueue admin scripts.
+ * Enqueue admin scripts & styles used in post meta fields.
  */
 function mcm_enqueue_admin_scripts() {
 	$screen = get_current_screen();
@@ -104,7 +104,7 @@ function mcm_enqueue_admin_scripts() {
 		if ( function_exists( 'wp_enqueue_media' ) && ! did_action( 'wp_enqueue_media' ) ) {
 			wp_enqueue_media();
 		}
-		wp_enqueue_style( 'mcm-posts', plugins_url( 'mcm-post.css', __FILE__ ) );
+		wp_enqueue_style( 'mcm-posts', plugins_url( 'css/mcm-post.css', __FILE__ ) );
 		wp_enqueue_script( 'mcm-admin-script', plugins_url( 'js/uploader.js', __FILE__ ), array( 'jquery' ) );
 		wp_localize_script(
 			'mcm-admin-script',
@@ -1897,7 +1897,7 @@ function mcm_configure_custom_fields() {
  * Enqueue styles.
  */
 function mcm_styles() {
-	echo '<link type="text/css" rel="stylesheet" href="' . plugins_url( 'mcm-styles.css', __FILE__ ) . '" />';
+	wp_enqueue_style( 'mcm.styles', plugins_url( 'css/mcm-styles.css', __FILE__ ) );
 }
 
 /**
@@ -1916,25 +1916,3 @@ function mcm_plugin_action( $links, $file ) {
 	return $links;
 }
 add_filter( 'plugin_action_links', 'mcm_plugin_action', 10, 2 );
-
-/**
- * Add stylesheet.
- */
-function mcm_add_styles() {
-	if ( file_exists( get_stylesheet_directory() . '/my-content-management.css' ) ) {
-		$stylesheet = get_stylesheet_directory_uri() . '/my-content-management.css';
-		echo "<link rel=\"stylesheet\" href=\"$stylesheet\" type=\"text/css\" media=\"all\" />";
-	}
-}
-add_action( 'wp_head', 'mcm_add_styles' );
-
-/**
- * Add JS
- */
-function mcm_add_js() {
-	if ( file_exists( get_stylesheet_directory() . '/my-content-management.js' ) ) {
-		$scripts = get_stylesheet_directory_uri() . '/my-content-management.js';
-		echo "<script type='text/javascript' src=\"$scripts\"></script>";
-	}
-}
-add_action( 'wp_footer', 'mcm_add_js' );
