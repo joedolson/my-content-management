@@ -647,16 +647,27 @@ function mcm_settings_page() {
 		<div class="postbox-container" style="width: 70%">
 			<div class="metabox-holder">
 				<div class="mcm-settings ui-sortable meta-box-sortables">
+					<?php
+					if ( isset( $_GET['mcm_edit'] ) ) {
+						?>
+					<div class="postbox">
+						<h2 class='hndle'><?php _e( 'Edit Custom Post Type', 'my-content-management' ); ?></h2>
+						<div class="inside">
+						<?php mcm_updater(); ?>
+						</div>
+					</div>
+						<?php
+					}
+					?>
 					<div class="postbox">
 						<h2 class='hndle'><?php _e( 'Enable Custom Post Types', 'my-content-management' ); ?></h2>
 						<div class="inside">
-						<?php mcm_updater(); ?>
 						<form method='post' action='<?php echo admin_url( 'options-general.php?page=my-content-management/my-content-management.php' ); ?>'>
 							<div><input type='hidden' name='_wpnonce' value='<?php echo wp_create_nonce( 'my-content-management-nonce' ); ?>' /></div>
 							<div>
 							<?php mcm_enabler(); ?>
 							<p>
-								<input type='submit' value='<?php _e( 'Update Enabled Post Types', 'my-content-management' ); ?>' name='mcm_enabler' class='button-primary' /> <a href="<?php echo admin_url( 'options-general.php?page=my-content-management/my-content-management.php&mcm_add=new' ); ?>"><?php _e( 'Add new post type', 'my-content-management' ); ?></a>
+								<input type='submit' value='<?php _e( 'Update Enabled Post Types', 'my-content-management' ); ?>' name='mcm_enabler' class='button-primary' /> <a class="button-secondary" href="<?php echo admin_url( 'options-general.php?page=my-content-management/my-content-management.php&mcm_add=new' ); ?>"><?php _e( 'Add new post type', 'my-content-management' ); ?></a>
 							</p>
 							</div>
 						</form>
@@ -667,10 +678,6 @@ function mcm_settings_page() {
 						mcm_template_setter();
 					}
 					?>
-				</div>
-			</div>
-			<div class="metabox-holder">
-				<div class="mcm-settings ui-sortable meta-box-sortables">
 					<div class="mcm-template-guide postbox" id="get-support">
 						<h2 class='hndle'><?php _e( 'Template Tags', 'my-content-management' ); ?></h2>
 						<div class="inside">
@@ -1409,14 +1416,15 @@ function mcm_fields( $show = 'assign', $post_type = false, $echo = true ) {
 				if ( isset( $_GET['mcm_fields_edit'] ) && urlencode( $_GET['mcm_fields_edit'] ) === $k ) {
 					$current = ' aria-current="true"';
 				}
-				$return .= "<li><a$current href='" . admin_url( "options-general.php?page=mcm_custom_fields&mcm_fields_edit=$k" ) . "'>" . __( 'Edit', 'my-content-management' ) . " $legend</a></li>";
+				$return .= "<li><a$current href='" . admin_url( "options-general.php?page=mcm_custom_fields&mcm_fields_edit=$k" ) . "'>$legend</a></li>";
 			}
 		}
 	}
+	$return = '<h3>' . __( 'Fieldsets', 'my-content-management' ) . "</h3><ul class='mcm_customfields'>" . $return . '</ul>';
 	if ( ! $echo ) {
-		return "<ul class='mcm_customfields'>" . $return . '</ul>';
+		return $return;
 	} else {
-		echo "<ul class='mcm_customfields'>" . $return . '</ul>';
+		echo $return;
 	}
 }
 
