@@ -784,11 +784,11 @@ function mcm_enabler() {
 						$checked = '';
 					}
 				}
-				$return .= "<li><input type='checkbox' value='$key' name='mcm_posttypes[]' id='mcm_$key'$checked /> <label for='mcm_$key'>$value[3] (<code>$key</code>) <a href='" . admin_url( "options-general.php?page=my-content-management/my-content-management.php&mcm_edit=$key" ) . "'>" . __( 'Edit', 'my-content-management' ) . " '$value[3]'</a> &bull; <a href='" . admin_url( "options-general.php?page=my-content-management/my-content-management.php&mcm_delete=$key" ) . "'>" . __( 'Delete', 'my-content-management' ) . "  '$value[3]'</a></label></li>\n";
+				$return .= "<li><input type='checkbox' value='$key' name='mcm_posttypes[]' id='mcm_$key'$checked /> <label for='mcm_$key'>$value[3] (<code>$key</code>) </label><a href='" . admin_url( "options-general.php?page=my-content-management/my-content-management.php&mcm_edit=$key" ) . "'>" . __( 'Edit', 'my-content-management' ) . " '$value[3]'</a> &bull; <a href='" . admin_url( "options-general.php?page=my-content-management/my-content-management.php&mcm_delete=$key" ) . "'>" . __( 'Delete', 'my-content-management' ) . "  '$value[3]'</a></li>\n";
 			}
 		}
 	}
-	echo '<h3>' . __( 'Available Post Types', 'my-content-management' ) . "</h3><ul class='mcm_posttypes'>" . $return . '</ul>';
+	echo '<fieldset aria-labelledby="available-post-types"><h3 id="available-post-types">' . __( 'Available Post Types', 'my-content-management' ) . "</h3><ul class='mcm_posttypes'>" . $return . '</ul></fieldset>';
 }
 
 /**
@@ -1121,7 +1121,7 @@ function mcm_template_setter() {
 						<fieldset>
 							<legend>" . __( 'Full', 'my-content-management' ) . "</legend>
 							<p>
-								<label for='mcm_full_list_wrapper_$value'>" . __( 'List Wrapper', 'my-content-management' ) . "</label> <select name='templates[$value][wrapper][list][full]' id='mcm_full_list_wrapper_$value'>" . mcm_option_list( $list, $template['wrapper']['list']['full'] ) . "</select> <label for='mcm_full_item_wrapper_$value'>" . __( 'Item Wrapper', 'my-content-management' ) . "</label> <select name='templates[$value][wrapper][item][full]' id='mcm_full_itemwrapper_$value'>" . mcm_option_list( $item, $template['wrapper']['item']['full'] ) . "</select>
+								<label for='mcm_full_list_wrapper_$value'>" . __( 'List Wrapper', 'my-content-management' ) . "</label> <select name='templates[$value][wrapper][list][full]' id='mcm_full_list_wrapper_$value'>" . mcm_option_list( $list, $template['wrapper']['list']['full'] ) . "</select> <label for='mcm_full_item_wrapper_$value'>" . __( 'Item Wrapper', 'my-content-management' ) . "</label> <select name='templates[$value][wrapper][item][full]' id='mcm_full_item_wrapper_$value'>" . mcm_option_list( $item, $template['wrapper']['item']['full'] ) . "</select>
 							</p>
 							<p>
 								<label for='mcm_full_wrapper_$value'>" . __( 'Full Template', 'my-content-management' ) . "</label><br /> <textarea name='templates[$value][full]' id='mcm_full_wrapper_$value' rows='7' cols='60'>" . stripslashes( esc_textarea( $template['full'] ) ) . '</textarea>
