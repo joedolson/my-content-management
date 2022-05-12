@@ -648,7 +648,7 @@ function mcm_settings_page() {
 			<div class="metabox-holder">
 				<div class="mcm-settings ui-sortable meta-box-sortables">
 					<?php
-					if ( isset( $_GET['mcm_edit'] ) ) {
+					if ( isset( $_GET['mcm_edit'] ) || isset( $_GET['mcm_add'] ) ) {
 						?>
 					<div class="postbox">
 						<h2 class='hndle'><?php _e( 'Edit Custom Post Type', 'my-content-management' ); ?></h2>
@@ -866,15 +866,17 @@ function mcm_updater() {
 		echo $message;
 	}
 	if ( isset( $_GET['mcm_edit'] ) ) {
-		$type = $_GET['mcm_edit'];
+		$type  = $_GET['mcm_edit'];
+		$event = 'mcm_edit';
 	} else {
-		$type = 'new';
+		$type  = 'new';
+		$event = 'mcm_add';
 	}
 	// Translators: post type name.
-	$before      = "<div class='mcm_edit_post_type'><form method='post' action='" . admin_url( 'options-general.php?page=my-content-management/my-content-management.php' ) . "'><div><input type='hidden' name='_wpnonce' value='" . wp_create_nonce( 'my-content-management-nonce' ) . "' /></div><fieldset class='fields'><legend>" . sprintf( __( 'Edit "%s"', 'my-content-management' ), $type ) . '</legend>';
+	$before      = "<div class='mcm_edit_post_type'><form method='post' action='" . add_query_arg( $event, $type, admin_url( 'options-general.php?page=my-content-management/my-content-management.php' ) ) . "'><div><input type='hidden' name='_wpnonce' value='" . wp_create_nonce( 'my-content-management-nonce' ) . "' /></div><fieldset class='fields'><legend>" . sprintf( __( 'Edit "%s"', 'my-content-management' ), $type ) . '</legend>';
 	$post_typing = "<div><input type='hidden' name='mcm_type' value='$type' /></div>";
-	// Translators: Post type name.
-	$after  = "</fieldset><p><input type='submit' value='" . sprintf( __( 'Edit type "%1$s"', 'my-content-management' ), $type ) . "' name='mcm_updater' class='button-primary' /> <a href='" . admin_url( 'options-general.php?page=my-content-management/my-content-management.php&mcm_add=new' ) . "'>" . __( 'Add new post type', 'my-content-management' ) . '</a>
+
+	$after  = "</fieldset><p><input type='submit' value='" . esc_attr( __( 'Edit Post Type', 'my-content-management' ) ) . "' name='mcm_updater' class='button-primary' /> <a href='" . admin_url( 'options-general.php?page=my-content-management/my-content-management.php&mcm_add=new' ) . "'>" . __( 'Add new post type', 'my-content-management' ) . '</a>
 				</p>
 			</form></div>';
 	$return = '';
