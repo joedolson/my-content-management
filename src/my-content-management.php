@@ -17,7 +17,7 @@
  * License:     GPL-2.0+
  * License URI: http://www.gnu.org/license/gpl-2.0.txt
  * Domain Path: lang
- * Version:     1.7.0
+ * Version:     1.7.1
  */
 
 /*
@@ -42,7 +42,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$mcm_version = '1.7.0';
+$mcm_version = '1.7.1';
 /**
  * Enable internationalisation
  */

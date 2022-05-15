@@ -6,7 +6,7 @@ Requires at least: 4.2
 Tested up to: 5.9
 License: GPLv2 or later
 Text domain: my-content-management
-Stable tag: 1.7.0
+Stable tag: 1.7.1
 
 Creates common custom post types for advanced content management: FAQ, Testimonials, people (staff, contributors, etc.), and others!
 
@@ -67,6 +67,7 @@ The "id" attribute is not supported in the [my_archive] shortcode. (That would b
 * Bug fix: Adding and editing post types was broken.
 * Change: Save post updates on admin_init instead of view.
 * Change: Set default full item wrappers to empty.
+* Change: Update default templates.
 
 = 1.7.0 =
 
