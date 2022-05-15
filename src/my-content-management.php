@@ -536,7 +536,7 @@ function mcm_install_plugin() {
 {excerpt}
 <p>{link_title}</p>';
 			$templates[ $key ]['list']                       = '{link_title}';
-			$templates[ $key ]['wrapper']['item']['full']    = 'div';
+			$templates[ $key ]['wrapper']['item']['full']    = '';
 			$templates[ $key ]['wrapper']['item']['excerpt'] = 'div';
 			$templates[ $key ]['wrapper']['item']['list']    = 'li';
 			$templates[ $key ]['wrapper']['list']['full']    = '';
