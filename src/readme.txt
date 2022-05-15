@@ -66,6 +66,7 @@ The "id" attribute is not supported in the [my_archive] shortcode. (That would b
 * Bug fix: Incorrect variable type caused caching to default to enabled.
 * Bug fix: Adding and editing post types was broken.
 * Change: Save post updates on admin_init instead of view.
+* Change: Set default full item wrappers to empty.
 
 = 1.7.0 =
 

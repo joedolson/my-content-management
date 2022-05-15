@@ -529,12 +529,11 @@ function mcm_install_plugin() {
 	$templates = array();
 	if ( is_array( $types ) ) {
 		foreach ( $types as $key => $value ) {
-			$templates[ $key ]['full']                       = '<h2>{title}</h2>
-{content}
-<p>{link_title}</p>';
+			$templates[ $key ]['full']                       = '{content}';
 			$templates[ $key ]['excerpt']                    = '<h3>{title}</h3>
-{excerpt}
-<p>{link_title}</p>';
+<div class="article">{excerpt}
+	<p class="read-more">{link_title}</p>
+</div>';
 			$templates[ $key ]['list']                       = '{link_title}';
 			$templates[ $key ]['wrapper']['item']['full']    = '';
 			$templates[ $key ]['wrapper']['item']['excerpt'] = 'div';
