@@ -792,9 +792,9 @@ function mcm_enabler() {
 }
 
 /**
- * Update post type settings.
+ * Save update to post type settings.
  */
-function mcm_updater() {
+function mcm_save_updates() {
 	if ( isset( $_POST['mcm_updater'] ) ) {
 		$nonce = $_REQUEST['_wpnonce'];
 		if ( ! wp_verify_nonce( $nonce, 'my-content-management-nonce' ) ) {
@@ -826,7 +826,7 @@ function mcm_updater() {
 
 			$option['types'][ $type ] = $new;
 			update_option( 'mcm_options', $option );
-			echo "<div class='updated fade'><p>" . __( 'Post type settings modified.', 'my-content-management' ) . '</p></div>';
+			set_transient( 'mcm_update_notice', "<div class='updated fade'><p>" . __( 'Post type settings modified.', 'my-content-management' ) . '</p></div>', 10 );
 		} else {
 			$option = get_option( 'mcm_options' );
 			$ns     = $_POST['new'];
@@ -852,12 +852,19 @@ function mcm_updater() {
 
 			$option['types'][ $type ] = $new;
 			update_option( 'mcm_options', $option );
-			echo "<div class='updated fade'><p>" . __( 'Added new custom post type.', 'my-content-management' ) . '</p></div>';
+			set_transient( 'mcm_update_notice', "<div class='updated fade'><p>" . __( 'Added new custom post type.', 'my-content-management' ) . '</p></div>', 10 );
 
 		}
 		// refresh permalinks.
 		flush_rewrite_rules();
 	}
+}
+add_action( 'admin_init', 'mcm_save_updates' );
+
+/**
+ * Update post type settings.
+ */
+function mcm_updater() {
 	global $mcm_types;
 	$types   = $mcm_types;
 	$checked = '';
@@ -871,6 +878,11 @@ function mcm_updater() {
 	} else {
 		$type  = 'new';
 		$event = 'mcm_add';
+	}
+	$notice = get_transient( 'mcm_update_notice' );
+	if ( $notice ) {
+		echo $notice;
+		delete_transient( 'mcm_update_notice' );
 	}
 	// Translators: post type name.
 	$before      = "<div class='mcm_edit_post_type'><form method='post' action='" . add_query_arg( $event, $type, admin_url( 'options-general.php?page=my-content-management/my-content-management.php' ) ) . "'><div><input type='hidden' name='_wpnonce' value='" . wp_create_nonce( 'my-content-management-nonce' ) . "' /></div><fieldset class='fields'><legend>" . sprintf( __( 'Edit "%s"', 'my-content-management' ), $type ) . '</legend>';
