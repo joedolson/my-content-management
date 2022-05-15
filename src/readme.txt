@@ -61,6 +61,12 @@ The "id" attribute is not supported in the [my_archive] shortcode. (That would b
 * Feature: Add user and post template tags to pick up data from related posts/users [todo]
 * Feature: Add event post type to integrate with My Tickets.
 
+= 1.7.1 =
+
+* Bug fix: Incorrect variable type caused caching to default to enabled.
+* Bug fix: Adding and editing post types was broken.
+* Change: Save post updates on admin_init instead of view.
+
 = 1.7.0 =
 
 * Update code to meet PHPCS expectations.
