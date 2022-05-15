@@ -101,7 +101,7 @@ function mcm_get_show_posts( $atts ) {
 	$templates = $mcm_templates;
 	$types     = $mcm_types;
 	$the_cache = false;
-	if ( false !== $cache ) {
+	if ( false !== (bool) $cache ) {
 		$cache_key = md5( $type . $display . $taxonomy . $term . $count . $order . $direction . $meta_key . $template . $offset . $id . $year . $month . $week . $day );
 		$the_cache = get_transient( "mcm_$cache_key" );
 	}
@@ -420,7 +420,7 @@ function mcm_get_show_posts( $atts ) {
 			}
 			$return = str_replace( "\r\n", '', $return );
 		}
-		if ( false !== $cache ) {
+		if ( false !== (bool) $cache ) {
 			$time = ( is_numeric( $cache ) ) ? $cache : 24;
 			set_transient( "mcm_$cache_key", $return, 60 * 60 * $time );
 		}
