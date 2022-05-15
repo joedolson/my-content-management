@@ -539,7 +539,7 @@ function mcm_install_plugin() {
 			$templates[ $key ]['wrapper']['item']['full']    = 'div';
 			$templates[ $key ]['wrapper']['item']['excerpt'] = 'div';
 			$templates[ $key ]['wrapper']['item']['list']    = 'li';
-			$templates[ $key ]['wrapper']['list']['full']    = 'div';
+			$templates[ $key ]['wrapper']['list']['full']    = '';
 			$templates[ $key ]['wrapper']['list']['excerpt'] = 'div';
 			$templates[ $key ]['wrapper']['list']['list']    = 'ul';
 		}
