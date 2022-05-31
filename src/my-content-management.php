@@ -151,7 +151,7 @@ function mcm_post_lookup() {
 			$suggestions[]       = $suggestion;
 		}
 
-		echo $_GET['callback'] . '(' . json_encode( $suggestions ) . ')';
+		echo esc_html( $_GET['callback'] ) . '(' . json_encode( $suggestions ) . ')';
 		exit;
 	}
 }
@@ -177,7 +177,7 @@ function mcm_user_lookup() {
 			$suggestions[]       = $suggestion;
 		};
 
-		echo $_GET['callback'] . '(' . json_encode( $suggestions ) . ')';
+		echo esc_html( $_GET['callback'] ) . '(' . json_encode( $suggestions ) . ')';
 		exit;
 	}
 }
@@ -868,11 +868,11 @@ function mcm_updater() {
 	$types   = $mcm_types;
 	$checked = '';
 	if ( isset( $_GET['mcm_delete'] ) ) {
-		$message = mcm_delete_type( $_GET['mcm_delete'] );
+		$message = mcm_delete_type( sanitize_key( $_GET['mcm_delete'] ) );
 		echo $message;
 	}
 	if ( isset( $_GET['mcm_edit'] ) ) {
-		$type  = $_GET['mcm_edit'];
+		$type  = sanitize_key( $_GET['mcm_edit'] );
 		$event = 'mcm_edit';
 	} else {
 		$type  = 'new';
@@ -1300,7 +1300,7 @@ add_action( 'admin_menu', 'mcm_add_fields_pages' );
  * Assign custom field groups to post types.
  */
 function mcm_assign_custom_fields() {
-	$type      = ( isset( $_GET['post_type'] ) ) ? $_GET['post_type'] : 'post';
+	$type      = ( isset( $_GET['post_type'] ) ) ? sanitize_text_field( $_GET['post_type'] ) : 'post';
 	$post_type = get_post_type_object( $type );
 	$type_name = $post_type->labels->name;
 	?>
@@ -1319,7 +1319,7 @@ function mcm_assign_custom_fields() {
 						<div class="inside">
 							<?php
 							$page = sanitize_key( $_GET['page'] );
-							$type = ( isset( $_GET['post_type'] ) ) ? $_GET['post_type'] : 'post';
+							$type = ( isset( $_GET['post_type'] ) ) ? sanitize_text_field( $_GET['post_type'] ) : 'post';
 							?>
 							<form method='post' action='<?php echo esc_url( admin_url( "edit.php?post_type=$type&page=$page" ) ); ?>'>
 								<div><input type='hidden' name='_wpnonce' value='<?php echo wp_create_nonce( 'my-content-management-nonce' ); ?>' /></div>
@@ -1454,13 +1454,9 @@ function mcm_fields_updater() {
 		// Creating a new fieldset, so fetch the blank fieldset form.
 		mcm_get_fieldset();
 	}
-	if ( isset( $_POST['mcm_custom_field_sets'] ) ) {
-		// Updating a fieldset, so update the fieldset and get the update message.
-		$message = mcm_update_custom_fieldset( $_POST );
-	}
 	if ( isset( $_GET['mcm_fields_edit'] ) ) {
 		// Editing a fieldset, so get the completed fieldset form.
-		mcm_get_fieldset( $_GET['mcm_fields_edit'] );
+		mcm_get_fieldset( sanitize_text_field( $_GET['mcm_fields_edit'] ) );
 	}
 }
 
@@ -1512,7 +1508,7 @@ function mcm_dropdown_roles( $selected = false ) {
 	$editable_roles = array_reverse( get_editable_roles() );
 
 	foreach ( $editable_roles as $role => $details ) {
-		$name = translate_user_role( $details['name'] );
+		$name = esc_html( translate_user_role( $details['name'] ) );
 		if ( $selected === $role ) {
 			$p = "\n\t<option selected='selected' value='" . esc_attr( $role ) . "'>$name</option>";
 		} else {
@@ -1756,7 +1752,7 @@ function mcm_update_custom_fieldset( $post ) {
 	$count        = count( $labels );
 	$delete_count = count( $delete );
 	// ID fieldset.
-	$fieldset = ( isset( $_GET['mcm_fields_edit'] ) ) ? $_GET['mcm_fields_edit'] : false;
+	$fieldset = ( isset( $_GET['mcm_fields_edit'] ) ) ? sanitize_text_field( $_GET['mcm_fields_edit'] ) : false;
 	if ( isset( $post['mcm_new_fieldset'] ) ) {
 		$fieldset = $post['mcm_new_fieldset'];
 		$added    = __( 'added', 'my-content-management' );
@@ -1876,7 +1872,7 @@ add_action( 'admin_menu', 'mcm_add_support_page' );
  */
 function mcm_configure_custom_fields() {
 	if ( isset( $_POST['mcm_custom_fieldsets'] ) ) {
-		$message = mcm_update_custom_fieldset( $_POST );
+		$message = mcm_update_custom_fieldset( map_deep( $_POST, 'sanitize_text_field' ) );
 	} else {
 		$message = false;
 	}
@@ -1884,7 +1880,7 @@ function mcm_configure_custom_fields() {
 		echo "<div class='updated notice'><p>$message</p></div>";
 	}
 	if ( isset( $_GET['mcm_fields_edit'] ) ) {
-		$append = '&mcm_fields_edit=' . urlencode( $_GET['mcm_fields_edit'] );
+		$append = '&mcm_fields_edit=' . urlencode( sanitize_text_field( $_GET['mcm_fields_edit'] ) );
 	} else {
 		$append = '';
 	}
