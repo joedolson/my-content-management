@@ -1681,7 +1681,7 @@ function mcm_get_fieldset( $fieldset = false ) {
 						<label for='mcm_field_options$key'>$labeled</label> $choice_field
 					</td>
 					<td>
-						<label for='mcm_field_repeatable$key'>" . __( 'Repeatable', 'my-content-management' ) . "</label> <input type='checkbox' name='mcm_field_repeatable[ $key ]' id='mcm_field_repeatable$key' class='mcm-repeatable' value='true'$repeatability />
+						<label for='mcm_field_repeatable$key'>" . __( 'Repeatable', 'my-content-management' ) . "</label> <input type='checkbox' name='mcm_field_repeatable[$key]' id='mcm_field_repeatable$key' class='mcm-repeatable' value='true'$repeatability />
 					</td>
 					<td>
 						<label for='mcm_field_delete$key'>" . __( 'Delete', 'my-content-management' ) . "</label> <input type='checkbox' name='mcm_field_delete[ $key ]' id='mcm_field_delete$key' class='mcm-delete' value='delete' />
