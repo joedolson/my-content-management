@@ -1684,7 +1684,7 @@ function mcm_get_fieldset( $fieldset = false ) {
 						<label for='mcm_field_repeatable$key'>" . __( 'Repeatable', 'my-content-management' ) . "</label> <input type='checkbox' name='mcm_field_repeatable[$key]' id='mcm_field_repeatable$key' class='mcm-repeatable' value='true'$repeatability />
 					</td>
 					<td>
-						<label for='mcm_field_delete$key'>" . __( 'Delete', 'my-content-management' ) . "</label> <input type='checkbox' name='mcm_field_delete[ $key ]' id='mcm_field_delete$key' class='mcm-delete' value='delete' />
+						<label for='mcm_field_delete$key'>" . __( 'Delete', 'my-content-management' ) . "</label> <input type='checkbox' name='mcm_field_delete[$key]' id='mcm_field_delete$key' class='mcm-delete' value='delete' />
 					</td>
 				</tr>";
 				$odd   = ( 'odd' === $odd ) ? 'even' : 'odd';
