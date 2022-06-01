@@ -861,7 +861,7 @@ function mcm_search_form( $post_type ) {
 			$nonce
 			<input type='hidden' name='customsearch' value='" . esc_attr( $post_type ) . "' />
 			</div>
-			<label for='csearch'>Search</label> <input type='text' class='text' name='s' id='csearch' value='" . esc_attr( $s ) . "' />
+			<label for='csearch'>Search</label> <input type='text' class='text' name='s' id='csearch' value='" . esc_attr( stripslashes( $s ) ) . "' />
 			<input type='submit' value='" . __( 'Search', 'my-content-management' ) . "' class='btn' />
 		</form>
 	</div>";
