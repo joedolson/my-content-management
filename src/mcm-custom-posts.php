@@ -131,7 +131,7 @@ function mcm_taxonomies() {
 		foreach ( $enabled as $key ) {
 			$value =& $types[ $key ];
 			if ( is_array( $value ) && ! empty( $value ) ) {
-				$cat_key = str_replace( 'mcm_', '', $key );
+				$cat_key = str_replace( 'mcm_', '', sanitize_key( $key ) );
 				register_taxonomy(
 					"mcm_category_$cat_key", // internal name = machine-readable taxonomy name.
 					array( $key ), // object type = post, page, link, or custom post-type.
@@ -354,7 +354,7 @@ function mcm_upload_field( $args ) {
 			foreach ( $args[2] as $file ) {
 				if ( '' !== $file ) {
 					$short     = str_replace( site_url(), '', $file );
-					$download .= '<li><input type="checkbox" id="del-' . $args[0] . $i . '" name="mcm_delete[' . $args[0] . '][]" value="' . $file . '" /> <label for="del-' . $args[0] . $i . '">' . __( 'Delete', 'my-content-management' ) . '</label> <a href="' . $short . '">' . $short . '</a></li>';
+					$download .= '<li><input type="checkbox" id="del-' . $args[0] . $i . '" name="mcm_delete[' . $args[0] . '][]" value="' . $file . '" /> <label for="del-' . $args[0] . $i . '">' . __( 'Delete', 'my-content-management' ) . '</label> <a href="' . esc_url( $file ) . '">' . esc_html( $short ) . '</a></li>';
 					$i++;
 				}
 			}
@@ -408,7 +408,7 @@ function mcm_chooser_field( $args ) {
 			$value     = '%3$s';
 			$url       = wp_get_attachment_url( $args[2] );
 			$img       = wp_get_attachment_image( $args[2], array( 80, 80 ), true, $attr );
-			$download .= '<div class="mcm-chooser-image"><a href="' . $url . '">' . $img . '</a><span class="mcm-delete"><input type="checkbox" id="del-' . $args[0] . '" name="mcm_delete[' . $args[0] . '][]" value="' . $args[2] . '" /> <label for="del-' . $args[0] . '">' . __( 'Delete', 'my-content-management' ) . '</label></span></div>';
+			$download .= '<div class="mcm-chooser-image"><a href="' . $url . '">' . $img . '</a><span class="mcm-delete"><input type="checkbox" id="del-' . $args[0] . '" name="mcm_delete[' . $args[0] . '][]" value="' . absint( $args[2] ) . '" /> <label for="del-' . $args[0] . '">' . __( 'Delete', 'my-content-management' ) . '</label></span></div>';
 			$copy      = __( 'Change Media', 'my-content-management' );
 		} else {
 			$value = '';
@@ -416,7 +416,7 @@ function mcm_chooser_field( $args ) {
 			foreach ( $args[2] as $attachment ) {
 				$url       = wp_get_attachment_url( $attachment );
 				$img       = wp_get_attachment_image( $attachment, array( 80, 80 ), true, $attr );
-				$download .= '<div class="mcm-chooser-image"><a href="' . $url . '">' . $img . '</a><span class="mcm-delete"><input type="checkbox" id="del-' . $args[0] . $i . '" name="mcm_delete[' . $args[0] . '][]" value="' . $attachment . '" /> <label for="del-' . $args[0] . $i . '">' . __( 'Delete', 'my-content-management' ) . '</label></span></div>';
+				$download .= '<div class="mcm-chooser-image"><a href="' . $url . '">' . $img . '</a><span class="mcm-delete"><input type="checkbox" id="del-' . $args[0] . $i . '" name="mcm_delete[' . $args[0] . '][]" value="' . absint( $attachment ) . '" /> <label for="del-' . $args[0] . $i . '">' . __( 'Delete', 'my-content-management' ) . '</label></span></div>';
 				$i++;
 			}
 			$copy = __( 'Add Media', 'my-content-management' );
@@ -424,8 +424,8 @@ function mcm_chooser_field( $args ) {
 	} else {
 		$copy = __( 'Choose Media', 'my-content-management' );
 	}
-	$label_format  = '<div class="mcm_chooser_field mcm_field field-holder"><label for="%1$s"><strong>%2$s</strong></label> ' . '<input type="hidden" name="%1$s" value="' . $value . '" class="textfield" id="%1$s" /> <a href="#" class="button textfield-field">' . $copy . '</a><br />';
-	$label_format .= '<br /><div class="selected">' . $description . '</div>';
+	$label_format  = '<div class="mcm_chooser_field mcm_field field-holder"><label for="%1$s"><strong>%2$s</strong></label> ' . '<input type="hidden" name="%1$s" value="' . esc_attr( $value ) . '" class="textfield" id="%1$s" /> <a href="#" class="button textfield-field">' . esc_html( $copy ) . '</a><br />';
+	$label_format .= '<br /><div class="selected">' . wp_kses_post( $description ) . '</div>';
 	if ( '' !== $download ) {
 		$label_format .= $download;
 	}
@@ -463,12 +463,12 @@ function mcm_text_field( $args, $type = 'text' ) {
 	$meta  = get_post_meta( $post->ID, $name, $single );
 	$value = ( $single ) ? $meta : '';
 	if ( 'date' === $type && $single ) {
-		$value = ( is_numeric( $value ) ) ? date( 'Y-m-d', $value ) : date( 'Y-m-d', strtotime( $value ) ); // phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date
+		$value = ( is_numeric( $value ) ) ? gmdate( 'Y-m-d', $value ) : gmdate( 'Y-m-d', strtotime( $value ) );
 	}
 	$value   = esc_attr( $value );
 	$value   = ( is_array( $value ) ) ? esc_attr( implode( ', ', $value ) ) : esc_attr( $value );
 	$output  = "<div class='mcm_text_field mcm_field'>";
-	$output .= '<p><label for="' . $name . '"><strong>' . $label . '</strong></label><br /><input style="width: 80%;" type="' . $type . '" name="' . $name . '" value="' . $value . '" id="' . $name . '" /></p>';
+	$output .= '<p><label for="' . esc_attr( $name ) . '"><strong>' . esc_html( $label ) . '</strong></label><br /><input style="width: 80%;" type="' . esc_attr( $type ) . '" name="' . esc_attr( $name ) . '" value="' . esc_attr( $value ) . '" id="' . esc_attr( $name ) . '" /></p>';
 	if ( is_array( $meta ) ) {
 		$i       = 1;
 		$output .= '<ul>';
@@ -479,14 +479,14 @@ function mcm_text_field( $args, $type = 'text' ) {
 					$field = ( is_numeric( $field ) ) ? gmdate( 'Y-m-d', $field ) : gmdate( 'Y-m-d', strtotime( $field ) );
 				}
 				$field   = esc_attr( $field );
-				$output .= '<li><span class="mcm-delete"><input type="checkbox" id="del-' . $name . $i . '" name="mcm_delete[' . $name . '][]" value="' . $field . '" /> <label for="del-' . $name . $i . '"><span>' . __( 'Delete', 'my-content-management' ) . '</span> - ' . $field . '</label></span></li>';
+				$output .= '<li><span class="mcm-delete"><input type="checkbox" id="del-' . esc_attr( $name  ) . $i . '" name="mcm_delete[' . esc_attr( $name ) . '][]" value="' . esc_attr( $field ) . '" /> <label for="del-' . esc_attr( $name  ) . $i . '"><span>' . __( 'Delete', 'my-content-management' ) . '</span> - ' . esc_html( $field  ) . '</label></span></li>';
 				$i++;
 			}
 		}
 		$output .= '</ul>';
 	}
 	if ( '' !== $description ) {
-		$output .= '<em>' . $description . '</em>';
+		$output .= '<em>' . esc_html( $description ) . '</em>';
 	}
 	$output .= '</div>';
 
@@ -606,7 +606,7 @@ function mcm_user_relation( $args ) {
 		$user       = get_userdata( $args[2] );
 		$user_login = '(' . $user->user_login . ')';
 	}
-	$label_format = '<p class="mcm_user-relation mcm_field"><label for="%1$s"><strong>%2$s</strong> <span id="mcm_selected_user_login" aria-live="assertive">' . $user_login . '</span></label><br />' . '<input type="text" class="mcm-autocomplete-users" value="%3$s" name="%1$s" id="%1$s" data-value="' . $user_role . '" aria-describedby="mcm_selected_user_login" /></p>';
+	$label_format = '<p class="mcm_user-relation mcm_field"><label for="%1$s"><strong>%2$s</strong> <span id="mcm_selected_user_login" aria-live="assertive">' . esc_html( $user_login ) . '</span></label><br />' . '<input type="text" class="mcm-autocomplete-users" value="%3$s" name="%1$s" id="%1$s" data-value="' . esc_attr( $user_role ) . '" aria-describedby="mcm_selected_user_login" /></p>';
 
 	return vsprintf( $label_format, $args );
 }
@@ -634,7 +634,7 @@ function mcm_choose_posts( $type, $chosen = false ) {
 	$select = '';
 	foreach ( $posts as $post ) {
 		$selected = ( $chosen && ( $post->ID === $chosen ) ) ? ' selected="selected"' : '';
-		$select  .= "<option value='$post->ID'$selected>$post->post_title</option>\n";
+		$select  .= "<option value='$post->ID'$selected>" . esc_html( stripslashes( $post->post_title ) ) . "</option>\n";
 	}
 
 	return $select;
@@ -664,7 +664,7 @@ function mcm_choose_users( $type, $chosen = false ) {
 	$select = '';
 	foreach ( $users as $user ) {
 		$selected = ( $chosen && ( $user->ID === $chosen ) ) ? ' selected="selected"' : '';
-		$select  .= "<option value='$user->ID'$selected>$user->user_login</option>\n";
+		$select  .= "<option value='$user->ID'$selected>" . esc_html( $user->user_login ) . "</option>\n";
 	}
 
 	return $select;
@@ -683,19 +683,19 @@ function mcm_create_options( $choices, $selected, $type = 'select' ) {
 	$return = '';
 	if ( is_array( $choices ) ) {
 		foreach ( $choices as $value ) {
-			$v       = esc_attr( sanitize_title( $value ) );
+			$v       = sanitize_title( $value );
 			$display = stripslashes( $value );
 			if ( 'select' === $type ) {
 				$chosen  = ( $v === $selected ) ? ' selected="selected"' : '';
-				$return .= "<option value='$v'$chosen>$display</option>";
+				$return .= "<option value='" . esc_attr( $v ) . "'$chosen>" . esc_html( stripslashes( $display ) ) . '</option>';
 			} else {
 				if ( is_array( $selected ) ) {
 					$chosen = ( in_array( $v, $selected, true ) ) ? ' checked="checked"' : '';
 				} else {
 					$chosen = ( $v === $selected ) ? ' checked="checked"' : '';
 				}
-				$id      = esc_attr( sanitize_title( $v . '_' . $type ) );
-				$return .= "<li><input type='checkbox' name='$type" . '[]' . "' value='$v' id='$id' $chosen /> <label for='$id'>$display</label></li>";
+				$id      = sanitize_title( $v . '_' . $type );
+				$return .= "<li><input type='checkbox' name='" . esc_attr( $type ) . '[]" value="' . esc_attr( $v ) . '" id="' . esc_attr( $id ) . "' $chosen /> <label for='" . esc_attr( $id ) . "'>" . esc_html( stripslashes( $display ) ) . '</label></li>';
 			}
 		}
 	}
@@ -724,21 +724,20 @@ function mcm_text_area( $args ) {
 	$meta    = get_post_meta( $post->ID, $name, $single );
 	$value   = ( $single ) ? $meta : '';
 	$output  = "<div class='mcm_textarea mcm_field'>";
-	$output .= '<p><label for="' . $name . '"><strong>' . $label . '</strong></label><br /><textarea style="width: 90%;" name="' . $name . '" id="' . $name . '">' . $value . '</textarea></p>';
+	$output .= '<p><label for="' . esc_attr( $name ) . '"><strong>' . esc_html( stripslashes( $label ) ) . '</strong></label><br /><textarea style="width: 90%;" name="' . esc_attr( $name ) . '" id="' . esc_attr( $name ) . '">' . esc_textarea( stripslashes( $value ) ) . '</textarea></p>';
 	if ( is_array( $meta ) ) {
 		$i       = 1;
 		$output .= '<ul>';
 		foreach ( $meta as $field ) {
 			if ( '' !== $field ) {
-				$field   = htmlentities( $field );
-				$output .= '<li><span class="mcm-delete"><input type="checkbox" id="del-' . $name . $i . '" name="mcm_delete[' . $name . '][]" value="' . $field . '" /> <label for="del-' . $name . $i . '">' . __( 'Delete', 'my-content-management' ) . '</span>' . $field . '</label></li>';
+				$output .= '<li><span class="mcm-delete"><input type="checkbox" id="del-' . esc_attr( $name ) . $i . '" name="mcm_delete[' . esc_attr( $name ) . '][]" value="' . esc_attr( $field ) . '" /> <label for="del-' . esc_attr( $name ) . $i . '">' . __( 'Delete', 'my-content-management' ) . '</span>' . esc_html( $field ) . '</label></li>';
 				$i++;
 			}
 		}
 		$output .= '</ul>';
 	}
 	if ( '' !== $description ) {
-		$output .= '<em>' . $description . '</em>';
+		$output .= '<em>' . esc_html( $description ) . '</em>';
 	}
 	$output .= '</div>';
 
@@ -771,7 +770,7 @@ function mcm_rich_text_area( $args ) {
 		),
 		$args
 	);
-	echo "<div class='mcm_rich_text_area'><label for='$id'><strong>$args[1]</strong></label><br /><em>$description</em>";
+	echo "<div class='mcm_rich_text_area'><label for='" . esc_attr( $id ) . "'><strong>" . esc_html( $args[1] ) . '</strong></label><br /><em>' . esc_html( stripslashes( $description ) ) . '</em>';
 	wp_editor( $meta, $id, $editor_args );
 	echo '</div>';
 }
@@ -811,7 +810,7 @@ function mcm_save_postdata( $post_id, $post ) {
 		}
 		$these_fields = array();
 		if ( isset( $_POST['mcm_fields'] ) ) {
-			$these_fields = $_POST['mcm_fields'];
+			$these_fields = map_deep( $_POST['mcm_fields'], 'sanitize_text_field' );
 			do_action( 'mcm_processing_fields_action', $_POST, $fields, $post->ID );
 		} else {
 			return;
@@ -827,7 +826,7 @@ function mcm_save_postdata( $post_id, $post ) {
 
 				if ( in_array( $custom_field_name, $these_fields, true ) && in_array( $set, $_POST['mcm_fieldsets'], true ) ) {
 					if ( isset( $_POST[ $custom_field_name ] ) && ! $repeatable ) {
-						$this_value = apply_filters( 'mcm_filter_saved_data', $_POST[ $custom_field_name ], $custom_field_name, $custom_field_type );
+						$this_value = apply_filters( 'mcm_filter_saved_data', sanitize_textarea_field( $_POST[ $custom_field_name ] ), $custom_field_name, $custom_field_type );
 						if ( $parent_id ) {
 							$parent    = get_post( $parent_id );
 							$test_meta = get_post_meta( $parent->ID, $custom_field_name, true );
@@ -843,7 +842,7 @@ function mcm_save_postdata( $post_id, $post ) {
 							add_metadata( 'post', $post_id, $custom_field_name, $this_value );
 						} else {
 							if ( '' !== $_POST[ $custom_field_name ] ) {
-								$this_value = apply_filters( 'mcm_filter_saved_data', $_POST[ $custom_field_name ], $custom_field_name, $custom_field_type );
+								$this_value = apply_filters( 'mcm_filter_saved_data', sanitize_textarea_field( $_POST[ $custom_field_name ] ), $custom_field_name, $custom_field_type );
 								add_post_meta( $post->ID, $custom_field_name, $this_value );
 							}
 						}
@@ -863,7 +862,7 @@ function mcm_save_postdata( $post_id, $post ) {
 							$title      = ( false !== $ext ) ? substr( $title, 0, -strlen( $ext ) ) : $title;
 							$attachment = array(
 								'post_mime_type' => $filetype['type'],
-								'post_title'     => addslashes( $title ),
+								'post_title'     => sanitize_text_field( $title ),
 								'post_content'   => '',
 								'post_status'    => 'inherit',
 								'post_parent'    => $post->ID,
@@ -1088,7 +1087,7 @@ function mcm_echo_hidden( $fields, $id ) {
 		}
 		$value = apply_filters( 'mcm_hidden_fields', $new_fields, $fields );
 		foreach ( $new_fields as $hidden ) {
-			echo '<input type="hidden" name="mcm_fields[]" value="' . $hidden . '" />';
+			echo '<input type="hidden" name="mcm_fields[]" value="' . esc_attr( $hidden ) . '" />';
 		}
 	}
 }
