@@ -479,7 +479,7 @@ function mcm_text_field( $args, $type = 'text' ) {
 					$field = ( is_numeric( $field ) ) ? gmdate( 'Y-m-d', $field ) : gmdate( 'Y-m-d', strtotime( $field ) );
 				}
 				$field   = esc_attr( $field );
-				$output .= '<li><span class="mcm-delete"><input type="checkbox" id="del-' . esc_attr( $name ) . $i . '" name="mcm_delete[' . esc_attr( $name ) . '][]" value="' . esc_attr( $field ) . '" /> <label for="del-' . esc_attr( $name  ) . $i . '"><span>' . __( 'Delete', 'my-content-management' ) . '</span> - ' . esc_html( $field  ) . '</label></span></li>';
+				$output .= '<li><span class="mcm-delete"><input type="checkbox" id="del-' . esc_attr( $name ) . $i . '" name="mcm_delete[' . esc_attr( $name ) . '][]" value="' . esc_attr( $field ) . '" /> <label for="del-' . esc_attr( $name ) . $i . '"><span>' . __( 'Delete', 'my-content-management' ) . '</span> - ' . esc_html( $field ) . '</label></span></li>';
 				$i++;
 			}
 		}
