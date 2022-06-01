@@ -426,7 +426,7 @@ function mcm_get_show_posts( $atts ) {
 		}
 	}
 
-	return $return;
+	return wp_kses_post( $return );
 }
 
 /**
@@ -480,10 +480,10 @@ function mcm_custom_field( $field, $before = '', $after = '', $id = '', $fallbac
 	if ( $value ) {
 		if ( is_array( $value ) ) {
 			foreach ( $value as $v ) {
-				echo $before . $v . $after;
+				echo wp_kses_post( $before . $v . $after );
 			}
 		} else {
-			echo $before . $value . $after;
+			echo wp_kses_post( $before . $value . $after );
 		}
 	}
 }
@@ -750,7 +750,7 @@ function mcm_draw_template( $array = array(), $template = '' ) {
 		}
 	}
 
-	return stripslashes( trim( mc_clean_template( $template ) ) );
+	return wp_kses_post( stripslashes( trim( mc_clean_template( $template ) ) ) );
 }
 
 /**
@@ -853,7 +853,7 @@ function mcm_search_form( $post_type ) {
 		$post_type = $post_type;
 	}
 	$nonce  = "<input type='hidden' name='_wpnonce' value='" . wp_create_nonce( 'mcm-nonce' ) . "' />";
-	$s      = isset( $_GET['customsearch'] ) && isset( $_GET['s'] ) ? esc_attr( $_GET['s'] ) : '';
+	$s      = isset( $_GET['customsearch'] ) && isset( $_GET['s'] ) ? sanitize_text_field( $_GET['s'] ) : '';
 	$return = "
 	<div class='search_container'>
 		<form action='" . esc_url( home_url() ) . "' method='get'>
@@ -878,7 +878,7 @@ function mcm_searchfilter( $query ) {
 	if ( isset( $_GET['customsearch'] ) ) {
 		if ( $query->is_search ) {
 			// Insert the specific post type you want to search.
-			$post_type = esc_attr( $_GET['customsearch'] );
+			$post_type = sanitize_text_field( $_GET['customsearch'] );
 			$query->set( 'post_type', $post_type );
 		}
 
