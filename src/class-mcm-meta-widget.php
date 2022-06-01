@@ -71,10 +71,7 @@ class Mcm_Meta_Widget extends WP_Widget {
 		);
 
 		if ( $fieldset ) {
-			echo $args['before_widget'];
-			echo $widget_title;
-			echo $fieldset;
-			echo $args['after_widget'];
+			echo wp_kses( $args['before_widget'] . $widget_title . $fieldset . $args['after_widget'], mcm_kses_elements() );
 		}
 	}
 
@@ -86,12 +83,12 @@ class Mcm_Meta_Widget extends WP_Widget {
 	function form( $instance ) {
 		global $mcm_extras;
 		$types           = array_keys( $mcm_extras );
-		$title           = isset( $instance['title'] ) ? esc_attr( $instance['title'] ) : '';
-		$fieldset        = isset( $instance['fieldset'] ) ? esc_attr( $instance['fieldset'] ) : '';
-		$display         = isset( $instance['display'] ) ? esc_attr( $instance['display'] ) : '';
-		$left_column     = isset( $instance['left_column'] ) ? esc_attr( $instance['left_column'] ) : '';
-		$right_column    = isset( $instance['right_column'] ) ? esc_attr( $instance['right_column'] ) : '';
-		$custom_template = isset( $instance['custom_template'] ) ? esc_attr( $instance['custom_template'] ) : '';
+		$title           = isset( $instance['title'] ) ? $instance['title'] : '';
+		$fieldset        = isset( $instance['fieldset'] ) ? $instance['fieldset'] : '';
+		$display         = isset( $instance['display'] ) ? $instance['display'] : '';
+		$left_column     = isset( $instance['left_column'] ) ? $instance['left_column'] : '';
+		$right_column    = isset( $instance['right_column'] ) ? $instance['right_column'] : '';
+		$custom_template = isset( $instance['custom_template'] ) ? $instance['custom_template'] : '';
 		?>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'my-content-management' ); ?>:</label><br />
@@ -105,7 +102,7 @@ class Mcm_Meta_Widget extends WP_Widget {
 				$name       = esc_attr( $v );
 				$label      = esc_html( $v );
 				$selected   = ( $fieldset === $name ) ? ' selected="selected"' : '';
-				$fieldsets .= "<option value='$name'$selected>$label</option>\n";
+				$fieldsets .= "<option value='" . esc_attr( $name ) . "'$selected>" . esc_html( $label ) . "</option>\n";
 			}
 			echo $fieldsets;
 			?>
@@ -123,11 +120,11 @@ class Mcm_Meta_Widget extends WP_Widget {
 			?>
 			<p>
 			<label for="<?php echo $this->get_field_id( 'left_column' ); ?>"><?php _e( 'Left column header', 'my-content-management' ); ?>:</label><br />
-			<input class="widefat" type="text" id="<?php echo $this->get_field_id( 'left_column' ); ?>" name="<?php echo $this->get_field_name( 'left_column' ); ?>" value="<?php echo $left_column; ?>"/>
+			<input class="widefat" type="text" id="<?php echo $this->get_field_id( 'left_column' ); ?>" name="<?php echo $this->get_field_name( 'left_column' ); ?>" value="<?php echo stripslashes( esc_attr( $left_column ) ); ?>"/>
 			</p>
 			<p>
 			<label for="<?php echo $this->get_field_id( 'right_column' ); ?>"><?php _e( 'Right column header', 'my-content-management' ); ?>:</label><br />
-			<input class="widefat" type="text" id="<?php echo $this->get_field_id( 'right_column' ); ?>" name="<?php echo $this->get_field_name( 'right_column' ); ?>" value="<?php echo $right_column; ?>"/>
+			<input class="widefat" type="text" id="<?php echo $this->get_field_id( 'right_column' ); ?>" name="<?php echo $this->get_field_name( 'right_column' ); ?>" value="<?php echo stripslashes( esc_attr( $right_column ) ); ?>"/>
 			</p>
 			<?php
 		}
@@ -135,7 +132,7 @@ class Mcm_Meta_Widget extends WP_Widget {
 			?>
 			<p>
 				<label for="<?php echo $this->get_field_id( 'custom_template' ); ?>"><?php _e( 'Template', 'my-content-management' ); ?>:</label><br />
-				<textarea class="widefat" cols="70" rows="6" id="<?php echo $this->get_field_id( 'custom_template' ); ?>" name="<?php echo $this->get_field_name( 'custom_template' ); ?>"><?php echo stripslashes( esc_attr( $custom_template ) ); ?></textarea>
+				<textarea class="widefat" cols="70" rows="6" id="<?php echo $this->get_field_id( 'custom_template' ); ?>" name="<?php echo $this->get_field_name( 'custom_template' ); ?>"><?php echo stripslashes( esc_textarea( $custom_template ) ); ?></textarea>
 			</p>
 			<?php
 		}
@@ -154,11 +151,11 @@ class Mcm_Meta_Widget extends WP_Widget {
 	 */
 	function update( $new_instance, $old_instance ) {
 		$instance                    = $old_instance;
-		$instance['fieldset']        = strip_tags( $new_instance['fieldset'] );
-		$instance['display']         = strip_tags( $new_instance['display'] );
-		$instance['title']           = strip_tags( $new_instance['title'] );
-		$instance['left_column']     = isset( $new_instance['left_column'] ) ? strip_tags( $new_instance['left_column'] ) : '';
-		$instance['right_column']    = isset( $new_instance['right_column'] ) ? strip_tags( $new_instance['right_column'] ) : '';
+		$instance['fieldset']        = sanitize_text_field( $new_instance['fieldset'] );
+		$instance['display']         = sanitize_text_field( $new_instance['display'] );
+		$instance['title']           = sanitize_text_field( $new_instance['title'] );
+		$instance['left_column']     = isset( $new_instance['left_column'] ) ? sanitize_text_field( $new_instance['left_column'] ) : '';
+		$instance['right_column']    = isset( $new_instance['right_column'] ) ? sanitize_text_field( $new_instance['right_column'] ) : '';
 		$instance['custom_template'] = isset( $new_instance['custom_template'] ) ? wp_kses_post( $new_instance['custom_template'] ) : '';
 
 		return $instance;

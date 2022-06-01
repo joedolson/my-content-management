@@ -91,12 +91,8 @@ class Mcm_Posts_Widget extends WP_Widget {
 		);
 		$args   = apply_filters( 'mcm_custom_posts_widget_args', $args );
 		$custom = mcm_get_show_posts( $args );
-		echo $before_widget;
-		echo $widget_title;
-		echo $wrapper;
-		echo $custom;
-		echo $unwrapper;
-		echo $after_widget;
+
+		echo wp_kses( $before_widget . $widget_title . $wrapper . $custom . $unwrapper . $after_widget, mcm_kses_elements() );
 	}
 
 	/**
@@ -117,7 +113,7 @@ class Mcm_Posts_Widget extends WP_Widget {
 		?>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'my-content-management' ); ?>:</label><br />
-			<input class="widefat" type="text" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" value="<?php echo $title; ?>"/>
+			<input class="widefat" type="text" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" value="<?php echo esc_attr( stripslashes( $title ) ); ?>"/>
 		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'mcm_posts_widget_post_type' ); ?>"><?php _e( 'Post type to list', 'my-content-management' ); ?></label> <select id="<?php echo $this->get_field_id( 'mcm_posts_widget_post_type' ); ?>" name="<?php echo $this->get_field_name( 'mcm_posts_widget_post_type' ); ?>">
@@ -133,7 +129,7 @@ class Mcm_Posts_Widget extends WP_Widget {
 				$name        = $v->name;
 				$label       = $v->labels->name;
 				$selected    = ( $post_type === $name ) ? ' selected="selected"' : '';
-				$post_types .= "<option value='$name'$selected>$label</option>\n";
+				$post_types .= "<option value='" . esc_attr( $name ) . "'$selected>" . esc_html( stripslashes( $label ) ) . "</option>\n";
 			}
 			echo $post_types;
 			?>
@@ -161,7 +157,7 @@ class Mcm_Posts_Widget extends WP_Widget {
 		</select>
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'count' ); ?>"><?php _e( 'Number to display', 'my-content-management' ); ?></label> <input type="text" size="3" id="<?php echo $this->get_field_id( 'count' ); ?>" name="<?php echo $this->get_field_name( 'count' ); ?>" value="<?php echo $count; ?>" /><br /><span>(<?php _e( '-1 to display all posts', 'my-content-management' ); ?>)</span>
+		<label for="<?php echo $this->get_field_id( 'count' ); ?>"><?php _e( 'Number to display', 'my-content-management' ); ?></label> <input type="text" size="3" id="<?php echo $this->get_field_id( 'count' ); ?>" name="<?php echo $this->get_field_name( 'count' ); ?>" value="<?php echo absint( $count ); ?>" /><br /><span>(<?php _e( '-1 to display all posts', 'my-content-management' ); ?>)</span>
 		</p>
 		<p>
 		<label for="<?php echo $this->get_field_id( 'direction' ); ?>"><?php _e( 'Order direction', 'my-content-management' ); ?></label> <select id="<?php echo $this->get_field_id( 'direction' ); ?>" name="<?php echo $this->get_field_name( 'direction' ); ?>">
@@ -171,7 +167,7 @@ class Mcm_Posts_Widget extends WP_Widget {
 		</p>
 		<p>
 		<label for="<?php echo $this->get_field_id( 'term' ); ?>"><?php _e( 'Category (single term or comma-separated list)', 'my-content-management' ); ?>:</label><br />
-		<input class="widefat" type="text" id="<?php echo $this->get_field_id( 'term' ); ?>" name="<?php echo $this->get_field_name( 'term' ); ?>" value="<?php echo $term; ?>"/>
+		<input class="widefat" type="text" id="<?php echo $this->get_field_id( 'term' ); ?>" name="<?php echo $this->get_field_name( 'term' ); ?>" value="<?php echo esc_attr( stripslashes( $term ) ); ?>"/>
 		</p>
 		<?php
 		if ( 'custom' === $display ) {
@@ -211,15 +207,15 @@ class Mcm_Posts_Widget extends WP_Widget {
 	 */
 	function update( $new_instance, $old_instance ) {
 		$instance                               = $old_instance;
-		$instance['mcm_posts_widget_post_type'] = strip_tags( $new_instance['mcm_posts_widget_post_type'] );
-		$instance['display']                    = strip_tags( $new_instance['display'] );
-		$instance['order']                      = strip_tags( $new_instance['order'] );
-		$instance['direction']                  = strip_tags( $new_instance['direction'] );
+		$instance['mcm_posts_widget_post_type'] = sanitize_text_field( $new_instance['mcm_posts_widget_post_type'] );
+		$instance['display']                    = sanitize_text_field( $new_instance['display'] );
+		$instance['order']                      = sanitize_text_field( $new_instance['order'] );
+		$instance['direction']                  = sanitize_text_field( $new_instance['direction'] );
 		$instance['count']                      = ( '' === $new_instance['count'] ) ? -1 : (int) $new_instance['count'];
-		$instance['title']                      = strip_tags( $new_instance['title'] );
-		$instance['term']                       = strip_tags( $new_instance['term'] );
-		$instance['wrapper']                    = esc_attr( $new_instance['wrapper'] );
-		$instance['template']                   = $new_instance['template'];
+		$instance['title']                      = sanitize_text_field( $new_instance['title'] );
+		$instance['term']                       = sanitize_text_field( $new_instance['term'] );
+		$instance['wrapper']                    = sanitize_text_field( $new_instance['wrapper'] );
+		$instance['template']                   = wp_kses( $new_instance['template'], mcm_kses_elements() );
 
 		return $instance;
 	}
