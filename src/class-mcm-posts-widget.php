@@ -157,7 +157,7 @@ class Mcm_Posts_Widget extends WP_Widget {
 		</select>
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'count' ); ?>"><?php _e( 'Number to display', 'my-content-management' ); ?></label> <input type="text" size="3" id="<?php echo $this->get_field_id( 'count' ); ?>" name="<?php echo $this->get_field_name( 'count' ); ?>" value="<?php echo absint( $count ); ?>" /><br /><span>(<?php _e( '-1 to display all posts', 'my-content-management' ); ?>)</span>
+		<label for="<?php echo $this->get_field_id( 'count' ); ?>"><?php _e( 'Number to display', 'my-content-management' ); ?></label> <input type="text" size="3" id="<?php echo $this->get_field_id( 'count' ); ?>" name="<?php echo $this->get_field_name( 'count' ); ?>" value="<?php echo (int) $count; ?>" /><br /><span>(<?php _e( '-1 to display all posts', 'my-content-management' ); ?>)</span>
 		</p>
 		<p>
 		<label for="<?php echo $this->get_field_id( 'direction' ); ?>"><?php _e( 'Order direction', 'my-content-management' ); ?></label> <select id="<?php echo $this->get_field_id( 'direction' ); ?>" name="<?php echo $this->get_field_name( 'direction' ); ?>">
