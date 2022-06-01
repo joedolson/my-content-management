@@ -6,7 +6,7 @@ Requires at least: 4.2
 Tested up to: 5.9
 License: GPLv2 or later
 Text domain: my-content-management
-Stable tag: 1.7.1
+Stable tag: 1.7.2
 
 Creates common custom post types for advanced content management: FAQ, Testimonials, people (staff, contributors, etc.), and others!
 
@@ -60,6 +60,14 @@ The "id" attribute is not supported in the [my_archive] shortcode. (That would b
 * Feature: repeatable field groups [todo]
 * Feature: Add user and post template tags to pick up data from related posts/users [todo]
 * Feature: Add event post type to integrate with My Tickets.
+
+= 1.7.2 =
+
+* Bug fix: Extra spaces in field name array broke creating repeatable fields.
+* Bug fix: Extra spaces in field name array broke deleting custom fields from fieldset groups.
+* Bug fix: PHP notice in post data widget.
+* Bug fix: $id can be empty or false in posts shortcode.
+* Security hardening.
 
 = 1.7.1 =
 
