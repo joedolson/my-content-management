@@ -156,7 +156,7 @@ function mcm_get_show_posts( $atts ) {
 		$column  = 'odd';
 		$return  = '';
 
-		if ( false === $id ) {
+		if ( ! $id ) {
 			// set up arguments for loop.
 			wp_reset_query();
 			$args = array(
