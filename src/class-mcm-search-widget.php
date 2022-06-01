@@ -49,7 +49,7 @@ class Mcm_Search_Widget extends WP_Widget {
 		$post_type    = $instance['mcm_widget_post_type'];
 		$search_form  = mcm_search_form( $post_type );
 
-		echo wp_kses_post( $before_widget . $widget_title . $search_form . $after_widget );
+		echo wp_kses( $before_widget . $widget_title . $search_form . $after_widget, mcm_kses_elements() );
 	}
 
 	/**

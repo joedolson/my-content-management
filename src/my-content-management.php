@@ -51,6 +51,7 @@ function mcm_load_textdomain() {
 }
 add_action( 'init', 'mcm_load_textdomain' );
 
+include( dirname( __FILE__ ) . '/includes/kses.php' );
 include( dirname( __FILE__ ) . '/mcm-custom-posts.php' );
 include( dirname( __FILE__ ) . '/mcm-view-custom-posts.php' );
 include( dirname( __FILE__ ) . '/mcm-widgets.php' );
