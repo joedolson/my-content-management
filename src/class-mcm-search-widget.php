@@ -38,17 +38,18 @@ class Mcm_Search_Widget extends WP_Widget {
 	 * @param array $instance Instance.
 	 */
 	function widget( $args, $instance ) {
-		// TODO: eliminate extract.
-		extract( $args ); // phpcs:ignore WordPress.PHP.DontExtract.extract_extract
+		$before_widget = $args['before_widget'];
+		$after_widget  = $args['after_widget'];
+		$before_title  = $args['before_title'];
+		$after_title   = $args['after_title'];
+
 		$the_title    = apply_filters( 'widget_title', $instance['title'] );
 		$widget_title = empty( $the_title ) ? '' : $the_title;
 		$widget_title = ( '' !== $widget_title ) ? $before_title . $widget_title . $after_title : '';
 		$post_type    = $instance['mcm_widget_post_type'];
 		$search_form  = mcm_search_form( $post_type );
-		echo $before_widget;
-		echo $widget_title;
-		echo $search_form;
-		echo $after_widget;
+
+		echo wp_kses_post( $before_widget . $widget_title . $search_form . $after_widget );
 	}
 
 	/**
@@ -78,7 +79,7 @@ class Mcm_Search_Widget extends WP_Widget {
 				$name        = $v->name;
 				$label       = $v->labels->name;
 				$selected    = ( $post_type === $name ) ? ' selected="selected"' : '';
-				$post_types .= "<option value='$name'$selected>$label</option>\n";
+				$post_types .= "<option value='" . esc_attr( $name ) . "'$selected>" . esc_html( $label ) . "</option>\n";
 			}
 			echo $post_types;
 			?>
@@ -97,8 +98,8 @@ class Mcm_Search_Widget extends WP_Widget {
 	 */
 	function update( $new_instance, $old_instance ) {
 		$instance                         = $old_instance;
-		$instance['mcm_widget_post_type'] = strip_tags( $new_instance['mcm_widget_post_type'] );
-		$instance['title']                = strip_tags( $new_instance['title'] );
+		$instance['mcm_widget_post_type'] = sanitize_text_field( $new_instance['mcm_widget_post_type'] );
+		$instance['title']                = sanitize_text_field( $new_instance['title'] );
 
 		return $instance;
 	}

@@ -39,9 +39,12 @@ class Mcm_Posts_Widget extends WP_Widget {
 	 */
 	function widget( $args, $instance ) {
 		global $mcm_types;
-		$types = array_keys( $mcm_types );
-		// TODO: eliminate extract.
-		extract( $args ); // phpcs:ignore WordPress.PHP.DontExtract.extract_extract
+		$types         = array_keys( $mcm_types );
+		$before_widget = $args['before_widget'];
+		$after_widget  = $args['after_widget'];
+		$before_title  = $args['before_title'];
+		$after_title   = $args['after_title'];
+
 		$the_title    = apply_filters( 'widget_title', $instance['title'] );
 		$widget_title = empty( $the_title ) ? '' : $the_title;
 		$widget_title = ( '' !== $widget_title ) ? $before_title . $widget_title . $after_title : '';
