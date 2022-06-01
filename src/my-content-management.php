@@ -1698,7 +1698,7 @@ function mcm_get_fieldset( $fieldset = false ) {
 	}
 	$field_type_select = '';
 	foreach ( $field_types as $k => $v ) {
-		$field_type_select .= "<option value='$k'>$v</option>";
+		$field_type_select .= "<option value='" . esc_attr( $k ) . "'>" . esc_html( $v ) . '</option>';
 	}
 	$form     .= "
 	<tr class='mcm_custom_fields_form clonedInput' id='field1'>
