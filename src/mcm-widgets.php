@@ -91,9 +91,9 @@ function mcm_format_fieldset( $values, $display, $headers, $fieldset, $template 
 						$label  = apply_filters( 'mcm_widget_data_label', esc_html( stripslashes( $value['label'] ) ), $val, $display, $fieldset );
 						$output = apply_filters( 'mcm_widget_data_value', mcm_format_value( $val, $value['type'], $value['label'] ), $val, $display, $fieldset );
 						if ( 'table' === $display ) {
-							$list .= '<tr><td class="mcm_field_label">' . $label . ' <span class="mcm-repeater-label">(' . $i . ')</span></td><td class="mcm_field_value">' . wp_kses_post( $output ) . '</td></tr>';
+							$list .= '<tr><td class="mcm_field_label">' . $label . ' <span class="mcm-repeater-label">(' . $i . ')</span></td><td class="mcm_field_value">' . $output . '</td></tr>';
 						} else {
-							$list .= '<li><strong class="mcm_field_label">' . $label . ' <span class="mcm-repeater-label">(' . $i . ')</span></strong> <div class="mcm_field_value">' . wp_kses_post( $output ) . '</div></li>';
+							$list .= '<li><strong class="mcm_field_label">' . $label . ' <span class="mcm-repeater-label">(' . $i . ')</span></strong> <div class="mcm_field_value">' . $output . '</div></li>';
 						}
 						$i++;
 					}
@@ -101,9 +101,9 @@ function mcm_format_fieldset( $values, $display, $headers, $fieldset, $template 
 					$label  = apply_filters( 'mcm_widget_data_label', esc_html( stripslashes( $value['label'] ) ), $value, $display, $fieldset );
 					$output = apply_filters( 'mcm_widget_data_value', mcm_format_value( $value['value'], $value['type'], $value['label'] ), $value, $display, $fieldset );
 					if ( 'table' === $display ) {
-						$list .= '<tr><td class="mcm_field_label">' . $label . '</td><td class="mcm_field_value">' . wp_kses_post( $output ) . '</td></tr>';
+						$list .= '<tr><td class="mcm_field_label">' . $label . '</td><td class="mcm_field_value">' . $output . '</td></tr>';
 					} else {
-						$list .= '<li><strong class="mcm_field_label">' . $label . '</strong> <div class="mcm_field_value">' . wp_kses_post( $output ) . '</div></li>';
+						$list .= '<li><strong class="mcm_field_label">' . $label . '</strong> <div class="mcm_field_value">' . $output . '</div></li>';
 					}
 				}
 			}
@@ -131,7 +131,7 @@ function mcm_format_fieldset( $values, $display, $headers, $fieldset, $template 
 	}
 
 	if ( $list ) {
-		$list = $before . $list . $after;
+		$list = wp_kses_post( $before . $list . $after );
 	}
 
 	return $list;
