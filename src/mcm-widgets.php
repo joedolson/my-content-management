@@ -38,7 +38,7 @@ function mcm_get_fieldset_values( $fieldset, $id = false ) {
 	$fields  = $options['fields'][ $fieldset ];
 	foreach ( $fields as $group ) {
 		$key = $group[0];
-		if ( '' !== $group[4] ) {
+		if ( isset( $group[4] ) && '' !== $group[4] ) {
 			$value = get_post_meta( $id, $key );
 		} else {
 			$value = get_post_meta( $id, $key, true );
