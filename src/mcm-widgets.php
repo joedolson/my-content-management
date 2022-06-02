@@ -83,27 +83,29 @@ function mcm_format_fieldset( $values, $display, $headers, $fieldset, $template 
 		} else {
 			$before = '<ul class="mcm_display_fieldset">';
 		}
-		foreach ( $values as $value ) {
-			if ( ! empty( $value['value'] ) ) {
-				if ( is_array( $value['value'] ) ) {
-					$i = 1;
-					foreach ( $value['value'] as $val ) {
-						$label  = apply_filters( 'mcm_widget_data_label', esc_html( stripslashes( $value['label'] ) ), $val, $display, $fieldset );
-						$output = apply_filters( 'mcm_widget_data_value', mcm_format_value( $val, $value['type'], $value['label'] ), $val, $display, $fieldset );
-						if ( 'table' === $display ) {
-							$list .= '<tr><td class="mcm_field_label">' . $label . ' <span class="mcm-repeater-label">(' . $i . ')</span></td><td class="mcm_field_value">' . $output . '</td></tr>';
-						} else {
-							$list .= '<li><strong class="mcm_field_label">' . $label . ' <span class="mcm-repeater-label">(' . $i . ')</span></strong> <div class="mcm_field_value">' . $output . '</div></li>';
+		if ( is_array( $values ) ) {
+			foreach ( $values as $value ) {
+				if ( ! empty( $value['value'] ) ) {
+					if ( is_array( $value['value'] ) ) {
+						$i = 1;
+						foreach ( $value['value'] as $val ) {
+							$label  = apply_filters( 'mcm_widget_data_label', esc_html( stripslashes( $value['label'] ) ), $val, $display, $fieldset );
+							$output = apply_filters( 'mcm_widget_data_value', mcm_format_value( $val, $value['type'], $value['label'] ), $val, $display, $fieldset );
+							if ( 'table' === $display ) {
+								$list .= '<tr><td class="mcm_field_label">' . $label . ' <span class="mcm-repeater-label">(' . $i . ')</span></td><td class="mcm_field_value">' . $output . '</td></tr>';
+							} else {
+								$list .= '<li><strong class="mcm_field_label">' . $label . ' <span class="mcm-repeater-label">(' . $i . ')</span></strong> <div class="mcm_field_value">' . $output . '</div></li>';
+							}
+							$i++;
 						}
-						$i++;
-					}
-				} else {
-					$label  = apply_filters( 'mcm_widget_data_label', esc_html( stripslashes( $value['label'] ) ), $value, $display, $fieldset );
-					$output = apply_filters( 'mcm_widget_data_value', mcm_format_value( $value['value'], $value['type'], $value['label'] ), $value, $display, $fieldset );
-					if ( 'table' === $display ) {
-						$list .= '<tr><td class="mcm_field_label">' . $label . '</td><td class="mcm_field_value">' . $output . '</td></tr>';
 					} else {
-						$list .= '<li><strong class="mcm_field_label">' . $label . '</strong> <div class="mcm_field_value">' . $output . '</div></li>';
+						$label  = apply_filters( 'mcm_widget_data_label', esc_html( stripslashes( $value['label'] ) ), $value, $display, $fieldset );
+						$output = apply_filters( 'mcm_widget_data_value', mcm_format_value( $value['value'], $value['type'], $value['label'] ), $value, $display, $fieldset );
+						if ( 'table' === $display ) {
+							$list .= '<tr><td class="mcm_field_label">' . $label . '</td><td class="mcm_field_value">' . $output . '</td></tr>';
+						} else {
+							$list .= '<li><strong class="mcm_field_label">' . $label . '</strong> <div class="mcm_field_value">' . $output . '</div></li>';
+						}
 					}
 				}
 			}
