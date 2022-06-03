@@ -408,7 +408,7 @@ function mcm_get_show_posts( $atts ) {
 				$return = "
 				<div class='mcm_posts $primary $display'>
 					$front
-					$return
+						$return
 					$back
 				</div>";
 			} else {
