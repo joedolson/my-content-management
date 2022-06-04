@@ -3,10 +3,10 @@ Contributors: joedolson
 Donate link: http://www.joedolson.com/donate/
 Tags: custom post types, post types, faq, testimonials, staff, glossary, sidebars, content management
 Requires at least: 4.2
-Tested up to: 5.9
+Tested up to: 6.0
 License: GPLv2 or later
 Text domain: my-content-management
-Stable tag: 1.7.2
+Stable tag: 1.7.3
 
 Creates common custom post types for advanced content management: FAQ, Testimonials, people (staff, contributors, etc.), and others!
 
@@ -60,6 +60,10 @@ The "id" attribute is not supported in the [my_archive] shortcode. (That would b
 * Feature: repeatable field groups [todo]
 * Feature: Add user and post template tags to pick up data from related posts/users [todo]
 * Feature: Add event post type to integrate with My Tickets.
+
+= 1.7.3 =
+
+* Bug fix: version 1.7.2 broken output of embedded content in custom posts.
 
 = 1.7.2 =
 
