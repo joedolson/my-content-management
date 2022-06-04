@@ -64,6 +64,7 @@ The "id" attribute is not supported in the [my_archive] shortcode. (That would b
 = 1.7.3 =
 
 * Bug fix: version 1.7.2 broken output of embedded content in custom posts.
+* Bug fix: Don't label non-repeatable meta data with iteration values, e.g. Name (1).
 
 = 1.7.2 =
 
