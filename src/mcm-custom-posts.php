@@ -826,7 +826,7 @@ function mcm_save_postdata( $post_id, $post ) {
 
 				if ( in_array( $custom_field_name, $these_fields, true ) && in_array( $set, $_POST['mcm_fieldsets'], true ) ) {
 					if ( isset( $_POST[ $custom_field_name ] ) && ! $repeatable ) {
-						$this_value = apply_filters( 'mcm_filter_saved_data', sanitize_textarea_field( $_POST[ $custom_field_name ] ), $custom_field_name, $custom_field_type );
+						$this_value = mcm_sanitize( $custom_field_name, $custom_field_type );
 						if ( $parent_id ) {
 							$parent    = get_post( $parent_id );
 							$test_meta = get_post_meta( $parent->ID, $custom_field_name, true );
@@ -914,6 +914,60 @@ function mcm_save_postdata( $post_id, $post ) {
 	}
 }
 add_action( 'save_post', 'mcm_save_postdata', 1, 2 );
+
+/**
+ * Based on field type, sanitize saved data.
+ *
+ * @param string $name Custom field name in POST data.
+ * @param string $type Custom field type.
+ * @param array  $post (Optional) Array containing value to be sanitized as $post[ $name ].
+ *
+ * @return string
+ */
+function mcm_sanitize( $name, $type, $post = array() ) {
+	if ( empty( $post ) ) {
+		$value = $_POST[ $name ];
+	} else {
+		$value = $post[ $name ];
+	}
+	switch ( $type ) {
+		case 'text' :
+		case 'select' :
+		case 'checkboxes' :
+		case 'checkbox' :
+		case 'upload' :
+		case 'chooser' :
+		case 'color' :
+		case 'date' :
+		case 'tel' :
+		case 'time' :
+			$value = sanitize_text_field( $value );
+			break;
+		case 'textarea' : // Many uses of this seem to be for HTML, rather than text.
+			$value = wp_kses_post( $value );
+			break;
+		case 'url' :
+			$value = sanitize_url( $value );
+			break;
+		case 'email' :
+			$value = sanitize_email( $value );
+			break;
+		case 'post-relation' :
+			$value = absint( $value );
+			break;
+		case 'user-relation' :
+			$value = absint( $value );
+			break;
+		case 'richtext' :
+			$value = wp_kses_post( $value );
+			break;
+		default:
+			$value = sanitize_text_field( $value );
+	}
+	$return = apply_filters( 'mcm_filter_saved_data', $value, $custom_field_name, $custom_field_type, $post );
+
+	return $return;
+}
 
 /**
  * Restore fields from post revision.
