@@ -931,34 +931,34 @@ function mcm_sanitize( $name, $type, $post = array() ) {
 		$value = $post[ $name ];
 	}
 	switch ( $type ) {
-		case 'text' :
-		case 'select' :
-		case 'checkboxes' :
-		case 'checkbox' :
-		case 'upload' :
-		case 'chooser' :
-		case 'color' :
-		case 'date' :
-		case 'tel' :
-		case 'time' :
+		case 'text':
+		case 'select':
+		case 'checkboxes':
+		case 'checkbox':
+		case 'upload':
+		case 'chooser':
+		case 'color':
+		case 'date':
+		case 'tel':
+		case 'time':
 			$value = sanitize_text_field( $value );
 			break;
-		case 'textarea' : // Many uses of this seem to be for HTML, rather than text.
+		case 'textarea': // Many uses of this seem to be for HTML, rather than text.
 			$value = wp_kses_post( $value );
 			break;
-		case 'url' :
+		case 'url':
 			$value = sanitize_url( $value );
 			break;
-		case 'email' :
+		case 'email':
 			$value = sanitize_email( $value );
 			break;
-		case 'post-relation' :
+		case 'post-relation':
 			$value = absint( $value );
 			break;
-		case 'user-relation' :
+		case 'user-relation':
 			$value = absint( $value );
 			break;
-		case 'richtext' :
+		case 'richtext':
 			$value = wp_kses_post( $value );
 			break;
 		default:
