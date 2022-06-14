@@ -19,7 +19,7 @@ This is the development environment for My Content Management.
 
 ## Contact
 
-Support questions should be sent via the Support form that appears on the Help screen within the plug-in.
+No support available.
 
 Bugs or feature development contributions should be made through the [GitHub repository](https://github.com/joedolson/my-content-management/issues)
 

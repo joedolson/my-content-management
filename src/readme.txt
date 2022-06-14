@@ -17,9 +17,9 @@ In addition to the default post types and field groups, you can create new custo
 
 There's no default styling in My Content Management, so you won't have any problems with conflicts between the plug-in and your theme. There is default HTML, but it can be 100% replaced through the included templating system, or by creating your own theme template documents to display these specific content types. 
 
-= Help Support Future Development! =
+= Support =
 
-[Buy the User's Guide](http://www.joedolson.com/my-content-management/guide/), which offers 35+ pages of detailed information on how to set up, use, and customize My Content Management.
+My Content Management is provided with no support.
 
 = How to Use My Content Management =
 
