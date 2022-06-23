@@ -760,7 +760,7 @@ function mcm_enabler() {
 	if ( isset( $_POST['mcm_enabler'] ) ) {
 		$nonce = $_REQUEST['_wpnonce'];
 		if ( ! wp_verify_nonce( $nonce, 'my-content-management-nonce' ) ) {
-			die( 'Security check failed' );
+			wp_die( 'My Content Management: Security check failed' );
 		}
 		$enable            = isset( $_POST['mcm_posttypes'] ) ? $_POST['mcm_posttypes'] : array();
 		$option            = get_option( 'mcm_options' );
@@ -798,7 +798,7 @@ function mcm_save_updates() {
 	if ( isset( $_POST['mcm_updater'] ) ) {
 		$nonce = $_REQUEST['_wpnonce'];
 		if ( ! wp_verify_nonce( $nonce, 'my-content-management-nonce' ) ) {
-			die( 'Security check failed' );
+			wp_die( 'My Content Management: Security check failed' );
 		}
 		if ( ! isset( $_POST['mcm_new'] ) ) {
 			$type     = $_POST['mcm_type'];
@@ -1015,7 +1015,7 @@ function mcm_template_setter() {
 	if ( isset( $_POST['mcm_save_templates'] ) ) {
 		$nonce = $_REQUEST['_wpnonce'];
 		if ( ! wp_verify_nonce( $nonce, 'my-content-management-nonce' ) ) {
-			die( 'Security check failed' );
+			wp_die( 'My Content Management: Security check failed' );
 		}
 		$type                         = $_POST['mcm_post_type'];
 		$option                       = get_option( 'mcm_options' );
@@ -1396,7 +1396,7 @@ function mcm_fields( $show = 'assign', $post_type = false, $echo = true ) {
 	if ( isset( $_POST['mcm_custom_fields'] ) ) {
 		$nonce = $_REQUEST['_wpnonce'];
 		if ( ! wp_verify_nonce( $nonce, 'my-content-management-nonce' ) ) {
-			die( 'Security check failed' );
+			wp_die( 'My Content Management: Security check failed' );
 		}
 		$extras = $_POST['mcm_field_extras'];
 		foreach ( $extras as $key => $value ) {
