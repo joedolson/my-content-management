@@ -55,12 +55,6 @@ The "id" attribute is not supported in the [my_archive] shortcode. (That would b
 
 == Changelog ==
 
-= Future =
-
-* Feature: repeatable field groups [todo]
-* Feature: Add user and post template tags to pick up data from related posts/users [todo]
-* Feature: Add event post type to integrate with My Tickets.
-
 = 1.7.5 =
 
 * Bug fix: Extraneous comma at end of arguments list in search shortcode.
@@ -525,17 +519,10 @@ The "id" attribute is not supported in the [my_archive] shortcode. (That would b
 
 == Frequently Asked Questions ==
 
-= What's a custom post type? =
+= Is support available for this plugin? =
 
-All of the  major WordPress features are types of posts: Posts are the main one, but Pages are just a different type of post. This plug-in gives you a whole bunch of other types of posts, so you can handle discrete types of content in different ways - but using a common interface. 
+Sorry, no support is available with My Content Management. I'll answer questions in the support forums as time allows.
 
-= I don't really get how to use this plug-in. =
-
-Well, there really isn't just one way to use this plug-in. There are many, many different ways to use it. I'd recommend buying the [User's Guide](http://www.joedolson.com/my-content-management/guide/), which will walk you through many of the ways you can use this plug-in. Also, your purchase will help support me! Bonus!
-
-= OMG! What happened to my Glossary page! =
-
-I removed the Glossary Filter plug-in from the My Content Management package in version 1.3.3. It can now be downloaded separately at <a href="http://wordpress.org/extend/plugins/my-content-glossary/">My Content Glossary</a>.
 
 == Screenshots ==
 
@@ -544,5 +531,3 @@ I removed the Glossary Filter plug-in from the My Content Management package in 
 3. Assign custom fields to post types.
 
 == Upgrade Notice ==
-
-* 1.5.4: Minor bug fix
