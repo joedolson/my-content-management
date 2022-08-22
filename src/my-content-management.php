@@ -425,7 +425,7 @@ function mcm_search_custom( $atts ) {
 				'type' => 'page',
 			),
 			$atts,
-			'custom_search',
+			'custom_search'
 		)
 	);
 
