@@ -6,7 +6,7 @@ Requires at least: 4.2
 Tested up to: 6.0
 License: GPLv2 or later
 Text domain: my-content-management
-Stable tag: 1.7.4
+Stable tag: 1.7.5
 
 Creates common custom post types for advanced content management: FAQ, Testimonials, people (staff, contributors, etc.), and others!
 
@@ -60,6 +60,12 @@ The "id" attribute is not supported in the [my_archive] shortcode. (That would b
 * Feature: repeatable field groups [todo]
 * Feature: Add user and post template tags to pick up data from related posts/users [todo]
 * Feature: Add event post type to integrate with My Tickets.
+
+= 1.7.5 =
+
+* Bug fix: Extraneous comma at end of arguments list in search shortcode.
+* Bug fix: Change from die() to wp_die() where appropriate and pass more appropriate error messages.
+* Changes: Add text indicating that support is no longer available.
 
 = 1.7.4 =
 
