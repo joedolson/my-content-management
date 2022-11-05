@@ -345,7 +345,7 @@ function mcm_upload_field( $args ) {
 		$single = false;
 	}
 	$args[2] = get_post_meta( $post->ID, $args[0], $single );
-	if ( ! empty( $args[2] ) && '0' !== $args[2] ) {
+	if ( ! empty( $args[2] ) && '0' !== (string) $args[2] ) {
 		if ( $single ) {
 			$download = '<div><a href="' . $args[2] . '">View ' . $args[1] . '</a></div>';
 		} else {
@@ -403,7 +403,7 @@ function mcm_chooser_field( $args ) {
 		'height' => 80,
 		'width'  => 80,
 	);
-	if ( ! empty( $args[2] ) && '0' !== $args[2] ) {
+	if ( ! empty( $args[2] ) && '0' !== (string) $args[2] ) {
 		if ( $single ) {
 			$value     = '%3$s';
 			$url       = wp_get_attachment_url( $args[2] );
@@ -414,9 +414,11 @@ function mcm_chooser_field( $args ) {
 			$value = '';
 			$i     = 0;
 			foreach ( $args[2] as $attachment ) {
-				$url       = wp_get_attachment_url( $attachment );
-				$img       = wp_get_attachment_image( $attachment, array( 80, 80 ), true, $attr );
-				$download .= '<div class="mcm-chooser-image"><a href="' . $url . '">' . $img . '</a><span class="mcm-delete"><input type="checkbox" id="del-' . $args[0] . $i . '" name="mcm_delete[' . $args[0] . '][]" value="' . absint( $attachment ) . '" /> <label for="del-' . $args[0] . $i . '">' . __( 'Delete', 'my-content-management' ) . '</label></span></div>';
+				if ( $attachment ) {
+					$url       = wp_get_attachment_url( $attachment );
+					$img       = wp_get_attachment_image( $attachment, array( 80, 80 ), true, $attr );
+					$download .= '<div class="mcm-chooser-image"><a href="' . $url . '">' . $img . '</a><span class="mcm-delete"><input type="checkbox" id="del-' . $args[0] . $i . '" name="mcm_delete[' . $args[0] . '][]" value="' . absint( $attachment ) . '" /> <label for="del-' . $args[0] . $i . '">' . __( 'Delete', 'my-content-management' ) . '</label></span></div>';
+				}
 				$i++;
 			}
 			$copy = __( 'Add Media', 'my-content-management' );
