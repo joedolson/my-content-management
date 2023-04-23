@@ -801,9 +801,9 @@ function mcm_save_updates() {
 			wp_die( 'My Content Management: Security check failed' );
 		}
 		if ( ! isset( $_POST['mcm_new'] ) ) {
-			$type     = $_POST['mcm_type'];
+			$type     = sanitize_text_field( $_POST['mcm_type'] );
 			$option   = get_option( 'mcm_options' );
-			$ns       = $_POST[ $type ];
+			$ns       = map_deep( $_POST[ $type ], 'sanitize_text_field' );
 			$supports = ( empty( $ns['supports'] ) ) ? array() : $ns['supports'];
 			$new      = array(
 				$ns['pt1'],
