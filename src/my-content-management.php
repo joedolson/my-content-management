@@ -640,7 +640,7 @@ function mcm_add_scripts() {
 function mcm_settings_page() {
 	global $mcm_enabled;
 	$enabled = $mcm_enabled;
-	$enabled = ( isset( $_POST['mcm_enabler'] ) && isset( $_POST['mcm_posttypes'] ) ) ? $_POST['mcm_posttypes'] : $enabled;
+	$enabled = ( isset( $_POST['mcm_enabler'] ) && isset( $_POST['mcm_posttypes'] ) ) ? map_deep( $_POST['mcm_posttypes'], 'sanitize_textarea_field' ) : $enabled;
 	?>
 	<div class='wrap mcm-settings'>
 		<h1><?php _e( 'My Content Management', 'my-content-management' ); ?></h1>
@@ -762,7 +762,7 @@ function mcm_enabler() {
 		if ( ! wp_verify_nonce( $nonce, 'my-content-management-nonce' ) ) {
 			wp_die( 'My Content Management: Security check failed' );
 		}
-		$enable            = isset( $_POST['mcm_posttypes'] ) ? $_POST['mcm_posttypes'] : array();
+		$enable            = isset( $_POST['mcm_posttypes'] ) ? map_deep( $_POST['mcm_posttypes'], 'sanitize_textarea_field' ) : array();
 		$option            = get_option( 'mcm_options' );
 		$option['enabled'] = $enable;
 		update_option( 'mcm_options', $option );
@@ -784,7 +784,7 @@ function mcm_enabler() {
 						$checked = '';
 					}
 				}
-				$return .= "<li><input type='checkbox' value='$key' name='mcm_posttypes[]' id='mcm_$key'$checked /> <label for='mcm_$key'>$value[3] (<code>$key</code>) </label><a href='" . admin_url( "options-general.php?page=my-content-management/my-content-management.php&mcm_edit=$key" ) . "'>" . __( 'Edit', 'my-content-management' ) . " '$value[3]'</a> &bull; <a href='" . admin_url( "options-general.php?page=my-content-management/my-content-management.php&mcm_delete=$key" ) . "'>" . __( 'Delete', 'my-content-management' ) . "  '$value[3]'</a></li>\n";
+				$return .= "<li><input type='checkbox' value='" . esc_attr( $key ) . "' name='mcm_posttypes[]' id='mcm_" . esc_attr( $key ) . "'$checked /><label for='mcm_" . esc_attr( $key ) . "'>" . esc_html( $value[3] ) . ' (<code>' . esc_html( $key ) . "</code>)</label> <a href='" . esc_url( admin_url( "options-general.php?page=my-content-management/my-content-management.php&mcm_edit=$key" ) ) . "'>" . __( 'Edit', 'my-content-management' ) . " '" . esc_html( $value[3] ) . "'</a> &bull; <a href='" . esc_url( admin_url( "options-general.php?page=my-content-management/my-content-management.php&mcm_delete=$key" ) ) . "'>" . __( 'Delete', 'my-content-management' ) . "  '" . esc_html( $value[3] ) . "'</a></li>\n";
 			}
 		}
 	}
@@ -829,7 +829,7 @@ function mcm_save_updates() {
 			set_transient( 'mcm_update_notice', "<div class='updated fade'><p>" . __( 'Post type settings modified.', 'my-content-management' ) . '</p></div>', 10 );
 		} else {
 			$option = get_option( 'mcm_options' );
-			$ns     = $_POST['new'];
+			$ns     = map_deep( $_POST['new'], 'sanitize_textarea_field' );
 			$type   = substr( 'mcm_' . sanitize_title( $ns['pt1'] ), 0, 20 );
 			$new    = array(
 				$ns['pt1'],
@@ -1017,9 +1017,9 @@ function mcm_template_setter() {
 		if ( ! wp_verify_nonce( $nonce, 'my-content-management-nonce' ) ) {
 			wp_die( 'My Content Management: Security check failed' );
 		}
-		$type                         = $_POST['mcm_post_type'];
+		$type                         = sanitize_key( $_POST['mcm_post_type'] );
 		$option                       = get_option( 'mcm_options' );
-		$new                          = $_POST['templates'];
+		$new                          = map_deep( $_POST['templates'], 'sanitize_textarea_field' );
 		$option['templates'][ $type ] = $new[ $type ];
 		update_option( 'mcm_options', $option );
 		echo "<div class='updated fade'><p>" . __( 'Post Type templates updated', 'my-content-management' ) . '</p></div>';
@@ -1398,7 +1398,7 @@ function mcm_fields( $show = 'assign', $post_type = false, $echo = true ) {
 		if ( ! wp_verify_nonce( $nonce, 'my-content-management-nonce' ) ) {
 			wp_die( 'My Content Management: Security check failed' );
 		}
-		$extras = $_POST['mcm_field_extras'];
+		$extras = map_deep( $_POST['mcm_field_extras'], 'sanitize_textarea_field' );
 		foreach ( $extras as $key => $value ) {
 			if ( 'on' === $value ) {
 				mcm_add_custom_field_support( $key, $post_type );
@@ -1432,7 +1432,7 @@ function mcm_fields( $show = 'assign', $post_type = false, $echo = true ) {
 				<p><span><input type='radio' value='off' name=\"mcm_field_extras[$key]\" id=\"mcm_off_$key\"$checked_off /> <label for='mcm_off_$key'>" . __( 'Off', 'my-content-management' ) . "</label><br /><input type='radio' value='on' name=\"mcm_field_extras[$key]\" id=\"mcm_on_$key\"$checked_on /> <label for='mcm_on_$key'>" . __( 'On', 'my-content-management' ) . "</label></span> <a class='button-secondary' href='" . esc_url( admin_url( "options-general.php?page=mcm_custom_fields&mcm_fields_edit=$k" ) ) . "'>" . __( 'Edit', 'my-content-management' ) . '<span class="screen-reader-text">' . $legend . '</span></a></p></fieldset></li>';
 			} else {
 				$current = '';
-				if ( isset( $_GET['mcm_fields_edit'] ) && urlencode( $_GET['mcm_fields_edit'] ) === $k ) {
+				if ( isset( $_GET['mcm_fields_edit'] ) && urlencode( sanitize_text_field( $_GET['mcm_fields_edit'] ) ) === $k ) {
 					$current = ' aria-current="true"';
 				}
 				$return .= "<li><a class='button-secondary'$current href='" . admin_url( "options-general.php?page=mcm_custom_fields&mcm_fields_edit=$k" ) . "'>$legend</a></li>";

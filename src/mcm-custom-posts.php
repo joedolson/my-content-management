@@ -905,7 +905,8 @@ function mcm_save_postdata( $post_id, $post ) {
 			}
 		}
 		if ( isset( $_POST['mcm_delete'] ) ) {
-			foreach ( $_POST['mcm_delete'] as $data => $deletion ) {
+			$deletions = map_deep( $_POST['mcm_delete'], 'sanitize_textarea_field' );
+			foreach ( $deletions as $data => $deletion ) {
 				foreach ( $deletion as $delete ) {
 					if ( '' !== $delete ) {
 						delete_post_meta( $post->ID, $data, $delete );
@@ -928,9 +929,9 @@ add_action( 'save_post', 'mcm_save_postdata', 1, 2 );
  */
 function mcm_sanitize( $name, $type, $post = array() ) {
 	if ( empty( $post ) ) {
-		$value = $_POST[ $name ];
+		$value = $_POST[ $name ]; // values are sanitized below based on data types.
 	} else {
-		$value = $post[ $name ];
+		$value = $post[ $name ]; // values are sanitized below based on data types.
 	}
 	switch ( $type ) {
 		case 'text':
