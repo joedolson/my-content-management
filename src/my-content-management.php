@@ -1430,14 +1430,14 @@ function mcm_fields( $show = 'assign', $post_type = false, $echo = true ) {
 			$legend = stripslashes( $key );
 			$key    = sanitize_key( $key );
 			if ( 'assign' === $show ) {
-				$return .= "<li><fieldset><legend>$legend</legend>
-				<p><span><input type='radio' value='off' name=\"mcm_field_extras[$key]\" id=\"mcm_off_$key\"$checked_off /> <label for='mcm_off_$key'>" . __( 'Off', 'my-content-management' ) . "</label><br /><input type='radio' value='on' name=\"mcm_field_extras[$key]\" id=\"mcm_on_$key\"$checked_on /> <label for='mcm_on_$key'>" . __( 'On', 'my-content-management' ) . "</label></span> <a class='button-secondary' href='" . esc_url( admin_url( "options-general.php?page=mcm_custom_fields&mcm_fields_edit=$k" ) ) . "'>" . __( 'Edit', 'my-content-management' ) . '<span class="screen-reader-text">' . $legend . '</span></a></p></fieldset></li>';
+				$return .= '<li><fieldset><legend>' . esc_html( $legend ) . "</legend>
+				<p><span><input type='radio' value='off' name=\"mcm_field_extras[$key]\" id=\"mcm_off_$key\"$checked_off /> <label for='mcm_off_$key'>" . __( 'Off', 'my-content-management' ) . "</label><br /><input type='radio' value='on' name=\"mcm_field_extras[$key]\" id=\"mcm_on_$key\"$checked_on /> <label for='mcm_on_$key'>" . __( 'On', 'my-content-management' ) . "</label></span> <a class='button-secondary' href='" . esc_url( admin_url( "options-general.php?page=mcm_custom_fields&mcm_fields_edit=$k" ) ) . "'>" . __( 'Edit', 'my-content-management' ) . '<span class="screen-reader-text">' . esc_html( $legend ) . '</span></a></p></fieldset></li>';
 			} else {
 				$current = '';
 				if ( isset( $_GET['mcm_fields_edit'] ) && urlencode( sanitize_text_field( $_GET['mcm_fields_edit'] ) ) === $k ) {
 					$current = ' aria-current="true"';
 				}
-				$return .= "<li><a class='button-secondary'$current href='" . admin_url( "options-general.php?page=mcm_custom_fields&mcm_fields_edit=$k" ) . "'>$legend</a></li>";
+				$return .= "<li><a class='button-secondary'$current href='" . esc_url( admin_url( "options-general.php?page=mcm_custom_fields&mcm_fields_edit=$k" ) ) . "'>$legend</a></li>";
 			}
 		}
 	}
