@@ -905,29 +905,30 @@ function mcm_updater() {
 			$return  = $before;
 			$return .= $post_typing;
 			$return .= "
-			<p><label for='pt1'>" . __( 'Singular Name, lower', 'my-content-management' ) . "</label><br /><input type='text' name='${type}[pt1]' id='pt1' value='$data[0]' /></p>
-			<p><label for='pt3'>" . __( 'Singular Name, upper', 'my-content-management' ) . "</label><br /><input type='text' name='${type}[pt3]' id='pt3' value='$data[2]' /></p>
-			<p><label for='pt2'>" . __( 'Plural Name, lower', 'my-content-management' ) . "</label><br /><input type='text' name='${type}[pt2]' id='pt2' value='$data[1]' /></p>
-			<p><label for='pt4'>" . __( 'Plural Name, upper', 'my-content-management' ) . "</label><br /><input type='text' name='${type}[pt4]' id='pt4' value='$data[3]' /></p>";
+			<p><label for='pt1'>" . __( 'Singular Name, lower', 'my-content-management' ) . "</label><br /><input type='text' name='" . esc_attr( "${type}[pt1]" ) . "' id='pt1' value='" . esc_attr( $data[0] ) . "' /></p>
+			<p><label for='pt3'>" . __( 'Singular Name, upper', 'my-content-management' ) . "</label><br /><input type='text' name='" . esc_attr( "${type}[pt3]" ) . "' id='pt3' value='" . esc_attr( $data[2] ) . "' /></p>
+			<p><label for='pt2'>" . __( 'Plural Name, lower', 'my-content-management' ) . "</label><br /><input type='text' name='" . esc_attr( "${type}[pt2]" ) . "' id='pt2' value='" . esc_attr( $data[1] ) . "' /></p>
+			<p><label for='pt4'>" . __( 'Plural Name, upper', 'my-content-management' ) . "</label><br /><input type='text' name='" . esc_attr( "${type}[pt4]" ) . "' id='pt4' value='" . esc_attr( $data[3] ) . "' /></p>";
 
 			$keys = array_keys( $data[4] );
 			if ( ! in_array( 'show_in_rest', $keys, true ) ) {
 				$data[4]['show_in_rest'] = false;
 			}
 			foreach ( $data[4] as $key => $value ) {
+				$key = sanitize_key( $key );
 				if ( is_bool( $value ) ) {
 					$checked = ( true === (bool) $value ) ? ' checked="checked"' : '';
 					if ( 'show_in_rest' !== $key ) {
-						$return .= "<p><input type='checkbox' name='${type}[$key]' value='1' id='$key'$checked /> <label for='$key'>" . ucwords( str_replace( '_', ' ', $key ) ) . '</label></p>';
+						$return .= "<p><input type='checkbox' name='" . esc_attr( "${type}[$key]" ) . "' value='1' id='" . esc_attr( $key ) . "'$checked /> <label for='" . esc_attr( $key ) . "'>" . esc_html( ucwords( str_replace( '_', ' ', $key ) ) ) . '</label></p>';
 					} else {
-						$return .= "<p><input type='checkbox' name='${type}[$key]' value='1' id='$key'$checked /> <label for='$key'>" . __( 'Show in REST API and enable Block Editor', 'my-content-management' ) . '</label></p>';
+						$return .= "<p><input type='checkbox' name='" . esc_attr( "${type}[$key]" ) . "' value='1' id='" . esc_attr( $key ) . "'$checked /> <label for='" . esc_attr( $key ) . "'>" . __( 'Show in REST API and enable Block Editor', 'my-content-management' ) . '</label></p>';
 					}
 				} elseif ( is_array( $value ) ) {
-					$return  .= "<p><label for='$key'>" . ucwords( str_replace( '_', ' ', $key ) ) . "</label><br /><select multiple='multiple' name='${type}[${key}][]' id='$key'>";
+					$return  .= "<p><label for='" . esc_attr( $key ) . "'>" . esc_html( ucwords( str_replace( '_', ' ', $key ) ) ) . "</label><br /><select multiple='multiple' name='" . esc_attr( "${type}[$key][]" ) . "' id='" . esc_attr( $key ) . "'>";
 					$supports = array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'trackbacks', 'custom-fields', 'comments', 'revisions', 'page-attributes', 'post-formats', 'publicize' );
 					foreach ( $supports as $s ) {
 						$selected = ( in_array( $s, $value, true ) ) ? ' selected="selected"' : '';
-						$return  .= "<option value='$s'$selected>$s</option>";
+						$return  .= "<option value='" . esc_attr( $s ) . "'$selected>" . esc_html( $s ) . '</option>';
 					}
 					$return .= '</select></p>';
 				} else {
@@ -935,7 +936,7 @@ function mcm_updater() {
 					if ( ! $value && in_array( $type, $defaults, true ) && 'menu_icon' === $key ) {
 						$value = plugins_url( 'images', __FILE__ ) . "/$type.png";
 					}
-					$return .= "<p><label for='$key'>" . ucwords( str_replace( '_', ' ', $key ) ) . "</label> <input type='text' name='${type}[$key]' size='32' value='$value' /></p>";
+					$return .= "<p><label for='" . esc_attr( $key ) . "'>" . esc_html( ucwords( str_replace( '_', ' ', $key ) ) ) . "</label> <input type='text' name='" . esc_attr( "${type}[$key]" ) . "' size='32' value='" . esc_attr( $value ) . "' /></p>";
 				}
 			}
 			$return .= $after;
@@ -950,6 +951,7 @@ function mcm_updater() {
 		<p><label for='pt2'>" . __( 'Plural Name, lower', 'my-content-management' ) . "</label><br /><input type='text' name='new[pt2]' id='pt2' value='' /></p>
 		<p><label for='pt4'>" . __( 'Plural Name, upper', 'my-content-management' ) . "</label><br /><input type='text' name='new[pt4]' id='pt4' value='' /></p>
 		";
+		// Set up values from default post type arguments.
 		foreach ( $d_mcm_args as $key => $value ) {
 			if ( is_bool( $value ) ) {
 				$checked = ( true === (bool) $value ) ? ' checked="checked"' : '';
