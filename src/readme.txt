@@ -58,6 +58,8 @@ The "id" attribute is not supported in the [my_archive] shortcode. (That would b
 = 1.7.7 =
 
 * Security: Omitted the XSS Vuln fix in previous release. Seriously. Wow.
+* Added a change that allows this to run locally from Github.
+* Misc. hardening.
 
 = 1.7.6 =
 
