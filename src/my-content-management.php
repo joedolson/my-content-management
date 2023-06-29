@@ -662,12 +662,12 @@ function mcm_settings_page() {
 					<div class="postbox">
 						<h2 class='hndle'><?php _e( 'Enable Custom Post Types', 'my-content-management' ); ?></h2>
 						<div class="inside">
-						<form method='post' action='<?php echo admin_url( 'options-general.php?page=my-content-management/my-content-management.php' ); ?>'>
+						<form method='post' action='<?php echo admin_url( 'options-general.php?page=mcm_settings' ); ?>'>
 							<div><input type='hidden' name='_wpnonce' value='<?php echo wp_create_nonce( 'my-content-management-nonce' ); ?>' /></div>
 							<div>
 							<?php mcm_enabler(); ?>
 							<p>
-								<input type='submit' value='<?php _e( 'Update Enabled Post Types', 'my-content-management' ); ?>' name='mcm_enabler' class='button-primary' /> <a class="button-secondary" href="<?php echo admin_url( 'options-general.php?page=my-content-management/my-content-management.php&mcm_add=new' ); ?>"><?php _e( 'Add new post type', 'my-content-management' ); ?></a>
+								<input type='submit' value='<?php _e( 'Update Enabled Post Types', 'my-content-management' ); ?>' name='mcm_enabler' class='button-primary' /> <a class="button-secondary" href="<?php echo admin_url( 'options-general.php?page=mcm_settings&mcm_add=new' ); ?>"><?php _e( 'Add new post type', 'my-content-management' ); ?></a>
 							</p>
 							</div>
 						</form>
@@ -784,7 +784,7 @@ function mcm_enabler() {
 						$checked = '';
 					}
 				}
-				$return .= "<li><input type='checkbox' value='" . esc_attr( $key ) . "' name='mcm_posttypes[]' id='mcm_" . esc_attr( $key ) . "'$checked /><label for='mcm_" . esc_attr( $key ) . "'>" . esc_html( $value[3] ) . ' (<code>' . esc_html( $key ) . "</code>)</label> <a href='" . esc_url( admin_url( "options-general.php?page=my-content-management/my-content-management.php&mcm_edit=$key" ) ) . "'>" . __( 'Edit', 'my-content-management' ) . " '" . esc_html( $value[3] ) . "'</a> &bull; <a href='" . esc_url( admin_url( "options-general.php?page=my-content-management/my-content-management.php&mcm_delete=$key" ) ) . "'>" . __( 'Delete', 'my-content-management' ) . "  '" . esc_html( $value[3] ) . "'</a></li>\n";
+				$return .= "<li><input type='checkbox' value='" . esc_attr( $key ) . "' name='mcm_posttypes[]' id='mcm_" . esc_attr( $key ) . "'$checked /><label for='mcm_" . esc_attr( $key ) . "'>" . esc_html( $value[3] ) . ' (<code>' . esc_html( $key ) . "</code>)</label> <a href='" . esc_url( admin_url( "options-general.php?page=mcm_settings&mcm_edit=$key" ) ) . "'>" . __( 'Edit', 'my-content-management' ) . " '" . esc_html( $value[3] ) . "'</a> &bull; <a href='" . esc_url( admin_url( "options-general.php?page=mcm_settings&mcm_delete=$key" ) ) . "'>" . __( 'Delete', 'my-content-management' ) . "  '" . esc_html( $value[3] ) . "'</a></li>\n";
 			}
 		}
 	}
@@ -885,10 +885,10 @@ function mcm_updater() {
 		delete_transient( 'mcm_update_notice' );
 	}
 	// Translators: post type name.
-	$before      = "<div class='mcm_edit_post_type'><form method='post' action='" . add_query_arg( $event, $type, admin_url( 'options-general.php?page=my-content-management/my-content-management.php' ) ) . "'><div><input type='hidden' name='_wpnonce' value='" . wp_create_nonce( 'my-content-management-nonce' ) . "' /></div><fieldset class='fields'><legend>" . sprintf( __( 'Edit "%s"', 'my-content-management' ), $type ) . '</legend>';
+	$before      = "<div class='mcm_edit_post_type'><form method='post' action='" . add_query_arg( $event, $type, admin_url( 'options-general.php?page=mcm_settings' ) ) . "'><div><input type='hidden' name='_wpnonce' value='" . wp_create_nonce( 'my-content-management-nonce' ) . "' /></div><fieldset class='fields'><legend>" . sprintf( __( 'Edit "%s"', 'my-content-management' ), $type ) . '</legend>';
 	$post_typing = "<div><input type='hidden' name='mcm_type' value='$type' /></div>";
 
-	$after  = "</fieldset><p><input type='submit' value='" . esc_attr( __( 'Edit Post Type', 'my-content-management' ) ) . "' name='mcm_updater' class='button-primary' /> <a href='" . admin_url( 'options-general.php?page=my-content-management/my-content-management.php&mcm_add=new' ) . "'>" . __( 'Add new post type', 'my-content-management' ) . '</a>
+	$after  = "</fieldset><p><input type='submit' value='" . esc_attr( __( 'Edit Post Type', 'my-content-management' ) ) . "' name='mcm_updater' class='button-primary' /> <a href='" . admin_url( 'options-general.php?page=mcm_settings&mcm_add=new' ) . "'>" . __( 'Add new post type', 'my-content-management' ) . '</a>
 				</p>
 			</form></div>';
 	$return = '';
@@ -1130,7 +1130,7 @@ function mcm_template_setter() {
 				// Translators: Post type name.
 				$return .= "<div id='$value-container' class='wptab'><h3>" . sprintf( __( '%s Templates', 'my-content-management' ), $types[ $value ][2] ) . '</h3>
 						<p>' . __( 'Example shortcode:', 'my-content-management' ) . "<br /><code>[my_content type='$display_value' display='full' taxonomy='mcm_category_$display_value' order='menu_order']</code></p>
-						<form method='post' action='" . admin_url( 'options-general.php?page=my-content-management/my-content-management.php' ) . "'>
+						<form method='post' action='" . admin_url( 'options-general.php?page=mcm_settings' ) . "'>
 						<div><input type='hidden' name='_wpnonce' value='" . wp_create_nonce( 'my-content-management-nonce' ) . "' /></div>
 						<div><input type='hidden' name='mcm_post_type' value='$value' /></div>
 						<div>
@@ -1859,7 +1859,7 @@ function mcm_update_custom_fieldset( $post ) {
 function mcm_add_support_page() {
 	// Use this filter to disable all access to admin pages.
 	if ( apply_filters( 'mcm_show_administration_pages', true ) ) {
-		$plugin_page = add_options_page( 'My Content Management', 'My Content Management', 'manage_options', __FILE__, 'mcm_settings_page' );
+		$plugin_page = add_options_page( 'My Content Management', 'My Content Management', 'manage_options', 'mcm_settings', 'mcm_settings_page' );
 		add_action( 'admin_head-' . $plugin_page, 'mcm_styles' );
 		add_action( 'admin_print_styles-' . $plugin_page, 'mcm_add_scripts' );
 
@@ -1935,7 +1935,7 @@ function mcm_styles() {
  */
 function mcm_plugin_action( $links, $file ) {
 	if ( plugin_basename( dirname( __FILE__ ) . '/my-content-management.php' ) === $file ) {
-		$links[] = "<a href='options-general.php?page=my-content-management/my-content-management.php'>" . __( 'Settings', 'my-content-management' ) . '</a>';
+		$links[] = "<a href='options-general.php?page=mcm_settings'>" . __( 'Settings', 'my-content-management' ) . '</a>';
 		$links[] = "<a href='http://www.joedolson.com/donate/'>" . __( 'Donate', 'my-content-management' ) . '</a>';
 	}
 
