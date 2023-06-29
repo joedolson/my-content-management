@@ -6,7 +6,7 @@ Requires at least: 4.2
 Tested up to: 6.3
 License: GPLv2 or later
 Text domain: my-content-management
-Stable tag: 1.7.6
+Stable tag: 1.7.7
 
 Creates common custom post types for advanced content management: FAQ, Testimonials, people (staff, contributors, etc.), and others!
 
@@ -54,6 +54,10 @@ Create a site map for a specific post type and taxonomy using the [my_archive ty
 The "id" attribute is not supported in the [my_archive] shortcode. (That would be silly.) The [my_archive] shortcode does support a "show_links" attribute which will turn on a navigation list to navigate to each displayed category.
 
 == Changelog ==
+
+= 1.7.7 =
+
+* Security: Omitted the XSS Vuln fix in previous release. Seriously. Wow.
 
 = 1.7.6 =
 
