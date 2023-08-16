@@ -368,12 +368,25 @@ add_filter( 'mcm_filter_output_data', 'mcm_reverse_date_data', 10, 2 );
  *
  * @return string
  */
-function mcm_get_current_template( $template ) {
+function mcm_set_current_template( $template ) {
 	$GLOBALS['current_theme_template'] = basename( $template );
 
 	return $template;
 }
-add_action( 'template_include', 'mcm_get_current_template', 1000 );
+add_action( 'template_include', 'mcm_set_current_template', 1000 );
+
+/**
+ * Get the current template.
+ *
+ * @return string
+ */
+function mcm_get_current_template() {
+	if ( ! isset( $GLOBALS['current_theme_template'] ) ) {
+		return false;
+	}
+
+	return $GLOBALS['current_theme_template'];
+}
 
 /**
  * Replace post content with MCM template.
@@ -384,7 +397,10 @@ add_action( 'template_include', 'mcm_get_current_template', 1000 );
  * @return string
  */
 function mcm_replace_content( $content, $id = false ) {
-	global $template;
+	$template = mcm_get_current_template();
+	if ( ! $template ) {
+		return;
+	}
 
 	if ( ! is_main_query() && ! $id ) {
 		return $content;
@@ -394,6 +410,7 @@ function mcm_replace_content( $content, $id = false ) {
 		return $content;
 	}
 	$mcm_options = get_option( 'mcm_options' );
+	// If this is a custom template for this post type, don't render replacement.
 	if ( false !== strpos( $template, $post_type ) ) {
 		return $content;
 	}
