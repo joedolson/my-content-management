@@ -2,12 +2,12 @@
 Contributors: joedolson
 Donate link: http://www.joedolson.com/donate/
 Tags: custom post types, post types, faq, testimonials, staff, glossary, sidebars, content management
-Requires at least: 4.2
-Tested up to: 6.3
+Requires at least: 4.9
+Tested up to: 6.4
 License: GPLv2 or later
 Text domain: my-content-management
 Update URI: https://www.joedolson.com
-Stable tag: 1.7.7
+Stable tag: 1.7.9
 
 Creates common custom post types for advanced content management: FAQ, Testimonials, people (staff, contributors, etc.), and others!
 
@@ -55,6 +55,10 @@ Create a site map for a specific post type and taxonomy using the [my_archive ty
 The "id" attribute is not supported in the [my_archive] shortcode. (That would be silly.) The [my_archive] shortcode does support a "show_links" attribute which will turn on a navigation list to navigate to each displayed category.
 
 == Changelog ==
+
+= 1.7.9 =
+
+* Test updating when running from init.
 
 = 1.7.8 =
 

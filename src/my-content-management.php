@@ -18,7 +18,7 @@
  * License URI: http://www.gnu.org/license/gpl-2.0.txt
  * Domain Path: lang
  * Update URI:  https://www.joedolson.com/my-content-management/
- * Version:     1.7.8
+ * Version:     1.7.9
  */
 
 /*
@@ -55,7 +55,7 @@ $mcm_update_checker = PucFactory::buildUpdateChecker(
 // Set the branch that contains the stable release.
 $mcm_update_checker->setBranch( 'master' );
 
-$mcm_version = '1.7.7';
+$mcm_version = '1.7.9';
 /**
  * Enable internationalisation
  */
