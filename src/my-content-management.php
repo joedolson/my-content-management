@@ -17,6 +17,7 @@
  * License:     GPL-2.0+
  * License URI: http://www.gnu.org/license/gpl-2.0.txt
  * Domain Path: lang
+ * Update URI:  https://www.joedolson.com/my-content-management/
  * Version:     1.7.7
  */
 
@@ -41,6 +42,18 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+require 'plugin-update-checker/plugin-update-checker.php';
+use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
+
+$mcm_update_checker = PucFactory::buildUpdateChecker(
+	'https://github.com/joedolson/my-content-management/',
+	__FILE__,
+	'my-content-management'
+);
+
+//Set the branch that contains the stable release.
+$mcm_update_checker->setBranch( 'master' );
 
 $mcm_version = '1.7.7';
 /**
