@@ -18,7 +18,7 @@
  * License URI: http://www.gnu.org/license/gpl-2.0.txt
  * Domain Path: lang
  * Update URI:  https://www.joedolson.com/my-content-management/
- * Version:     1.7.7
+ * Version:     1.7.8
  */
 
 /*
