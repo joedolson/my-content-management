@@ -7,7 +7,7 @@ Tested up to: 6.4
 License: GPLv2 or later
 Text domain: my-content-management
 Update URI: https://www.joedolson.com
-Stable tag: 1.7.9
+Stable tag: 1.7.10
 
 Creates common custom post types for advanced content management: FAQ, Testimonials, people (staff, contributors, etc.), and others!
 

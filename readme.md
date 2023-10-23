@@ -8,10 +8,10 @@ Custom Post Type Manager for WordPress
 
 * Donate link: https://www.joedolson.com/my-content-management/
 * Tags: content, management, post types
-* Requires at least: 4.7
-* Tested up to: 6.3
+* Requires at least: 4.9
+* Tested up to: 6.4
 * Requires PHP: 5.6
-* Stable tag: `1.7.7`
+* Stable tag: `1.7.10`
 * License: GPLv2 or later
 * License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
