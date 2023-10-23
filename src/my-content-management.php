@@ -52,7 +52,7 @@ $mcm_update_checker = PucFactory::buildUpdateChecker(
 	'my-content-management'
 );
 
-//Set the branch that contains the stable release.
+// Set the branch that contains the stable release.
 $mcm_update_checker->setBranch( 'master' );
 
 $mcm_version = '1.7.7';
