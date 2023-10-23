@@ -56,6 +56,10 @@ The "id" attribute is not supported in the [my_archive] shortcode. (That would b
 
 == Changelog ==
 
+= 1.7.8 =
+
+* Move updates and all maintenance to Github.
+
 = 1.7.7 =
 
 * Security: Omitted the XSS Vuln fix in previous release. Seriously. Wow.
