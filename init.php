@@ -42,4 +42,16 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+require 'src/plugin-update-checker/plugin-update-checker.php';
+use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
+
+$mcm_update_checker = PucFactory::buildUpdateChecker(
+	'https://github.com/joedolson/my-content-management/',
+	__FILE__,
+	'my-content-management'
+);
+
+// Set the branch that contains the stable release.
+$mcm_update_checker->setBranch( 'master' );
+
 include( dirname( __FILE__ ) . '/src/my-content-management.php' );

@@ -43,18 +43,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-require 'plugin-update-checker/plugin-update-checker.php';
-use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
-
-$mcm_update_checker = PucFactory::buildUpdateChecker(
-	'https://github.com/joedolson/my-content-management/',
-	__FILE__,
-	'my-content-management'
-);
-
-// Set the branch that contains the stable release.
-$mcm_update_checker->setBranch( 'master' );
-
 $mcm_version = '1.7.9';
 /**
  * Enable internationalisation
@@ -75,6 +63,7 @@ add_shortcode( 'custom_search', 'mcm_search_custom' );
 add_shortcode( 'my_archive', 'mcm_show_archive' );
 add_shortcode( 'email', 'mcm_munger' );
 add_shortcode( 'my_terms', 'mcm_terms' );
+
 // Filters.
 add_filter( 'pre_get_posts', 'mcm_searchfilter' );
 add_filter( 'post_updated_messages', 'mcm_posttypes_messages' );
@@ -93,7 +82,6 @@ function mcm_register_widgets() {
 	register_widget( 'Mcm_Posts_Widget' );
 	register_widget( 'Mcm_Meta_Widget' );
 }
-
 
 if ( ! get_option( 'mcm_version' ) ) {
 	mcm_install_plugin();
