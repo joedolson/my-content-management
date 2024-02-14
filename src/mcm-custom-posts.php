@@ -132,6 +132,7 @@ function mcm_taxonomies() {
 			$value =& $types[ $key ];
 			if ( is_array( $value ) && ! empty( $value ) ) {
 				$cat_key = str_replace( 'mcm_', '', sanitize_key( $key ) );
+				// translators: Name of post type.
 				$label   = sprintf( apply_filters( 'mcm_tax_category_name', __( '%s Categories', 'my-content-management' ), $value[2], $cat_key ), $value[2] );
 				register_taxonomy(
 					"mcm_category_$cat_key", // internal name = machine-readable taxonomy name.
@@ -148,6 +149,7 @@ function mcm_taxonomies() {
 						), // pretty permalinks for your taxonomy.
 					)
 				);
+				// translators: Name of post type.
 				$type_label = sprintf( apply_filters( 'mcm_tax_type_name', __( '%s Types', 'my-content-management' ), $value[2], $cat_key ), $value[2] );
 				register_taxonomy(
 					"mcm_type_$cat_key", // internal name = machine-readable taxonomy name.
@@ -164,6 +166,7 @@ function mcm_taxonomies() {
 						), // pretty permalinks for your taxonomy.
 					)
 				);
+				// translators: Name of post type.
 				$tag_label = sprintf( apply_filters( 'mcm_tax_tag_name', __( '%s Tags', 'my-content-management' ), $value[2], $cat_key ), $value[2] );
 				register_taxonomy(
 					"mcm_tag_$cat_key", // internal name = machine-readable taxonomy name.
