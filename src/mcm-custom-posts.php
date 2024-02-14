@@ -132,13 +132,14 @@ function mcm_taxonomies() {
 			$value =& $types[ $key ];
 			if ( is_array( $value ) && ! empty( $value ) ) {
 				$cat_key = str_replace( 'mcm_', '', sanitize_key( $key ) );
+				$label   = sprintf( apply_filters( 'mcm_tax_category_name', __( '%s Categories', 'my-content-management' ), $value[2], $cat_key ), $value[2] );
 				register_taxonomy(
 					"mcm_category_$cat_key", // internal name = machine-readable taxonomy name.
 					array( $key ), // object type = post, page, link, or custom post-type.
 					array(
 						'hierarchical'      => true,
 						// Translators: taxonomy name.
-						'label'             => apply_filters( 'mcm_tax_category_name', sprintf( __( '%s Categories', 'my-content-management' ), $value[2] ), $cat_key ),
+						'label'             => $label,
 						'show_in_rest'      => true,
 						'show_admin_column' => true,
 						'query_var'         => true, // enable taxonomy-specific querying.
@@ -147,13 +148,14 @@ function mcm_taxonomies() {
 						), // pretty permalinks for your taxonomy.
 					)
 				);
+				$type_label = sprintf( apply_filters( 'mcm_tax_type_name', __( '%s Types', 'my-content-management' ), $value[2], $cat_key ), $value[2] );
 				register_taxonomy(
 					"mcm_type_$cat_key", // internal name = machine-readable taxonomy name.
 					array( $key ), // object type = post, page, link, or custom post-type.
 					array(
 						'hierarchical'      => false,
 						// Translators: taxonomy name.
-						'label'             => apply_filters( 'mcm_tax_type_name', sprintf( __( '%s Types', 'my-content-management' ), $value[2] ), $cat_key ),
+						'label'             => $type_label,
 						'show_in_rest'      => true,
 						'show_admin_column' => true,
 						'query_var'         => true, // enable taxonomy-specific querying.
@@ -162,13 +164,14 @@ function mcm_taxonomies() {
 						), // pretty permalinks for your taxonomy.
 					)
 				);
+				$tag_label = sprintf( apply_filters( 'mcm_tax_tag_name', __( '%s Tags', 'my-content-management' ), $value[2], $cat_key ), $value[2] );
 				register_taxonomy(
 					"mcm_tag_$cat_key", // internal name = machine-readable taxonomy name.
 					array( $key ), // object type = post, page, link, or custom post-type.
 					array(
 						'hierarchical'      => false,
 						// Translators: taxonomy name.
-						'label'             => apply_filters( 'mcm_tax_tag_name', sprintf( __( '%s Tags', 'my-content-management' ), $value[2] ), $cat_key ),
+						'label'             => $tag_label,
 						'show_in_rest'      => true,
 						'show_admin_column' => true,
 						'query_var'         => true, // enable taxonomy-specific querying.
