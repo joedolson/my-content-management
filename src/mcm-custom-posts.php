@@ -133,7 +133,7 @@ function mcm_taxonomies() {
 			if ( is_array( $value ) && ! empty( $value ) ) {
 				$cat_key = str_replace( 'mcm_', '', sanitize_key( $key ) );
 				// translators: Name of post type.
-				$label   = sprintf( apply_filters( 'mcm_tax_category_name', __( '%s Categories', 'my-content-management' ), $value[2], $cat_key ), $value[2] );
+				$label = sprintf( apply_filters( 'mcm_tax_category_name', __( '%s Categories', 'my-content-management' ), $value[2], $cat_key ), $value[2] );
 				register_taxonomy(
 					"mcm_category_$cat_key", // internal name = machine-readable taxonomy name.
 					array( $key ), // object type = post, page, link, or custom post-type.
