@@ -374,7 +374,7 @@ function mcm_upload_field( $args ) {
 	$memory_limit = (int) ( ini_get( 'memory_limit' ) );
 	$upload_mb    = min( $max_upload, $max_post, $memory_limit );
 	// Translators: Upload limit in MB.
-	$label_format = '<div class="mcm_text_field mcm_field"><input type="hidden" name="%1$s" id="%1$s" value="%3$s" /><label for="%1$s"><strong>%2$s</strong></label><br />' . '<input style="width: 80%;" type="file" name="%1$s" id="%1$s" /><br />' . sprintf( __( 'Upload limit: %s MB', 'my-content-management' ), $upload_mb );
+	$label_format = '<div class="mcm_text_field mcm_field"><input type="hidden" name="%1$s" id="%1$s" value="%3$s" /><label for="%1$s"><strong>%2$s</strong></label><br />' . '<input type="file" name="%1$s" id="%1$s" /><br />' . sprintf( __( 'Upload limit: %s MB', 'my-content-management' ), $upload_mb );
 	if ( '' !== $description ) {
 		$label_format .= '<br /><em>' . $description . '</em>';
 	}
@@ -476,7 +476,7 @@ function mcm_text_field( $args, $type = 'text' ) {
 	$value   = esc_attr( $value );
 	$value   = ( is_array( $value ) ) ? esc_attr( implode( ', ', $value ) ) : esc_attr( $value );
 	$output  = "<div class='mcm_text_field mcm_field'>";
-	$output .= '<p><label for="' . esc_attr( $name ) . '"><strong>' . esc_html( $label ) . '</strong></label><br /><input style="width: 80%;" type="' . esc_attr( $type ) . '" name="' . esc_attr( $name ) . '" value="' . esc_attr( $value ) . '" id="' . esc_attr( $name ) . '" /></p>';
+	$output .= '<p><label for="' . esc_attr( $name ) . '"><strong>' . esc_html( $label ) . '</strong></label><br /><input class="widefat" type="' . esc_attr( $type ) . '" name="' . esc_attr( $name ) . '" value="' . esc_attr( $value ) . '" id="' . esc_attr( $name ) . '" /></p>';
 	if ( is_array( $meta ) ) {
 		$i       = 1;
 		$output .= '<ul>';
@@ -732,7 +732,7 @@ function mcm_text_area( $args ) {
 	$meta    = get_post_meta( $post->ID, $name, $single );
 	$value   = ( $single ) ? $meta : '';
 	$output  = "<div class='mcm_textarea mcm_field'>";
-	$output .= '<p><label for="' . esc_attr( $name ) . '"><strong>' . esc_html( stripslashes( $label ) ) . '</strong></label><br /><textarea style="width: 90%;" name="' . esc_attr( $name ) . '" id="' . esc_attr( $name ) . '">' . esc_textarea( stripslashes( $value ) ) . '</textarea></p>';
+	$output .= '<p><label for="' . esc_attr( $name ) . '"><strong>' . esc_html( stripslashes( $label ) ) . '</strong></label><br /><textarea name="' . esc_attr( $name ) . '" id="' . esc_attr( $name ) . '" class="widefat">' . esc_textarea( stripslashes( $value ) ) . '</textarea></p>';
 	if ( is_array( $meta ) ) {
 		$i       = 1;
 		$output .= '<ul>';
