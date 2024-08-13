@@ -666,6 +666,10 @@ function mcm_settings_page() {
 			<div class="metabox-holder">
 				<div class="mcm-settings ui-sortable meta-box-sortables">
 					<?php
+					if ( isset( $_GET['mcm_delete'] ) ) {
+						$message = mcm_delete_type( sanitize_key( $_GET['mcm_delete'] ) );
+						echo $message;
+					}
 					if ( isset( $_GET['mcm_edit'] ) || isset( $_GET['mcm_add'] ) ) {
 						?>
 					<div class="postbox">
@@ -886,10 +890,6 @@ function mcm_updater() {
 	global $mcm_types;
 	$types   = $mcm_types;
 	$checked = '';
-	if ( isset( $_GET['mcm_delete'] ) ) {
-		$message = mcm_delete_type( sanitize_key( $_GET['mcm_delete'] ) );
-		echo $message;
-	}
 	if ( isset( $_GET['mcm_edit'] ) ) {
 		$type  = sanitize_key( $_GET['mcm_edit'] );
 		$event = 'mcm_edit';
@@ -1012,6 +1012,7 @@ function mcm_delete_type( $type ) {
 	$types     = $options['types'];
 	$templates = $options['templates'];
 	$enabled   = $options['enabled'];
+	print_r( $types );
 	if ( isset( $types[ $type ] ) ) {
 		unset( $options['types'][ $type ] );
 		unset( $options['templates'][ $type ] );
