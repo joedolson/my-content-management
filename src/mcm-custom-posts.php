@@ -239,8 +239,10 @@ function mcm_add_custom_box( $fields, $post_type = 'post', $location = 'side', $
 		$location = apply_filters( 'mcm_set_location', $location, $fields, $post_type );
 		$priority = apply_filters( 'mcm_set_priority', 'default', $fields, $post_type );
 		foreach ( array_keys( $fields ) as $field ) {
-			$id    = sanitize_title( $field );
-			$field = stripslashes( $field );
+			$id              = sanitize_title( $field );
+			$field           = stripslashes( $field );
+			$fields['group'] = $field;
+			$field           = apply_filters( 'mcm_display_name', $field );
 			if ( apply_filters( 'mcm_filter_meta_box', $show, $post_type, $id ) ) {
 				add_meta_box( $id, $field, 'mcm_build_custom_box', $post_type, $location, $priority, $fields );
 			}
@@ -282,7 +284,7 @@ function mcm_test_context( $show ) {
 function mcm_build_custom_box( $post, $fields ) {
 	static $nonce_flag = false;
 	// Run once.
-	$id = addslashes( $fields['title'] );
+	$id = addslashes( $fields['args']['group'] );
 	echo "<div class='mcm_post_fields'>";
 	if ( ! $nonce_flag ) {
 		mcm_echo_nonce();
