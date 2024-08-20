@@ -1281,44 +1281,6 @@ function mcm_support_column() {
 }
 
 /**
- * Add submenu pages for defined custom post types.
- */
-function mcm_add_fields_pages() {
-	$post_types   = get_post_types(
-		array(
-			'show_ui' => true,
-		),
-		'object'
-	);
-	$submenu_page = add_submenu_page(
-		'edit.php',
-		__( 'Posts > My Content Management > Custom Fields', 'my-content-management' ),
-		__( 'Custom Fields', 'my-content-management' ),
-		'manage_options',
-		'post_fields',
-		'mcm_assign_custom_fields'
-	);
-	add_action( 'admin_head-' . $submenu_page, 'mcm_styles' );
-	foreach ( $post_types as $type ) {
-		$name = $type->name;
-		if ( 'acf' !== $name ) {
-			$label        = $type->labels->name;
-			$submenu_page = add_submenu_page(
-				"edit.php?post_type=$name",
-				// Translators: Post type name.
-				sprintf( __( '%s > My Content Management > Custom Fields', 'my-content-management' ), $label ),
-				__( 'Custom Fields', 'my-content-management' ),
-				'manage_options',
-				$name . '_fields',
-				'mcm_assign_custom_fields'
-			);
-			add_action( 'admin_head-' . $submenu_page, 'mcm_styles' );
-		}
-	}
-}
-add_action( 'admin_menu', 'mcm_add_fields_pages' );
-
-/**
  * Assign custom field groups to post types.
  */
 function mcm_assign_custom_fields() {
@@ -1448,16 +1410,12 @@ function mcm_fields( $show = 'assign', $post_type = false, $echo = true ) {
 			$k      = urlencode( $key );
 			$legend = stripslashes( $key );
 			$key    = sanitize_key( $key );
-			if ( 'assign' === $show ) {
-				$return .= '<li><fieldset><legend>' . esc_html( $legend ) . "</legend>
-				<p><span><input type='radio' value='off' name=\"mcm_field_extras[$key]\" id=\"mcm_off_$key\"$checked_off /> <label for='mcm_off_$key'>" . __( 'Off', 'my-content-management' ) . "</label><br /><input type='radio' value='on' name=\"mcm_field_extras[$key]\" id=\"mcm_on_$key\"$checked_on /> <label for='mcm_on_$key'>" . __( 'On', 'my-content-management' ) . "</label></span> <a class='button-secondary' href='" . esc_url( admin_url( "options-general.php?page=mcm_custom_fields&mcm_fields_edit=$k" ) ) . "'>" . __( 'Edit', 'my-content-management' ) . '<span class="screen-reader-text">' . esc_html( $legend ) . '</span></a></p></fieldset></li>';
-			} else {
-				$current = '';
-				if ( isset( $_GET['mcm_fields_edit'] ) && urlencode( sanitize_text_field( $_GET['mcm_fields_edit'] ) ) === $k ) {
-					$current = ' aria-current="true"';
-				}
-				$return .= "<li><a class='button-secondary'$current href='" . esc_url( admin_url( "options-general.php?page=mcm_custom_fields&mcm_fields_edit=$k" ) ) . "'>$legend</a></li>";
+
+			$current = '';
+			if ( isset( $_GET['mcm_fields_edit'] ) && urlencode( sanitize_text_field( $_GET['mcm_fields_edit'] ) ) === $k ) {
+				$current = ' aria-current="true"';
 			}
+			$return .= "<li><a class='button-secondary'$current href='" . esc_url( admin_url( "options-general.php?page=mcm_custom_fields&mcm_fields_edit=$k" ) ) . "'>$legend</a></li>";
 		}
 	}
 	$return = '<h3>' . __( 'Fieldsets', 'my-content-management' ) . "</h3><ul class='mcm_customfields'>" . $return . '</ul>';
