@@ -1363,15 +1363,15 @@ function mcm_fields( $show = 'assign', $post_type = false, $echo = true ) {
 				$checked_off = ' checked="checked"';
 				$checked_on  = '';
 			}
-			$k      = urlencode( $key );
-			$legend = stripslashes( $key );
-			$key    = sanitize_key( $key );
+			$k     = urlencode( $key );
+			$group = stripslashes( $key );
+			$key   = sanitize_key( $key );
 
 			$current = '';
 			if ( isset( $_GET['mcm_fields_edit'] ) && urlencode( sanitize_text_field( $_GET['mcm_fields_edit'] ) ) === $k ) {
 				$current = ' aria-current="true"';
 			}
-			$return .= "<li><a class='button-secondary'$current href='" . esc_url( admin_url( "options-general.php?page=mcm_custom_fields&mcm_fields_edit=$k" ) ) . "'>$legend</a></li>";
+			$return .= "<li><a class='button-secondary'$current href='" . esc_url( admin_url( "options-general.php?page=mcm_custom_fields&mcm_fields_edit=$k" ) ) . "'>$group</a></li>";
 		}
 	}
 	$return = '<h3>' . __( 'Fieldsets', 'my-content-management' ) . "</h3><ul class='mcm_customfields'>" . $return . '</ul>';
