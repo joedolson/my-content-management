@@ -1281,50 +1281,6 @@ function mcm_support_column() {
 }
 
 /**
- * Assign custom field groups to post types.
- */
-function mcm_assign_custom_fields() {
-	$type      = ( isset( $_GET['post_type'] ) ) ? sanitize_text_field( $_GET['post_type'] ) : 'post';
-	$post_type = get_post_type_object( $type );
-	$type_name = $post_type->labels->name;
-	?>
-	<div class="wrap">
-		<h1>
-		<?php
-		// Translators: Post type plural name.
-		printf( __( 'My Content Management / %s / Manage Custom Fields', 'my-content-management' ), $type_name );
-		?>
-		</h1>
-		<div class="postbox-container" style="width: 70%">
-			<div class="metabox-holder">
-				<div class="mcm-settings ui-sortable meta-box-sortables">
-					<div class="postbox" id="mcm-settings">
-						<h2 class='hndle'><?php _e( 'Custom Fields Assigned to this post type', 'my-content-management' ); ?></h2>
-						<div class="inside">
-							<?php
-							$page = sanitize_key( $_GET['page'] );
-							$type = ( isset( $_GET['post_type'] ) ) ? sanitize_text_field( $_GET['post_type'] ) : 'post';
-							?>
-							<form method='post' action='<?php echo esc_url( admin_url( "edit.php?post_type=$type&page=$page" ) ); ?>'>
-								<div><input type='hidden' name='_wpnonce' value='<?php echo wp_create_nonce( 'my-content-management-nonce' ); ?>' /></div>
-								<div>
-								<?php mcm_fields( 'assign', $page ); ?>
-								<p>
-									<input type='submit' value='<?php _e( 'Update Assignments', 'my-content-management' ); ?>' name='mcm_custom_fields' class='button-primary' /> <a class="button-secondary" href="<?php echo admin_url( 'options-general.php?page=mcm_custom_fields&mcm_fields_add=new' ); ?>"><?php _e( 'Add new custom field set', 'my-content-management' ); ?></a>
-								</p>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<?php mcm_support_column(); ?>
-	</div>
-	<?php
-}
-
-/**
  * Add custom field support to a post type.
  *
  * @param string $fieldset Fieldset name.
