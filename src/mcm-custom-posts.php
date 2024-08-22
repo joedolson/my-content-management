@@ -140,7 +140,6 @@ function mcm_taxonomies() {
 					array( $key ), // object type = post, page, link, or custom post-type.
 					array(
 						'hierarchical'      => true,
-						// Translators: taxonomy name.
 						'label'             => $label,
 						'show_in_rest'      => true,
 						'show_admin_column' => true,
@@ -159,7 +158,6 @@ function mcm_taxonomies() {
 					array( $key ), // object type = post, page, link, or custom post-type.
 					array(
 						'hierarchical'      => false,
-						// Translators: taxonomy name.
 						'label'             => $type_label,
 						'show_in_rest'      => true,
 						'show_admin_column' => true,
@@ -178,7 +176,6 @@ function mcm_taxonomies() {
 					array( $key ), // object type = post, page, link, or custom post-type.
 					array(
 						'hierarchical'      => false,
-						// Translators: taxonomy name.
 						'label'             => $tag_label,
 						'show_in_rest'      => true,
 						'show_admin_column' => true,
