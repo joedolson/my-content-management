@@ -425,9 +425,11 @@ function mcm_chooser_field( $args ) {
 			$i     = 0;
 			foreach ( $args[2] as $attachment ) {
 				if ( $attachment ) {
-					$url       = wp_get_attachment_url( $attachment );
-					$img       = wp_get_attachment_image( $attachment, array( 80, 80 ), true, $attr );
-					$download .= '<div class="mcm-chooser-image"><a href="' . $url . '">' . $img . '</a><span class="mcm-delete"><input type="checkbox" id="del-' . $args[0] . $i . '" name="mcm_delete[' . $args[0] . '][]" value="' . absint( $attachment ) . '" /> <label for="del-' . $args[0] . $i . '">' . __( 'Delete', 'my-content-management' ) . '</label></span></div>';
+					if ( is_numeric( $attachment ) ) {
+						$url       = wp_get_attachment_url( $attachment );
+						$img       = wp_get_attachment_image( $attachment, array( 80, 80 ), true, $attr );
+						$download .= '<div class="mcm-chooser-image"><a href="' . $url . '">' . $img . '</a><span class="mcm-delete"><input type="checkbox" id="del-' . $args[0] . $i . '" name="mcm_delete[' . $args[0] . '][]" value="' . absint( $attachment ) . '" /> <label for="del-' . $args[0] . $i . '">' . __( 'Delete', 'my-content-management' ) . '</label></span></div>';
+					}
 				}
 				$i++;
 			}
