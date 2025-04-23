@@ -113,7 +113,7 @@ class Mcm_Posts_Widget extends WP_Widget {
 		?>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'my-content-management' ); ?>:</label><br />
-			<input class="widefat" type="text" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" value="<?php echo esc_attr( stripslashes( $title ) ); ?>"/>
+			<input class="widefat" type="text" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" value="<?php echo esc_attr( wp_unslash( $title ) ); ?>"/>
 		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'mcm_posts_widget_post_type' ); ?>"><?php _e( 'Post type to list', 'my-content-management' ); ?></label> <select id="<?php echo $this->get_field_id( 'mcm_posts_widget_post_type' ); ?>" name="<?php echo $this->get_field_name( 'mcm_posts_widget_post_type' ); ?>">
@@ -129,7 +129,7 @@ class Mcm_Posts_Widget extends WP_Widget {
 				$name        = $v->name;
 				$label       = $v->labels->name;
 				$selected    = ( $post_type === $name ) ? ' selected="selected"' : '';
-				$post_types .= "<option value='" . esc_attr( $name ) . "'$selected>" . esc_html( stripslashes( $label ) ) . "</option>\n";
+				$post_types .= "<option value='" . esc_attr( $name ) . "'$selected>" . esc_html( wp_unslash( $label ) ) . "</option>\n";
 			}
 			echo $post_types;
 			?>
@@ -167,7 +167,7 @@ class Mcm_Posts_Widget extends WP_Widget {
 		</p>
 		<p>
 		<label for="<?php echo $this->get_field_id( 'term' ); ?>"><?php _e( 'Category (single term or comma-separated list)', 'my-content-management' ); ?>:</label><br />
-		<input class="widefat" type="text" id="<?php echo $this->get_field_id( 'term' ); ?>" name="<?php echo $this->get_field_name( 'term' ); ?>" value="<?php echo esc_attr( stripslashes( $term ) ); ?>"/>
+		<input class="widefat" type="text" id="<?php echo $this->get_field_id( 'term' ); ?>" name="<?php echo $this->get_field_name( 'term' ); ?>" value="<?php echo esc_attr( wp_unslash( $term ) ); ?>"/>
 		</p>
 		<?php
 		if ( 'custom' === $display ) {
@@ -185,7 +185,7 @@ class Mcm_Posts_Widget extends WP_Widget {
 		</p>
 		<p>
 		<label for="<?php echo $this->get_field_id( 'template' ); ?>"><?php _e( 'Custom Template', 'my-content-management' ); ?></label><br />
-		<textarea class="widefat" id="<?php echo $this->get_field_id( 'template' ); ?>" cols='40' rows='4' name="<?php echo $this->get_field_name( 'template' ); ?>"><?php echo stripslashes( esc_textarea( $template ) ); ?></textarea>
+		<textarea class="widefat" id="<?php echo $this->get_field_id( 'template' ); ?>" cols='40' rows='4' name="<?php echo $this->get_field_name( 'template' ); ?>"><?php echo wp_unslash( esc_textarea( $template ) ); ?></textarea>
 		</p>
 		</fieldset>
 			<?php

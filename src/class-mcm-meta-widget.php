@@ -91,7 +91,7 @@ class Mcm_Meta_Widget extends WP_Widget {
 		?>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'my-content-management' ); ?>:</label><br />
-			<input class="widefat" type="text" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" value="<?php echo stripslashes( esc_attr( $title ) ); ?>"/>
+			<input class="widefat" type="text" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" value="<?php echo wp_unslash( esc_attr( $title ) ); ?>"/>
 		</p>
 		<p>
 			<label for="<?php echo $this->get_field_id( 'fieldset' ); ?>"><?php _e( 'Fieldset to display', 'my-content-management' ); ?></label> <select id="<?php echo $this->get_field_id( 'fieldset' ); ?>" name="<?php echo $this->get_field_name( 'fieldset' ); ?>">
@@ -119,11 +119,11 @@ class Mcm_Meta_Widget extends WP_Widget {
 			?>
 			<p>
 			<label for="<?php echo $this->get_field_id( 'left_column' ); ?>"><?php _e( 'Left column header', 'my-content-management' ); ?>:</label><br />
-			<input class="widefat" type="text" id="<?php echo $this->get_field_id( 'left_column' ); ?>" name="<?php echo $this->get_field_name( 'left_column' ); ?>" value="<?php echo stripslashes( esc_attr( $left_column ) ); ?>"/>
+			<input class="widefat" type="text" id="<?php echo $this->get_field_id( 'left_column' ); ?>" name="<?php echo $this->get_field_name( 'left_column' ); ?>" value="<?php echo wp_unslash( esc_attr( $left_column ) ); ?>"/>
 			</p>
 			<p>
 			<label for="<?php echo $this->get_field_id( 'right_column' ); ?>"><?php _e( 'Right column header', 'my-content-management' ); ?>:</label><br />
-			<input class="widefat" type="text" id="<?php echo $this->get_field_id( 'right_column' ); ?>" name="<?php echo $this->get_field_name( 'right_column' ); ?>" value="<?php echo stripslashes( esc_attr( $right_column ) ); ?>"/>
+			<input class="widefat" type="text" id="<?php echo $this->get_field_id( 'right_column' ); ?>" name="<?php echo $this->get_field_name( 'right_column' ); ?>" value="<?php echo wp_unslash( esc_attr( $right_column ) ); ?>"/>
 			</p>
 			<?php
 		}
@@ -131,7 +131,7 @@ class Mcm_Meta_Widget extends WP_Widget {
 			?>
 			<p>
 				<label for="<?php echo $this->get_field_id( 'custom_template' ); ?>"><?php _e( 'Template', 'my-content-management' ); ?>:</label><br />
-				<textarea class="widefat" cols="70" rows="6" id="<?php echo $this->get_field_id( 'custom_template' ); ?>" name="<?php echo $this->get_field_name( 'custom_template' ); ?>"><?php echo stripslashes( esc_textarea( $custom_template ) ); ?></textarea>
+				<textarea class="widefat" cols="70" rows="6" id="<?php echo $this->get_field_id( 'custom_template' ); ?>" name="<?php echo $this->get_field_name( 'custom_template' ); ?>"><?php echo wp_unslash( esc_textarea( $custom_template ) ); ?></textarea>
 			</p>
 			<?php
 		}

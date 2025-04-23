@@ -665,7 +665,7 @@ function mcm_draw_template( $array = array(), $template = '' ) {
 	$template = mcm_simple_template( $array, $template );
 	$has_tags = strpos( $template, '{' );
 	if ( false === $has_tags ) { // if there are no longer any tags, this is done.
-		return stripslashes( trim( mc_clean_template( $template ) ) );
+		return wp_unslash( trim( mc_clean_template( $template ) ) );
 	}
 	foreach ( $array as $key => $value ) {
 		if ( ! in_array( $key, $defaults, true ) ) {
@@ -750,7 +750,7 @@ function mcm_draw_template( $array = array(), $template = '' ) {
 		}
 	}
 
-	return wp_kses_post( stripslashes( trim( mc_clean_template( $template ) ) ) );
+	return wp_kses_post( wp_unslash( trim( mc_clean_template( $template ) ) ) );
 }
 
 /**
@@ -861,7 +861,7 @@ function mcm_search_form( $post_type ) {
 			$nonce
 			<input type='hidden' name='customsearch' value='" . esc_attr( $post_type ) . "' />
 			</div>
-			<label for='csearch'>Search</label> <input type='text' class='text' name='s' id='csearch' value='" . esc_attr( stripslashes( $s ) ) . "' />
+			<label for='csearch'>Search</label> <input type='text' class='text' name='s' id='csearch' value='" . esc_attr( wp_unslash( $s ) ) . "' />
 			<input type='submit' value='" . __( 'Search', 'my-content-management' ) . "' class='btn' />
 		</form>
 	</div>";

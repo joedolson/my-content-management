@@ -89,7 +89,7 @@ function mcm_format_fieldset( $values, $display, $headers, $fieldset, $template 
 					if ( is_array( $value['value'] ) ) {
 						$i = 1;
 						foreach ( $value['value'] as $val ) {
-							$label  = apply_filters( 'mcm_widget_data_label', esc_html( stripslashes( $value['label'] ) ), $val, $display, $fieldset );
+							$label  = apply_filters( 'mcm_widget_data_label', esc_html( wp_unslash( $value['label'] ) ), $val, $display, $fieldset );
 							$output = apply_filters( 'mcm_widget_data_value', mcm_format_value( $val, $value['type'], $value['label'] ), $val, $display, $fieldset );
 							if ( 'table' === $display ) {
 								$list .= '<tr><td class="mcm_field_label">' . $label . ' <span class="mcm-repeater-label">(' . $i . ')</span></td><td class="mcm_field_value">' . $output . '</td></tr>';
@@ -99,7 +99,7 @@ function mcm_format_fieldset( $values, $display, $headers, $fieldset, $template 
 							$i++;
 						}
 					} else {
-						$label  = apply_filters( 'mcm_widget_data_label', esc_html( stripslashes( $value['label'] ) ), $value, $display, $fieldset );
+						$label  = apply_filters( 'mcm_widget_data_label', esc_html( wp_unslash( $value['label'] ) ), $value, $display, $fieldset );
 						$output = apply_filters( 'mcm_widget_data_value', mcm_format_value( $value['value'], $value['type'], $value['label'] ), $value, $display, $fieldset );
 						if ( 'table' === $display ) {
 							$list .= '<tr><td class="mcm_field_label">' . $label . '</td><td class="mcm_field_value">' . $output . '</td></tr>';
@@ -269,11 +269,11 @@ function mcm_format_value( $value, $type, $label ) {
 		case 'time':
 		case 'email':
 		case 'text':
-			$return = stripslashes( $value );
+			$return = wp_unslash( $value );
 			break;
 		case 'textarea':
 		case 'richtext':
-			$return = wpautop( stripslashes( $value ) );
+			$return = wpautop( wp_unslash( $value ) );
 			break;
 		case 'upload':
 			$components = parse_url( $value );
@@ -292,7 +292,7 @@ function mcm_format_value( $value, $type, $label ) {
 			if ( is_numeric( $value ) ) {
 				$return = date_i18n( get_option( 'date_format' ), $value );
 			} else {
-				$return = stripslashes( $value );
+				$return = wp_unslash( $value );
 			}
 			// if is timestamp, convert to date; otherwise, display as is.
 			break; // timestamp? convert to date format?

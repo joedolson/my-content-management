@@ -1124,7 +1124,7 @@ function mcm_template_setter() {
 								<label for='mcm_full_list_wrapper_$value'>" . __( 'List Wrapper', 'my-content-management' ) . "</label> <select name='templates[$value][wrapper][list][full]' id='mcm_full_list_wrapper_$value'>" . mcm_option_list( $list, $template['wrapper']['list']['full'] ) . "</select> <label for='mcm_full_item_wrapper_$value'>" . __( 'Item Wrapper', 'my-content-management' ) . "</label> <select name='templates[$value][wrapper][item][full]' id='mcm_full_item_wrapper_$value'>" . mcm_option_list( $item, $template['wrapper']['item']['full'] ) . "</select>
 							</p>
 							<p>
-								<label for='mcm_full_wrapper_$value'>" . __( 'Full Template', 'my-content-management' ) . "</label><br /> <textarea name='templates[$value][full]' id='mcm_full_wrapper_$value' rows='7' cols='60'>" . stripslashes( esc_textarea( $template['full'] ) ) . '</textarea>
+								<label for='mcm_full_wrapper_$value'>" . __( 'Full Template', 'my-content-management' ) . "</label><br /> <textarea name='templates[$value][full]' id='mcm_full_wrapper_$value' rows='7' cols='60'>" . wp_unslash( esc_textarea( $template['full'] ) ) . '</textarea>
 							</p>
 						</fieldset>
 						<fieldset>
@@ -1133,7 +1133,7 @@ function mcm_template_setter() {
 								<label for='mcm_excerpt_list_wrapper_$value'>" . __( 'List Wrapper', 'my-content-management' ) . "</label> <select name='templates[$value][wrapper][list][excerpt]' id='mcm_excerpt_list_wrapper_$value'>" . mcm_option_list( $list, $template['wrapper']['list']['excerpt'] ) . "</select> <label for='mcm_excerpt_item_wrapper_$value'>" . __( 'Item Wrapper', 'my-content-management' ) . "</label> <select name='templates[$value][wrapper][item][excerpt]' id='mcm_excerpt_item_wrapper_$value'>" . mcm_option_list( $item, $template['wrapper']['item']['excerpt'] ) . "</select>
 							</p>
 							<p>
-								<label for='mcm_excerpt_wrapper_$value'>" . __( 'Excerpt Template', 'my-content-management' ) . "</label><br /> <textarea name='templates[$value][excerpt]' id='mcm_excerpt_wrapper_$value' rows='3' cols='60'>" . stripslashes( esc_textarea( $template['excerpt'] ) ) . '</textarea>
+								<label for='mcm_excerpt_wrapper_$value'>" . __( 'Excerpt Template', 'my-content-management' ) . "</label><br /> <textarea name='templates[$value][excerpt]' id='mcm_excerpt_wrapper_$value' rows='3' cols='60'>" . wp_unslash( esc_textarea( $template['excerpt'] ) ) . '</textarea>
 							</p>
 						</fieldset>
 						<fieldset>
@@ -1142,7 +1142,7 @@ function mcm_template_setter() {
 								<label for='mcm_list_list_wrapper_$value'>" . __( 'List Wrapper', 'my-content-management' ) . "</label> <select name='templates[$value][wrapper][list][list]' id='mcm_list_list_wrapper_$value'>" . mcm_option_list( $list, $template['wrapper']['list']['list'] ) . "</select> <label for='mcm_list_item_wrapper_$value'>" . __( 'Item Wrapper', 'my-content-management' ) . "</label> <select name='templates[$value][wrapper][item][list]' id='mcm_list_item_wrapper_$value'>" . mcm_option_list( $item, $template['wrapper']['item']['list'] ) . "</select>
 							</p>
 							<p>
-								<label for='mcm_list_wrapper_$value'>" . __( 'List Template', 'my-content-management' ) . "</label><br /> <textarea name='templates[$value][list]' id='mcm_list_wrapper_$value' rows='1' cols='60'>" . stripslashes( esc_textarea( $template['list'] ) ) . '</textarea>
+								<label for='mcm_list_wrapper_$value'>" . __( 'List Template', 'my-content-management' ) . "</label><br /> <textarea name='templates[$value][list]' id='mcm_list_wrapper_$value' rows='1' cols='60'>" . wp_unslash( esc_textarea( $template['list'] ) ) . '</textarea>
 							</p>
 						</fieldset>';
 					// Translators: Template name.
@@ -1329,7 +1329,7 @@ function mcm_fields( $show = 'assign', $post_type = false, $echo = true ) {
 				$checked_on  = '';
 			}
 			$k     = urlencode( $key );
-			$group = stripslashes( $key );
+			$group = wp_unslash( $key );
 			$key   = sanitize_key( $key );
 
 			$current = '';
@@ -1536,9 +1536,9 @@ function mcm_get_fieldset( $fieldset = false ) {
 		if ( count( $fields ) > 0 ) {
 			foreach ( $fields as $key => $value ) {
 				if ( is_array( $value[2] ) ) {
-					$choices = esc_attr( stripslashes( implode( ', ', $value[2] ) ) );
+					$choices = esc_attr( wp_unslash( implode( ', ', $value[2] ) ) );
 				} else {
-					$choices = esc_attr( stripslashes( $value[2] ) );
+					$choices = esc_attr( wp_unslash( $value[2] ) );
 				}
 				$field_type_select = '';
 				foreach ( $field_types as $k => $v ) {
@@ -1570,7 +1570,7 @@ function mcm_get_fieldset( $fieldset = false ) {
 					</td>
 					<td>
 						<input type='hidden' name='mcm_field_key[]'  value='$value[0]' />
-						<label for='mcm_field_label$key'>" . __( 'Label', 'my-content-management' ) . "</label> <input type='text' name='mcm_field_label[]' id='mcm_field_label$key' value='" . esc_attr( stripslashes( $value[1] ) ) . "' /><br /><small>{<code>$value[0]</code>}</small>
+						<label for='mcm_field_label$key'>" . __( 'Label', 'my-content-management' ) . "</label> <input type='text' name='mcm_field_label[]' id='mcm_field_label$key' value='" . esc_attr( wp_unslash( $value[1] ) ) . "' /><br /><small>{<code>$value[0]</code>}</small>
 					</td>
 					<td>
 						<label for='mcm_field_type$key'>" . __( 'Type', 'my-content-management' ) . "</label>
@@ -1748,7 +1748,7 @@ function mcm_update_custom_fieldset( $post ) {
 	}
 	update_option( 'mcm_options', $option );
 	// Translators: 1) action taken 2) name of fieldset acted on.
-	return sprintf( __( 'You have %1$s the %2$s group of custom fields.', 'my-content-management' ), $added, stripslashes( $fieldset ) );
+	return sprintf( __( 'You have %1$s the %2$s group of custom fields.', 'my-content-management' ), $added, wp_unslash( $fieldset ) );
 }
 
 /**
