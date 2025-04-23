@@ -627,7 +627,7 @@ function mcm_settings_page() {
 	$enabled = ( isset( $_POST['mcm_enabler'] ) && isset( $_POST['mcm_posttypes'] ) ) ? map_deep( $_POST['mcm_posttypes'], 'sanitize_textarea_field' ) : $enabled;
 	?>
 	<div class='wrap mcm-settings'>
-		<h1><?php _e( 'My Content Management', 'my-content-management' ); ?></h1>
+		<h1><?php esc_html_e( 'My Content Management', 'my-content-management' ); ?></h1>
 		<div class="postbox-container" style="width: 70%">
 			<div class="metabox-holder">
 				<div class="mcm-settings ui-sortable meta-box-sortables">
@@ -639,7 +639,7 @@ function mcm_settings_page() {
 					if ( isset( $_GET['mcm_edit'] ) || isset( $_GET['mcm_add'] ) ) {
 						?>
 					<div class="postbox">
-						<h2 class='hndle'><?php _e( 'Edit Custom Post Type', 'my-content-management' ); ?></h2>
+						<h2 class='hndle'><?php esc_html_e( 'Edit Custom Post Type', 'my-content-management' ); ?></h2>
 						<div class="inside">
 						<?php mcm_updater(); ?>
 						</div>
@@ -648,14 +648,14 @@ function mcm_settings_page() {
 					}
 					?>
 					<div class="postbox">
-						<h2 class='hndle'><?php _e( 'Enable Custom Post Types', 'my-content-management' ); ?></h2>
+						<h2 class='hndle'><?php esc_html_e( 'Enable Custom Post Types', 'my-content-management' ); ?></h2>
 						<div class="inside">
 						<form method='post' action='<?php echo admin_url( 'options-general.php?page=mcm_settings' ); ?>'>
 							<div><input type='hidden' name='_wpnonce' value='<?php echo wp_create_nonce( 'my-content-management-nonce' ); ?>' /></div>
 							<div>
 							<?php mcm_enabler(); ?>
 							<p>
-								<input type='submit' value='<?php _e( 'Update Enabled Post Types', 'my-content-management' ); ?>' name='mcm_enabler' class='button-primary' /> <a class="button-secondary" href="<?php echo admin_url( 'options-general.php?page=mcm_settings&mcm_add=new' ); ?>"><?php _e( 'Add new post type', 'my-content-management' ); ?></a>
+								<input type='submit' value='<?php esc_attr_e( 'Update Enabled Post Types', 'my-content-management' ); ?>' name='mcm_enabler' class='button-primary' /> <a class="button-secondary" href="<?php echo admin_url( 'options-general.php?page=mcm_settings&mcm_add=new' ); ?>"><?php esc_html_e( 'Add new post type', 'my-content-management' ); ?></a>
 							</p>
 							</div>
 						</form>
@@ -667,29 +667,29 @@ function mcm_settings_page() {
 					}
 					?>
 					<div class="mcm-template-guide postbox" id="get-support">
-						<h2 class='hndle'><?php _e( 'Template Tags', 'my-content-management' ); ?></h2>
+						<h2 class='hndle'><?php esc_html_e( 'Template Tags', 'my-content-management' ); ?></h2>
 						<div class="inside">
 							<dl>
 								<dt><code>{id}</code></dt>
-								<dd><?php _e( 'Post ID', 'my-content-management' ); ?></dd>
+								<dd><?php esc_html_e( 'Post ID', 'my-content-management' ); ?></dd>
 
 								<dt><code>{slug}</code></dt>
-								<dd><?php _e( 'Post Slug', 'my-content-management' ); ?></dd>
+								<dd><?php esc_html_e( 'Post Slug', 'my-content-management' ); ?></dd>
 
 								<dt><code>{excerpt}</code></dt>
-								<dd><?php _e( 'Post excerpt (with auto paragraphs)', 'my-content-management' ); ?></dd>
+								<dd><?php esc_html_e( 'Post excerpt (with auto paragraphs)', 'my-content-management' ); ?></dd>
 
 								<dt><code>{excerpt_raw}</code></dt>
-								<dd><?php _e( 'Post excerpt (unmodified)', 'my-content-management' ); ?></dd>
+								<dd><?php esc_html_e( 'Post excerpt (unmodified)', 'my-content-management' ); ?></dd>
 
 								<dt><code>{content}</code></dt>
-								<dd><?php _e( 'Post content (with auto paragraphs and shortcodes processed)', 'my-content-management' ); ?></dd>
+								<dd><?php esc_html_e( 'Post content (with auto paragraphs and shortcodes processed)', 'my-content-management' ); ?></dd>
 
 								<dt><code>{content_raw}</code></dt>
-								<dd><?php _e( 'Post content (unmodified)', 'my-content-management' ); ?></dd>
+								<dd><?php esc_html_e( 'Post content (unmodified)', 'my-content-management' ); ?></dd>
 
 								<dt><code>{full}</code></dt>
-								<dd><?php _e( 'Featured image at original size.', 'my-content-management' ); ?></dd>
+								<dd><?php esc_html_e( 'Featured image at original size.', 'my-content-management' ); ?></dd>
 
 								<?php
 								$sizes = get_intermediate_image_sizes();
@@ -700,31 +700,31 @@ function mcm_settings_page() {
 								?>
 
 								<dt><code>{permalink}</code></dt>
-								<dd><?php _e( 'Permalink URL for post', 'my-content-management' ); ?></dd>
+								<dd><?php esc_html_e( 'Permalink URL for post', 'my-content-management' ); ?></dd>
 
 								<dt><code>{link_title}</code></dt>
-								<dd><?php _e( 'Post title linked to permalink URL', 'my-content-management' ); ?></dd>
+								<dd><?php esc_html_e( 'Post title linked to permalink URL', 'my-content-management' ); ?></dd>
 
 								<dt><code>{title}</code></dt>
-								<dd><?php _e( 'Post title', 'my-content-management' ); ?></dd>
+								<dd><?php esc_html_e( 'Post title', 'my-content-management' ); ?></dd>
 
 								<dt><code>{shortlink}</code></dt>
-								<dd><?php _e( 'Post shortlink', 'my-content-management' ); ?></dd>
+								<dd><?php esc_html_e( 'Post shortlink', 'my-content-management' ); ?></dd>
 
 								<dt><code>{modified}</code></dt>
-								<dd><?php _e( 'Post last modified date', 'my-content-management' ); ?></dd>
+								<dd><?php esc_html_e( 'Post last modified date', 'my-content-management' ); ?></dd>
 
 								<dt><code>{date}</code></dt>
-								<dd><?php _e( 'Post publication date', 'my-content-management' ); ?></dd>
+								<dd><?php esc_html_e( 'Post publication date', 'my-content-management' ); ?></dd>
 
 								<dt><code>{author}</code></dt>
-								<dd><?php _e( 'Post author display name', 'my-content-management' ); ?></dd>
+								<dd><?php esc_html_e( 'Post author display name', 'my-content-management' ); ?></dd>
 
 								<dt><code>{terms}</code></dt>
-								<dd><?php _e( 'List of taxonomy terms associated with post.', 'my-content-management' ); ?></dd>
+								<dd><?php esc_html_e( 'List of taxonomy terms associated with post.', 'my-content-management' ); ?></dd>
 
 								<dt><code>{edit_link}</code></dt>
-								<dd><?php _e( 'When logged in, display link to edit the current post.', 'my-content-management' ); ?></dd>
+								<dd><?php esc_html_e( 'When logged in, display link to edit the current post.', 'my-content-management' ); ?></dd>
 							</dl>
 							<p>
 							<?php
@@ -1222,7 +1222,7 @@ function mcm_support_column() {
 		<div class="metabox-holder">
 			<div class="mcm-settings ui-sortable meta-box-sortables">
 				<div class="mcm-template-guide postbox" id="get-support">
-					<h2 class='hndle'><?php _e( 'Support This Plug-in', 'my-content-management' ); ?></h2>
+					<h2 class='hndle'><?php esc_html_e( 'Support This Plug-in', 'my-content-management' ); ?></h2>
 					<div class="inside">
 						<?php mcm_show_support_box(); ?>
 					</div>
@@ -1232,7 +1232,7 @@ function mcm_support_column() {
 		<div class="metabox-holder">
 			<div class="mcm-settings ui-sortable meta-box-sortables">
 				<div class="mcm-template-guide postbox" id="get-support">
-					<h2 class='hndle'><?php _e( 'No support', 'my-content-management' ); ?></h2>
+					<h2 class='hndle'><?php esc_html_e( 'No support', 'my-content-management' ); ?></h2>
 					<div class="inside">
 						<?php
 							_e( 'My Content Management is available with no support. It is intended as a custom field and custom post type builder, and the templating functions are no longer maintained.', 'my-content-management' );
@@ -1788,21 +1788,21 @@ function mcm_configure_custom_fields() {
 	$fields = mcm_fields( 'edit', false, false );
 	?>
 	<div class="wrap">
-		<h2 class='hndle'><?php _e( 'My Content Management / Manage Custom Fields', 'my-content-management' ); ?></h2>
+		<h2 class='hndle'><?php esc_html_e( 'My Content Management / Manage Custom Fields', 'my-content-management' ); ?></h2>
 		<div class="postbox-container" style="width: 70%">
 			<div class="metabox-holder">
 				<div class="mcm-settings ui-sortable meta-box-sortables">
 					<div class="postbox" id="mcm-settings">
-						<h2 class='hndle'><?php _e( 'Manage Custom Fieldsets', 'my-content-management' ); ?></h2>
+						<h2 class='hndle'><?php esc_html_e( 'Manage Custom Fieldsets', 'my-content-management' ); ?></h2>
 						<div class="inside">
-							<p><?php _e( 'If the input type is a Select box, enter the selectable options as a comma-separated list in the Description/Options field.', 'my-content-management' ); ?></p>
+							<p><?php esc_html_e( 'If the input type is a Select box, enter the selectable options as a comma-separated list in the Description/Options field.', 'my-content-management' ); ?></p>
 							<?php echo $fields; ?>
 							<form method='post' action='<?php echo esc_url( admin_url( "options-general.php?page=mcm_custom_fields$append" ) ); ?>'>
 								<div><input type='hidden' name='_wpnonce' value='<?php echo wp_create_nonce( 'my-content-management-nonce' ); ?>' /></div>
 								<div>
 								<?php mcm_fields_updater(); ?>
 								<p>
-									<input type='submit' value='<?php _e( 'Update Custom Fieldsets', 'my-content-management' ); ?>' name='mcm_custom_fieldsets' class='button-primary' /> <a href="<?php echo admin_url( 'options-general.php?page=mcm_custom_fields&mcm_fields_add=new' ); ?>"><?php _e( 'Add new custom field set', 'my-content-management' ); ?></a>
+									<input type='submit' value='<?php esc_attr_e( 'Update Custom Fieldsets', 'my-content-management' ); ?>' name='mcm_custom_fieldsets' class='button-primary' /> <a href="<?php echo admin_url( 'options-general.php?page=mcm_custom_fields&mcm_fields_add=new' ); ?>"><?php esc_html_e( 'Add new custom field set', 'my-content-management' ); ?></a>
 								</p>
 								</div>
 							</form>

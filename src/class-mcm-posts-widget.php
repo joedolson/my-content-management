@@ -92,7 +92,7 @@ class Mcm_Posts_Widget extends WP_Widget {
 		$args   = apply_filters( 'mcm_custom_posts_widget_args', $args );
 		$custom = mcm_get_show_posts( $args );
 
-		echo wp_kses( $before_widget . $widget_title . $wrapper . $custom . $unwrapper . $after_widget, mcm_kses_elements() );
+		echo wp_kses( $before_widget . $widget_title . $wrapper . $custom . $unwrapper . $after_widget, mcm_ksesesc_html_elements() );
 	}
 
 	/**
@@ -112,11 +112,11 @@ class Mcm_Posts_Widget extends WP_Widget {
 		$wrapper   = isset( $instance['wrapper'] ) ? esc_attr( $instance['wrapper'] ) : '';
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title', 'my-content-management' ); ?>:</label><br />
+			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php esc_html_e( 'Title', 'my-content-management' ); ?>:</label><br />
 			<input class="widefat" type="text" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" value="<?php echo esc_attr( wp_unslash( $title ) ); ?>"/>
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'mcm_posts_widget_post_type' ); ?>"><?php _e( 'Post type to list', 'my-content-management' ); ?></label> <select id="<?php echo $this->get_field_id( 'mcm_posts_widget_post_type' ); ?>" name="<?php echo $this->get_field_name( 'mcm_posts_widget_post_type' ); ?>">
+			<label for="<?php echo $this->get_field_id( 'mcm_posts_widget_post_type' ); ?>"><?php esc_html_e( 'Post type to list', 'my-content-management' ); ?></label> <select id="<?php echo $this->get_field_id( 'mcm_posts_widget_post_type' ); ?>" name="<?php echo $this->get_field_name( 'mcm_posts_widget_post_type' ); ?>">
 			<?php
 			$posts      = get_post_types(
 				array(
@@ -136,55 +136,55 @@ class Mcm_Posts_Widget extends WP_Widget {
 			</select>
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'display' ); ?>"><?php _e( 'Template Model', 'my-content-management' ); ?></label> <select id="<?php echo $this->get_field_id( 'display' ); ?>" name="<?php echo $this->get_field_name( 'display' ); ?>">
-			<option value='list'<?php selected( $display, 'list' ); ?>><?php _e( 'List', 'my-content-management' ); ?></option>
-			<option value='excerpt'<?php selected( $display, 'excerpt' ); ?>><?php _e( 'Excerpt', 'my-content-management' ); ?></option>
-			<option value='full'<?php selected( $display, 'full' ); ?>><?php _e( 'Full', 'my-content-management' ); ?></option>
-			<option value='custom'<?php selected( $display, 'custom' ); ?>><?php _e( 'Custom', 'my-content-management' ); ?></option>
+			<label for="<?php echo $this->get_field_id( 'display' ); ?>"><?php esc_html_e( 'Template Model', 'my-content-management' ); ?></label> <select id="<?php echo $this->get_field_id( 'display' ); ?>" name="<?php echo $this->get_field_name( 'display' ); ?>">
+			<option value='list'<?php selected( $display, 'list' ); ?>><?php esc_html_e( 'List', 'my-content-management' ); ?></option>
+			<option value='excerpt'<?php selected( $display, 'excerpt' ); ?>><?php esc_html_e( 'Excerpt', 'my-content-management' ); ?></option>
+			<option value='full'<?php selected( $display, 'full' ); ?>><?php esc_html_e( 'Full', 'my-content-management' ); ?></option>
+			<option value='custom'<?php selected( $display, 'custom' ); ?>><?php esc_html_e( 'Custom', 'my-content-management' ); ?></option>
 			</select>
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'order' ); ?>"><?php _e( 'Display order', 'my-content-management' ); ?></label> <select id="<?php echo $this->get_field_id( 'order' ); ?>" name="<?php echo $this->get_field_name( 'order' ); ?>">
-			<option value='menu_order'<?php selected( $order, 'menu_order' ); ?>><?php _e( 'Menu Order', 'my-content-management' ); ?></option>
-			<option value='none'<?php selected( $order, 'none' ); ?>><?php _e( 'None', 'my-content-management' ); ?></option>
-			<option value='ID'<?php selected( $order, 'id' ); ?>><?php _e( 'Post ID', 'my-content-management' ); ?></option>
-			<option value='author'<?php selected( $order, 'author' ); ?>><?php _e( 'Author', 'my-content-management' ); ?></option>
-			<option value='title'<?php selected( $order, 'title' ); ?>><?php _e( 'Post Title', 'my-content-management' ); ?></option>
-			<option value='date'<?php selected( $order, 'date' ); ?>><?php _e( 'Post Date', 'my-content-management' ); ?></option>
-			<option value='modified'<?php selected( $order, 'modified' ); ?>><?php _e( 'Post Modified Date', 'my-content-management' ); ?></option>
-			<option value='rand'<?php selected( $order, 'rand' ); ?>><?php _e( 'Random', 'my-content-management' ); ?></option>
-			<option value='comment_count'<?php selected( $order, 'comment_count' ); ?>><?php _e( 'Number of comments', 'my-content-management' ); ?></option>
+		<label for="<?php echo $this->get_field_id( 'order' ); ?>"><?php esc_html_e( 'Display order', 'my-content-management' ); ?></label> <select id="<?php echo $this->get_field_id( 'order' ); ?>" name="<?php echo $this->get_field_name( 'order' ); ?>">
+			<option value='menu_order'<?php selected( $order, 'menu_order' ); ?>><?php esc_html_e( 'Menu Order', 'my-content-management' ); ?></option>
+			<option value='none'<?php selected( $order, 'none' ); ?>><?php esc_html_e( 'None', 'my-content-management' ); ?></option>
+			<option value='ID'<?php selected( $order, 'id' ); ?>><?php esc_html_e( 'Post ID', 'my-content-management' ); ?></option>
+			<option value='author'<?php selected( $order, 'author' ); ?>><?php esc_html_e( 'Author', 'my-content-management' ); ?></option>
+			<option value='title'<?php selected( $order, 'title' ); ?>><?php esc_html_e( 'Post Title', 'my-content-management' ); ?></option>
+			<option value='date'<?php selected( $order, 'date' ); ?>><?php esc_html_e( 'Post Date', 'my-content-management' ); ?></option>
+			<option value='modified'<?php selected( $order, 'modified' ); ?>><?php esc_html_e( 'Post Modified Date', 'my-content-management' ); ?></option>
+			<option value='rand'<?php selected( $order, 'rand' ); ?>><?php esc_html_e( 'Random', 'my-content-management' ); ?></option>
+			<option value='comment_count'<?php selected( $order, 'comment_count' ); ?>><?php esc_html_e( 'Number of comments', 'my-content-management' ); ?></option>
 		</select>
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'count' ); ?>"><?php _e( 'Number to display', 'my-content-management' ); ?></label> <input type="text" size="3" id="<?php echo $this->get_field_id( 'count' ); ?>" name="<?php echo $this->get_field_name( 'count' ); ?>" value="<?php echo (int) $count; ?>" /><br /><span>(<?php _e( '-1 to display all posts', 'my-content-management' ); ?>)</span>
+		<label for="<?php echo $this->get_field_id( 'count' ); ?>"><?php esc_html_e( 'Number to display', 'my-content-management' ); ?></label> <input type="text" size="3" id="<?php echo $this->get_field_id( 'count' ); ?>" name="<?php echo $this->get_field_name( 'count' ); ?>" value="<?php echo (int) $count; ?>" /><br /><span>(<?php esc_html_e( '-1 to display all posts', 'my-content-management' ); ?>)</span>
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'direction' ); ?>"><?php _e( 'Order direction', 'my-content-management' ); ?></label> <select id="<?php echo $this->get_field_id( 'direction' ); ?>" name="<?php echo $this->get_field_name( 'direction' ); ?>">
-		<option value='asc'<?php echo ( 'asc' === $direction ) ? ' selected="selected"' : ''; ?>><?php _e( 'Ascending (A-Z)', 'my-content-management' ); ?></option>
-		<option value='desc'<?php echo ( 'desc' === $direction ) ? ' selected="selected"' : ''; ?>><?php _e( 'Descending (Z-A)', 'my-content-management' ); ?></option>
+		<label for="<?php echo $this->get_field_id( 'direction' ); ?>"><?php esc_html_e( 'Order direction', 'my-content-management' ); ?></label> <select id="<?php echo $this->get_field_id( 'direction' ); ?>" name="<?php echo $this->get_field_name( 'direction' ); ?>">
+		<option value='asc'<?php echo ( 'asc' === $direction ) ? ' selected="selected"' : ''; ?>><?php esc_html_e( 'Ascending (A-Z)', 'my-content-management' ); ?></option>
+		<option value='desc'<?php echo ( 'desc' === $direction ) ? ' selected="selected"' : ''; ?>><?php esc_html_e( 'Descending (Z-A)', 'my-content-management' ); ?></option>
 		</select>
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'term' ); ?>"><?php _e( 'Category (single term or comma-separated list)', 'my-content-management' ); ?>:</label><br />
+		<label for="<?php echo $this->get_field_id( 'term' ); ?>"><?php esc_html_e( 'Category (single term or comma-separated list)', 'my-content-management' ); ?>:</label><br />
 		<input class="widefat" type="text" id="<?php echo $this->get_field_id( 'term' ); ?>" name="<?php echo $this->get_field_name( 'term' ); ?>" value="<?php echo esc_attr( wp_unslash( $term ) ); ?>"/>
 		</p>
 		<?php
 		if ( 'custom' === $display ) {
 			?>
 		<fieldset>
-		<legend><strong><?php _e( 'Custom Templating', 'my-content-management' ); ?></strong></legend>
+		<legend><strong><?php esc_html_e( 'Custom Templating', 'my-content-management' ); ?></strong></legend>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'wrapper' ); ?>"><?php _e( 'Wrapper', 'my-content-management' ); ?>:</label><br />
+		<label for="<?php echo $this->get_field_id( 'wrapper' ); ?>"><?php esc_html_e( 'Wrapper', 'my-content-management' ); ?>:</label><br />
 		<select id="<?php echo $this->get_field_id( 'wrapper' ); ?>" name="<?php echo $this->get_field_name( 'wrapper' ); ?>">
-			<option value=''><?php _e( 'None', 'my-content-management' ); ?></option>
-			<option value='ul'<?php selected( 'ul', $wrapper ); ?>><?php _e( 'Unordered list', 'my-content-management' ); ?></option>
-			<option value='ol'<?php selected( 'ol', $wrapper ); ?>><?php _e( 'Ordered list', 'my-content-management' ); ?></option>
-			<option value='div'<?php selected( 'div', $wrapper ); ?>><?php _e( 'Div', 'my-content-management' ); ?></option>
+			<option value=''><?php esc_html_e( 'None', 'my-content-management' ); ?></option>
+			<option value='ul'<?php selected( 'ul', $wrapper ); ?>><?php esc_html_e( 'Unordered list', 'my-content-management' ); ?></option>
+			<option value='ol'<?php selected( 'ol', $wrapper ); ?>><?php esc_html_e( 'Ordered list', 'my-content-management' ); ?></option>
+			<option value='div'<?php selected( 'div', $wrapper ); ?>><?php esc_html_e( 'Div', 'my-content-management' ); ?></option>
 		</select>
 		</p>
 		<p>
-		<label for="<?php echo $this->get_field_id( 'template' ); ?>"><?php _e( 'Custom Template', 'my-content-management' ); ?></label><br />
+		<label for="<?php echo $this->get_field_id( 'template' ); ?>"><?php esc_html_e( 'Custom Template', 'my-content-management' ); ?></label><br />
 		<textarea class="widefat" id="<?php echo $this->get_field_id( 'template' ); ?>" cols='40' rows='4' name="<?php echo $this->get_field_name( 'template' ); ?>"><?php echo wp_unslash( esc_textarea( $template ) ); ?></textarea>
 		</p>
 		</fieldset>
@@ -215,7 +215,7 @@ class Mcm_Posts_Widget extends WP_Widget {
 		$instance['title']                      = sanitize_text_field( $new_instance['title'] );
 		$instance['term']                       = sanitize_text_field( $new_instance['term'] );
 		$instance['wrapper']                    = sanitize_text_field( $new_instance['wrapper'] );
-		$instance['template']                   = wp_kses( $new_instance['template'], mcm_kses_elements() );
+		$instance['template']                   = wp_kses( $new_instance['template'], mcm_ksesesc_html_elements() );
 
 		return $instance;
 	}
