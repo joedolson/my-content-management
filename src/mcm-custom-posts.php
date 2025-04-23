@@ -108,7 +108,7 @@ function mcm_posttypes_messages( $messages ) {
 				// Translators: Post type name, link to preview, post type lower case name.
 				8  => sprintf( __( '%1$s listing submitted. <a target="_blank" href="%2$s">Preview %3$s listing</a>', 'my-content-management' ), $value[2], esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ), $value[0] ),
 				// Translators: Post type name, date scheduled, preview link, post type lowercase name.
-				9  => sprintf( __( '%1$s listing scheduled for: <strong>%2$s</strong>. <a target="_blank" href="%3$s">Preview %4$s</a>', 'my-content-management' ), $value[2], date_i18n( __( 'M j, Y @ G:i' ), strtotime( $post->post_date ) ), esc_url( get_permalink( $post_ID ) ), $value[0] ),
+				9  => sprintf( __( '%1$s listing scheduled for: <strong>%2$s</strong>. <a target="_blank" href="%3$s">Preview %4$s</a>', 'my-content-management' ), $value[2], date_i18n( __( 'M j, Y @ G:i', 'my-content-management' ), strtotime( $post->post_date ) ), esc_url( get_permalink( $post_ID ) ), $value[0] ),
 				// Translators: Post type name, preview link, post type lowercase.
 				10 => sprintf( __( '%1$s draft updated. <a target="_blank" href="%2$s">Preview %3$s listing</a>', 'my-content-management' ), $value[2], esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ), $value[0] ),
 			);
@@ -239,7 +239,7 @@ function mcm_add_custom_box( $fields, $post_type = 'post', $location = 'side', $
 		$priority = apply_filters( 'mcm_set_priority', 'default', $fields, $post_type );
 		foreach ( array_keys( $fields ) as $field ) {
 			$id              = sanitize_title( $field );
-			$field           = stripslashes( $field );
+			$field           = wp_unslash( $field );
 			$fields['group'] = $field;
 			$field           = apply_filters( 'mcm_display_name', $field );
 			if ( apply_filters( 'mcm_filter_meta_box', $show, $post_type, $id ) ) {
@@ -343,8 +343,8 @@ function mcm_field_html( $args ) {
  */
 function mcm_upload_field( $args ) {
 	global $post;
-	$args[1]     = stripslashes( $args[1] );
-	$description = stripslashes( $args[2] );
+	$args[1]     = wp_unslash( $args[1] );
+	$description = wp_unslash( $args[2] );
 	// adjust data.
 	$single   = true;
 	$download = '';
@@ -396,8 +396,8 @@ function mcm_upload_field( $args ) {
  */
 function mcm_chooser_field( $args ) {
 	global $post;
-	$args[1]     = stripslashes( $args[1] );
-	$description = stripslashes( $args[2] );
+	$args[1]     = wp_unslash( $args[1] );
+	$description = wp_unslash( $args[2] );
 	// adjust data.
 	$single   = true;
 	$download = '';
@@ -454,8 +454,8 @@ function mcm_chooser_field( $args ) {
  * @return string
  */
 function mcm_text_field( $args, $type = 'text' ) {
-	$args[1]     = stripslashes( $args[1] );
-	$description = stripslashes( $args[2] );
+	$args[1]     = wp_unslash( $args[1] );
+	$description = wp_unslash( $args[2] );
 	$types       = array( 'color', 'date', 'number', 'tel', 'time', 'url' );
 	if ( 'mcm_text_field' === $type ) {
 		$type = 'text';
@@ -513,7 +513,7 @@ function mcm_text_field( $args, $type = 'text' ) {
  */
 function mcm_select( $args ) {
 	global $post;
-	$args[1] = stripslashes( $args[1] );
+	$args[1] = wp_unslash( $args[1] );
 	$choices = $args[2];
 	$single  = true;
 	if ( isset( $args[4] ) && 'true' === $args[4] ) {
@@ -534,7 +534,7 @@ function mcm_select( $args ) {
  */
 function mcm_checkbox( $args ) {
 	global $post;
-	$args[1] = stripslashes( $args[1] );
+	$args[1] = wp_unslash( $args[1] );
 	$choices = $args[2];
 	$single  = true;
 	$checked = '';
@@ -559,7 +559,7 @@ function mcm_checkbox( $args ) {
  */
 function mcm_checkboxes( $args ) {
 	global $post;
-	$args[1] = stripslashes( $args[1] );
+	$args[1] = wp_unslash( $args[1] );
 	$choices = $args[2];
 	$single  = true;
 	if ( isset( $args[4] ) && 'true' === $args[4] ) {
@@ -581,7 +581,7 @@ function mcm_checkboxes( $args ) {
 function mcm_post_relation( $args ) {
 	global $post;
 	$title     = '';
-	$args[1]   = stripslashes( $args[1] );
+	$args[1]   = wp_unslash( $args[1] );
 	$post_type = $args[2];
 	$single    = true;
 	if ( isset( $args[4] ) && 'true' === $args[4] ) {
@@ -606,7 +606,7 @@ function mcm_post_relation( $args ) {
 function mcm_user_relation( $args ) {
 	global $post;
 	$user_login = '';
-	$args[1]    = stripslashes( $args[1] );
+	$args[1]    = wp_unslash( $args[1] );
 	$user_role  = $args[2];
 	$single     = true;
 	if ( isset( $args[4] ) && 'true' === $args[4] ) {
@@ -645,7 +645,7 @@ function mcm_choose_posts( $type, $chosen = false ) {
 	$select = '';
 	foreach ( $posts as $post ) {
 		$selected = ( $chosen && ( $post->ID === $chosen ) ) ? ' selected="selected"' : '';
-		$select  .= "<option value='$post->ID'$selected>" . esc_html( stripslashes( $post->post_title ) ) . "</option>\n";
+		$select  .= "<option value='$post->ID'$selected>" . esc_html( wp_unslash( $post->post_title ) ) . "</option>\n";
 	}
 
 	return $select;
@@ -695,10 +695,10 @@ function mcm_create_options( $choices, $selected, $type = 'select' ) {
 	if ( is_array( $choices ) ) {
 		foreach ( $choices as $value ) {
 			$v       = sanitize_title( $value );
-			$display = stripslashes( $value );
+			$display = wp_unslash( $value );
 			if ( 'select' === $type ) {
 				$chosen  = ( $v === $selected ) ? ' selected="selected"' : '';
-				$return .= "<option value='" . esc_attr( $v ) . "'$chosen>" . esc_html( stripslashes( $display ) ) . '</option>';
+				$return .= "<option value='" . esc_attr( $v ) . "'$chosen>" . esc_html( wp_unslash( $display ) ) . '</option>';
 			} else {
 				if ( is_array( $selected ) ) {
 					$chosen = ( in_array( $v, $selected, true ) ) ? ' checked="checked"' : '';
@@ -706,7 +706,7 @@ function mcm_create_options( $choices, $selected, $type = 'select' ) {
 					$chosen = ( $v === $selected ) ? ' checked="checked"' : '';
 				}
 				$id      = sanitize_title( $v . '_' . $type );
-				$return .= "<li><input type='checkbox' name='" . esc_attr( $type ) . '[]" value="' . esc_attr( $v ) . '" id="' . esc_attr( $id ) . "' $chosen /> <label for='" . esc_attr( $id ) . "'>" . esc_html( stripslashes( $display ) ) . '</label></li>';
+				$return .= "<li><input type='checkbox' name='" . esc_attr( $type ) . '[]" value="' . esc_attr( $v ) . '" id="' . esc_attr( $id ) . "' $chosen /> <label for='" . esc_attr( $id ) . "'>" . esc_html( wp_unslash( $display ) ) . '</label></li>';
 			}
 		}
 	}
@@ -724,8 +724,8 @@ function mcm_create_options( $choices, $selected, $type = 'select' ) {
 function mcm_text_area( $args ) {
 	global $post;
 	$name        = $args[0];
-	$args[1]     = stripslashes( $args[1] );
-	$description = stripslashes( $args[2] );
+	$args[1]     = wp_unslash( $args[1] );
+	$description = wp_unslash( $args[2] );
 	$label       = $args[1];
 	// adjust data.
 	$single = true;
@@ -735,7 +735,7 @@ function mcm_text_area( $args ) {
 	$meta    = get_post_meta( $post->ID, $name, $single );
 	$value   = ( $single ) ? $meta : '';
 	$output  = "<div class='mcm_textarea mcm_field'>";
-	$output .= '<p><label for="' . esc_attr( $name ) . '"><strong>' . esc_html( stripslashes( $label ) ) . '</strong></label><br /><textarea name="' . esc_attr( $name ) . '" id="' . esc_attr( $name ) . '" class="widefat">' . esc_textarea( stripslashes( $value ) ) . '</textarea></p>';
+	$output .= '<p><label for="' . esc_attr( $name ) . '"><strong>' . esc_html( wp_unslash( $label ) ) . '</strong></label><br /><textarea name="' . esc_attr( $name ) . '" id="' . esc_attr( $name ) . '" class="widefat">' . esc_textarea( wp_unslash( $value ) ) . '</textarea></p>';
 	if ( is_array( $meta ) ) {
 		$i       = 1;
 		$output .= '<ul>';
@@ -764,8 +764,8 @@ function mcm_rich_text_area( $args ) {
 	global $post;
 	// adjust data.
 	$single      = true;
-	$args[1]     = stripslashes( $args[1] );
-	$description = stripslashes( $args[2] );
+	$args[1]     = wp_unslash( $args[1] );
+	$description = wp_unslash( $args[2] );
 	if ( isset( $args[4] ) && 'true' === $args[4] ) {
 		$single = false;
 	}
@@ -781,7 +781,7 @@ function mcm_rich_text_area( $args ) {
 		),
 		$args
 	);
-	echo "<div class='mcm_rich_text_area'><label for='" . esc_attr( $id ) . "'><strong>" . esc_html( $args[1] ) . '</strong></label><br /><em>' . esc_html( stripslashes( $description ) ) . '</em>';
+	echo "<div class='mcm_rich_text_area'><label for='" . esc_attr( $id ) . "'><strong>" . esc_html( $args[1] ) . '</strong></label><br /><em>' . esc_html( wp_unslash( $description ) ) . '</em>';
 	wp_editor( $meta, $id, $editor_args );
 	echo '</div>';
 }
