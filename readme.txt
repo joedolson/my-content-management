@@ -3,11 +3,11 @@ Contributors: joedolson
 Donate link: http://www.joedolson.com/donate/
 Tags: custom post types, post types, faq, testimonials, staff, glossary, sidebars, content management
 Requires at least: 4.9
-Tested up to: 6.4
+Tested up to: 6.8
 License: GPLv2 or later
 Text domain: my-content-management
 Update URI: https://www.joedolson.com
-Stable tag: 1.7.10
+Stable tag: 1.7.11
 
 Creates common custom post types for advanced content management: FAQ, Testimonials, people (staff, contributors, etc.), and others!
 
