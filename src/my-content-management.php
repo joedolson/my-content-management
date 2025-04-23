@@ -634,7 +634,7 @@ function mcm_settings_page() {
 					<?php
 					if ( isset( $_GET['mcm_delete'] ) ) {
 						$message = mcm_delete_type( sanitize_key( $_GET['mcm_delete'] ) );
-						echo $message;
+						echo wp_kses_post( $message );
 					}
 					if ( isset( $_GET['mcm_edit'] ) || isset( $_GET['mcm_add'] ) ) {
 						?>
@@ -650,12 +650,12 @@ function mcm_settings_page() {
 					<div class="postbox">
 						<h2 class='hndle'><?php esc_html_e( 'Enable Custom Post Types', 'my-content-management' ); ?></h2>
 						<div class="inside">
-						<form method='post' action='<?php echo admin_url( 'options-general.php?page=mcm_settings' ); ?>'>
+						<form method='post' action='<?php echo esc_url( admin_url( 'options-general.php?page=mcm_settings' ) ); ?>'>
 							<div><input type='hidden' name='_wpnonce' value='<?php echo wp_create_nonce( 'my-content-management-nonce' ); ?>' /></div>
 							<div>
 							<?php mcm_enabler(); ?>
 							<p>
-								<input type='submit' value='<?php esc_attr_e( 'Update Enabled Post Types', 'my-content-management' ); ?>' name='mcm_enabler' class='button-primary' /> <a class="button-secondary" href="<?php echo admin_url( 'options-general.php?page=mcm_settings&mcm_add=new' ); ?>"><?php esc_html_e( 'Add new post type', 'my-content-management' ); ?></a>
+								<input type='submit' value='<?php esc_attr_e( 'Update Enabled Post Types', 'my-content-management' ); ?>' name='mcm_enabler' class='button-primary' /> <a class="button-secondary" href="<?php echo esc_url( admin_url( 'options-general.php?page=mcm_settings&mcm_add=new' ) ); ?>"><?php esc_html_e( 'Add new post type', 'my-content-management' ); ?></a>
 							</p>
 							</div>
 						</form>
@@ -695,7 +695,7 @@ function mcm_settings_page() {
 								$sizes = get_intermediate_image_sizes();
 								foreach ( $sizes as $size ) {
 									// Translators: Image size name.
-									echo '<dt><code>{' . $size . '}</code></dt><dd>' . sprintf( esc_html__( 'Featured image at %s size', 'my-content-management' ), $size ) . '</dd>';
+									echo '<dt><code>{' . esc_html( $size ) . '}</code></dt><dd>' . sprintf( esc_html__( 'Featured image at %s size', 'my-content-management' ), $size ) . '</dd>';
 								}
 								?>
 
@@ -728,7 +728,7 @@ function mcm_settings_page() {
 							</dl>
 							<p>
 							<?php
-								_e( 'Any custom field can also be referenced via shortcode, using the same pattern with the name of the custom field: <code>{custom_field_name}</code>', 'my-content-management' );
+								esc_html_e( 'Any custom field can also be referenced via shortcode, using the same pattern with the name of the custom field: <code>{custom_field_name}</code>', 'my-content-management' );
 							?>
 							</p>
 						</div>
@@ -933,18 +933,19 @@ function mcm_updater() {
 		<p><label for='pt2'>" . esc_html__( 'Plural Name, lower', 'my-content-management' ) . "</label><br /><input type='text' name='new[pt2]' id='pt2' value='' /></p>
 		<p><label for='pt4'>" . esc_html__( 'Plural Name, upper', 'my-content-management' ) . "</label><br /><input type='text' name='new[pt4]' id='pt4' value='' /></p>
 		";
+
 		$default_args = mcm_globals( 'mcm_args' );
 		// Set up values from default post type arguments.
 		foreach ( $default_args as $key => $value ) {
 			if ( is_bool( $value ) ) {
 				$checked = ( true === (bool) $value ) ? ' checked="checked"' : '';
 				if ( 'show_in_rest' !== $key ) {
-					$return .= "<p><input type='checkbox' name='new[ $key ]' value='1' id='$key'$checked /> <label for='$key'>" . ucwords( str_replace( '_', ' ', $key ) ) . '</label></p>';
+					$return .= "<p><input type='checkbox' name='new[" . esc_attr( $key ) . "]' value='1' id='" . esc_attr( $key ) . "'$checked /> <label for='" . esc_attr( $key ) . "'>" . ucwords( str_replace( '_', ' ', $key ) ) . '</label></p>';
 				} else {
-					$return .= "<p><input type='checkbox' name='new[ $key ]' value='1' id='$key'$checked /> <label for='$key'>" . esc_html__( 'Show in REST API and enable Block Editor', 'my-content-management' ) . '</label></p>';
+					$return .= "<p><input type='checkbox' name='new[" . esc_attr( $key ) . "]' value='1' id='" . esc_attr( $key ) . "'$checked /> <label for='" . esc_attr( $key ) . "'>" . esc_html__( 'Show in REST API and enable Block Editor', 'my-content-management' ) . '</label></p>';
 				}
 			} elseif ( is_array( $value ) ) {
-				$return  .= "<p><label for='$key'>" . ucwords( str_replace( '_', ' ', $key ) ) . "</label><br /><select multiple='multiple' name='new[${key}][]' id='$key'>";
+				$return  .= "<p><label for='" . esc_attr( $key ) . "'>" . ucwords( str_replace( '_', ' ', $key ) ) . "</label><br /><select multiple='multiple' name='new[${key}][]' id='" . esc_attr( $key ) . "'>";
 				$supports = array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'trackbacks', 'custom-fields', 'comments', 'revisions', 'page-attributes', 'post-formats', 'publicize' );
 				foreach ( $supports as $s ) {
 					$selected = ( in_array( $s, $value, true ) ) ? ' selected="selected"' : '';
@@ -952,7 +953,7 @@ function mcm_updater() {
 				}
 				$return .= '</select></p>';
 			} else {
-				$return .= "<p><label for='$key'>" . ucwords( str_replace( '_', ' ', $key ) ) . "</label> <input type='text' name='new[ $key ]' value='$value' /></p>";
+				$return .= "<p><label for='" . esc_attr( $key ) . "'>" . ucwords( str_replace( '_', ' ', $key ) ) . "</label> <input type='text' name='new[" . esc_attr( $key ) . "]' value='" . esc_attr( $value ) . "' /></p>";
 			}
 		}
 		$return .= "<p>
@@ -1235,7 +1236,7 @@ function mcm_support_column() {
 					<h2 class='hndle'><?php esc_html_e( 'No support', 'my-content-management' ); ?></h2>
 					<div class="inside">
 						<?php
-							_e( 'My Content Management is available with no support. It is intended as a custom field and custom post type builder, and the templating functions are no longer maintained.', 'my-content-management' );
+							esc_html_e( 'My Content Management is available with no support. It is intended as a custom field and custom post type builder, and the templating functions are no longer maintained.', 'my-content-management' );
 						?>
 					</div>
 				</div>
@@ -1310,7 +1311,7 @@ function mcm_fields( $show = 'assign', $post_type = false, $echo = true ) {
 				mcm_delete_custom_field_support( $key, $post_type );
 			}
 		}
-		echo "<div class='updated fade'><p>" . __( 'Custom fields for this post type updated', 'my-content-management' ) . '</p></div>';
+		echo "<div class='updated fade'><p>" . esc_html__( 'Custom fields for this post type updated', 'my-content-management' ) . '</p></div>';
 	}
 	$option  = get_option( 'mcm_options' );
 	$extras  = $option['extras'];
@@ -1592,7 +1593,7 @@ function mcm_get_fieldset( $fieldset = false ) {
 			}
 		} else {
 			// Translators: action to perform (html button).
-			echo "<div class='mcm-notice'><p>" . sprintf( esc_html__( 'This fieldset has no fields defined. Do you want to %s?', 'my-content-management' ), "<input type='submit' class='button-primary' name='mcm_custom_fieldsets' value='" . __( 'Delete the Fieldset', 'my-content-management' ) . "' />" ) . '</p></div>';
+			echo "<div class='mcm-notice'><p>" . sprintf( esc_html__( 'This fieldset has no fields defined. Do you want to %s?', 'my-content-management' ), "<input type='submit' class='button-primary' name='mcm_custom_fieldsets' value='" . esc_attr__( 'Delete the Fieldset', 'my-content-management' ) . "' />" ) . '</p></div>';
 		}
 	} elseif ( $fieldset && ! isset( $option['fields'][ $fieldset ] ) ) {
 		echo "<div class='updated error'><p>" . esc_html__( 'There is no field set by that name', 'my-content-management' ) . '</p></div>';
@@ -1778,7 +1779,7 @@ function mcm_configure_custom_fields() {
 		$message = false;
 	}
 	if ( $message ) {
-		echo "<div class='updated notice'><p>$message</p></div>";
+		wp_admin_notice( $message );
 	}
 	if ( isset( $_GET['mcm_fields_edit'] ) ) {
 		$append = '&mcm_fields_edit=' . urlencode( sanitize_text_field( $_GET['mcm_fields_edit'] ) );
@@ -1802,7 +1803,7 @@ function mcm_configure_custom_fields() {
 								<div>
 								<?php mcm_fields_updater(); ?>
 								<p>
-									<input type='submit' value='<?php esc_attr_e( 'Update Custom Fieldsets', 'my-content-management' ); ?>' name='mcm_custom_fieldsets' class='button-primary' /> <a href="<?php echo admin_url( 'options-general.php?page=mcm_custom_fields&mcm_fields_add=new' ); ?>"><?php esc_html_e( 'Add new custom field set', 'my-content-management' ); ?></a>
+									<input type='submit' value='<?php esc_attr_e( 'Update Custom Fieldsets', 'my-content-management' ); ?>' name='mcm_custom_fieldsets' class='button-primary' /> <a href="<?php echo esc_url( admin_url( 'options-general.php?page=mcm_custom_fields&mcm_fields_add=new' ) ); ?>"><?php esc_html_e( 'Add new custom field set', 'my-content-management' ); ?></a>
 								</p>
 								</div>
 							</form>

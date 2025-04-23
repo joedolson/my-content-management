@@ -1145,7 +1145,7 @@ function mcm_echo_nonce() {
  */
 function mcm_echo_hidden( $fields, $id ) {
 	// finish when I add hidden fields.
-	echo '<input type="hidden" name="mcm_fieldsets[]" value="' . $id . '" />';
+	echo '<input type="hidden" name="mcm_fieldsets[]" value="' . esc_attr( $id ) . '" />';
 	if ( is_array( $fields ) ) {
 		foreach ( $fields as $field ) {
 			$new_fields[] = $field[0];
