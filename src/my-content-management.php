@@ -543,8 +543,7 @@ add_action( 'after_setup_theme', 'mcm_grant_support' );
  * Installation function.
  */
 function mcm_install_plugin() {
-	global $default_mcm_types, $default_mcm_fields, $default_mcm_extras;
-	$types     = $default_mcm_types;
+	$types     = mcm_globals( 'mcm_types' );
 	$templates = array();
 	if ( is_array( $types ) ) {
 		foreach ( $types as $key => $value ) {
@@ -565,9 +564,9 @@ function mcm_install_plugin() {
 	$options = array(
 		'enabled'   => array(),
 		'templates' => $templates,
-		'types'     => $default_mcm_types,
-		'fields'    => $default_mcm_fields,
-		'extras'    => $default_mcm_extras,
+		'types'     => mcm_globals( 'mcm_types' ),
+		'fields'    => mcm_globals( 'mcm_fields' ),
+		'extras'    => mcm_globals( 'mcm_extras' ),
 	);
 	if ( '' === get_option( 'mcm_options', '' ) ) { // this should protect against deleting changes.
 		add_option( 'mcm_options', $options );
@@ -578,45 +577,12 @@ function mcm_install_plugin() {
  * Run upgrades.
  */
 function mcm_upgrade_plugin() {
-	// no upgrade routine for 1.2.0.
-	// no upgrade routine for 1.3.0.
-	global $mcm_version, $default_mcm_types, $default_mcm_fields, $default_mcm_extras;
+	global $mcm_version;
 	$from = get_option( 'mcm_version' );
 	if ( $mcm_version === $from ) {
 		return;
 	}
-	switch ( $from ) {
-		case version_compare( $from, '1.2.0', '<' ):
-			$options            = get_option( 'mcm_options' );
-			$options['types'][] = $default_mcm_types;
-			$options['fields']  = $default_mcm_fields;
-			$options['extras']  = $default_mcm_extras;
-			update_option( 'mcm_options', $options );
-			break;
-		case version_compare( $from, '1.4.0', '<' ):
-			$options    = get_option( 'mcm_options' );
-			$mcm_fields = $options['fields'];
-			$simplified = array();
-			if ( is_array( $mcm_fields ) ) {
-				foreach ( $mcm_fields as $key => $fields ) {
-					foreach ( $fields as $k => $field ) {
-						$simplified[] = array(
-							'key'         => $field[0],
-							'label'       => $field[1],
-							'description' => $field[2],
-							'type'        => $field[3],
-							'repetition'  => $field[4],
-							'fieldset'    => $key,
-						);
-					}
-				}
-			}
-			$options['simplified'] = $simplified;
-			update_option( 'mcm_options', $options );
-			break;
-		default:
-			break;
-	}
+
 	update_option( 'mcm_version', $mcm_version );
 }
 
@@ -887,8 +853,7 @@ add_action( 'admin_init', 'mcm_save_updates' );
  * Update post type settings.
  */
 function mcm_updater() {
-	global $mcm_types;
-	$types   = $mcm_types;
+	$types   = mcm_globals( 'mcm_types' );
 	$checked = '';
 	if ( isset( $_GET['mcm_edit'] ) ) {
 		$type  = sanitize_key( $_GET['mcm_edit'] );
@@ -961,7 +926,6 @@ function mcm_updater() {
 		}
 	}
 	if ( 'new' === $type && isset( $_GET['mcm_add'] ) && 'new' === $_GET['mcm_add'] ) {
-		global $d_mcm_args;
 		$return  = $before;
 		$return .= "
 		<p><label for='pt1'>" . __( 'Singular Name, lower', 'my-content-management' ) . "</label><br /><input type='text' name='new[pt1]' id='pt1' value='' /></p>
@@ -969,8 +933,9 @@ function mcm_updater() {
 		<p><label for='pt2'>" . __( 'Plural Name, lower', 'my-content-management' ) . "</label><br /><input type='text' name='new[pt2]' id='pt2' value='' /></p>
 		<p><label for='pt4'>" . __( 'Plural Name, upper', 'my-content-management' ) . "</label><br /><input type='text' name='new[pt4]' id='pt4' value='' /></p>
 		";
+		$default_args = mcm_globals( 'mcm_args' );
 		// Set up values from default post type arguments.
-		foreach ( $d_mcm_args as $key => $value ) {
+		foreach ( $default_args as $key => $value ) {
 			if ( is_bool( $value ) ) {
 				$checked = ( true === (bool) $value ) ? ' checked="checked"' : '';
 				if ( 'show_in_rest' !== $key ) {

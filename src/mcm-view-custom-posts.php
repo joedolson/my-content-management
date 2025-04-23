@@ -97,9 +97,9 @@ function mcm_get_show_posts( $atts ) {
 	foreach ( $atts as $key => $att ) {
 		${$key} = $att;
 	}
-	global $mcm_templates, $mcm_types;
-	$templates = $mcm_templates;
-	$types     = $mcm_types;
+
+	$templates = mcm_globals( 'mcm_templates' );
+	$types     = mcm_globals( 'mcm_types' );
 	$the_cache = false;
 	if ( false !== (bool) $cache ) {
 		$cache_key = md5( $type . $display . $taxonomy . $term . $count . $order . $direction . $meta_key . $template . $offset . $id . $year . $month . $week . $day );
@@ -499,8 +499,8 @@ function mcm_custom_field( $field, $before = '', $after = '', $id = '', $fallbac
  * @return string
  */
 function mcm_run_template( $post, $display, $column, $type ) {
-	global $mcm_templates, $mcm_types;
-	$templates = $mcm_templates;
+	$templates = mcm_globals( 'mcm_templates' );
+	$mcm_types = mcm_globals( 'mcm_types' );
 	$post_type = get_post_type( $post['id'] );
 	$keys      = array_keys( $mcm_types );
 	if ( 'custom' !== $display ) {
@@ -797,9 +797,9 @@ function mcm_is_user_relation( $key ) {
  */
 function mcm_is_type( $key, $type ) {
 	// determine whether a given key is a specific data type.
-	global $mcm_fields;
-	$check = false;
-	$found = false;
+	$mcm_fields = mcm_globals( 'mcm_fields' );
+	$check      = false;
+	$found      = false;
 	foreach ( $mcm_fields as $k => $v ) {
 		foreach ( $v as $field ) {
 			if ( $field[0] === $key ) {
@@ -845,8 +845,8 @@ function mc_clean_template( $template ) {
  */
 function mcm_search_form( $post_type ) {
 	// no arguments.
-	global $mcm_types;
-	$keys = array_keys( $mcm_types );
+	$mcm_types = mcm_globals( 'mcm_types' );
+	$keys      = array_keys( $mcm_types );
 	if ( in_array( 'mcm_' . $post_type, $keys, true ) ) {
 		$post_type = 'mcm_' . $post_type;
 	} else {

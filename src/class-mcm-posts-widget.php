@@ -38,7 +38,7 @@ class Mcm_Posts_Widget extends WP_Widget {
 	 * @param array $instance Instance.
 	 */
 	function widget( $args, $instance ) {
-		global $mcm_types;
+		$mcm_types     = mcm_globals( 'mcm_types' );
 		$types         = array_keys( $mcm_types );
 		$before_widget = $args['before_widget'];
 		$after_widget  = $args['after_widget'];

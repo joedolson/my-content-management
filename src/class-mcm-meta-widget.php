@@ -45,7 +45,6 @@ class Mcm_Meta_Widget extends WP_Widget {
 	 * @param array $instance Instance.
 	 */
 	function widget( $args, $instance ) {
-		global $mcm_extras;
 		$the_title     = apply_filters( 'widget_title', $instance['title'] );
 		$fieldset_name = $instance['fieldset'];
 		$display       = $instance['display'];
@@ -81,7 +80,7 @@ class Mcm_Meta_Widget extends WP_Widget {
 	 * @param array $instance Instance data.
 	 */
 	function form( $instance ) {
-		global $mcm_extras;
+		$mcm_extras      = mcm_globals( 'mcm_extras' );
 		$types           = array_keys( $mcm_extras );
 		$title           = isset( $instance['title'] ) ? $instance['title'] : '';
 		$fieldset        = isset( $instance['fieldset'] ) ? $instance['fieldset'] : '';

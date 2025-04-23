@@ -13,14 +13,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-global $mcm_types, $mcm_fields, $mcm_extras, $mcm_enabled, $mcm_templates, $default_mcm_types, $default_mcm_fields, $default_mcm_extras;
-
 /**
  * Create post types.
  */
 function mcm_posttypes() {
-	global $mcm_types, $mcm_enabled;
-	$types   = $mcm_types;
+	global $mcm_enabled;
+	$types   = mcm_globals( 'mcm_types' );
 	$enabled = $mcm_enabled;
 	if ( is_array( $enabled ) ) {
 		foreach ( $enabled as $key ) {
@@ -87,8 +85,8 @@ function mcm_posttypes() {
  * @return array
  */
 function mcm_posttypes_messages( $messages ) {
-	global $post, $post_ID, $mcm_types, $mcm_enabled;
-	$types   = $mcm_types;
+	global $post, $post_ID, $mcm_enabled;
+	$types   = mcm_globals( 'mcm_types' );
 	$enabled = $mcm_enabled;
 	if ( is_array( $enabled ) ) {
 		foreach ( $enabled as $key ) {
@@ -124,8 +122,8 @@ function mcm_posttypes_messages( $messages ) {
  * Define custom taxonomies.
  */
 function mcm_taxonomies() {
-	global $mcm_types, $mcm_enabled;
-	$types   = $mcm_types;
+	global $mcm_enabled;
+	$types   = mcm_globals( 'mcm_types' );
 	$enabled = $mcm_enabled;
 	if ( is_array( $enabled ) ) {
 		foreach ( $enabled as $key ) {
@@ -194,9 +192,8 @@ function mcm_taxonomies() {
  * Set up post meta boxes.
  */
 function mcm_add_custom_boxes() {
-	global $mcm_fields, $mcm_extras;
-	$fields = $mcm_fields;
-	$extras = $mcm_extras;
+	$fields = mcm_globals( 'mcm_fields' );
+	$extras = mcm_globals( 'mcm_extras' );
 	if ( is_array( $fields ) ) {
 		foreach ( $fields as $key => $value ) {
 			if ( isset( $extras[ $key ] ) && is_array( $extras[ $key ][0] ) ) {
@@ -804,8 +801,7 @@ function mcm_save_postdata( $post_id, $post ) {
 		return;
 	}
 
-	global $mcm_fields;
-	$fields = $mcm_fields;
+	$fields = mcm_globals( 'mcm_fields' );
 	// verify this came from our screen and with proper authorization.
 	// because save_post can be triggered at other times.
 	if ( isset( $_POST['mcm_nonce_name'] ) ) {
@@ -1018,7 +1014,7 @@ add_action( 'wp_restore_post_revision', 'mcm_restore_revision', 10, 2 );
  * @return array
  */
 function mcm_revision_fields( $fields ) {
-	global $mcm_fields;
+	$mcm_fields = mcm_globals( 'mcm_fields' );
 	foreach ( $mcm_fields as $set => $field ) {
 		foreach ( $field as $key => $value ) {
 			// Cannot save array values into revisions.
@@ -1161,136 +1157,154 @@ function mcm_echo_hidden( $fields, $id ) {
 	}
 }
 
-// Default settings for post types.
-$d_mcm_args = array(
-	'public'              => true,
-	'publicly_queryable'  => true,
-	'exclude_from_search' => false,
-	'show_ui'             => true,
-	'show_in_menu'        => true,
-	'show_ui'             => true,
-	'menu_icon'           => null,
-	'hierarchical'        => true,
-	'show_in_rest'        => false,
-	'supports'            => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'custom-fields', 'revisions' ),
-	'slug'                => '',
-);
+/**
+ * Define global variables.
+ *
+ * @param string $var A single variable in the key to fetch.
+ *
+ * @return Array
+ */
+function mcm_globals( $var ) {
+	$vars = array();
+	// Default settings for post types.
+	$mcm_args = array(
+		'public'              => true,
+		'publicly_queryable'  => true,
+		'exclude_from_search' => false,
+		'show_ui'             => true,
+		'show_in_menu'        => true,
+		'show_ui'             => true,
+		'menu_icon'           => null,
+		'hierarchical'        => true,
+		'show_in_rest'        => false,
+		'supports'            => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'custom-fields', 'revisions' ),
+		'slug'                => '',
+	);
 
-// Default post types.
-$default_mcm_types = array(
-	'mcm_faq'          => array(
-		__( 'faq', 'my-content-management' ),
-		__( 'faqs', 'my-content-management' ),
-		__( 'FAQ', 'my-content-management' ),
-		__( 'FAQs', 'my-content-management' ),
-		$d_mcm_args,
-	),
-	'mcm_people'       => array(
-		__( 'person', 'my-content-management' ),
-		__( 'people', 'my-content-management' ),
-		__( 'Person', 'my-content-management' ),
-		__( 'People', 'my-content-management' ),
-		$d_mcm_args,
-	),
-	'mcm_testimonials' => array(
-		__( 'testimonial', 'my-content-management' ),
-		__( 'testimonials', 'my-content-management' ),
-		__( 'Testimonial', 'my-content-management' ),
-		__( 'Testimonials', 'my-content-management' ),
-		$d_mcm_args,
-	),
-	'mcm_locations'    => array(
-		__( 'location', 'my-content-management' ),
-		__( 'locations', 'my-content-management' ),
-		__( 'Location', 'my-content-management' ),
-		__( 'Locations', 'my-content-management' ),
-		$d_mcm_args,
-	),
-	'mcm_quotes'       => array(
-		__( 'quote', 'my-content-management' ),
-		__( 'quotes', 'my-content-management' ),
-		__( 'Quote', 'my-content-management' ),
-		__( 'Quotes', 'my-content-management' ),
-		$d_mcm_args,
-	),
-	'mcm_glossary'     => array(
-		__( 'glossary term', 'my-content-management' ),
-		__( 'glossary terms', 'my-content-management' ),
-		__( 'Glossary Term', 'my-content-management' ),
-		__( 'Glossary Terms', 'my-content-management' ),
-		$d_mcm_args,
-	),
-	'mcm_portfolio'    => array(
-		__( 'portfolio item', 'my-content-management' ),
-		__( 'portfolio items', 'my-content-management' ),
-		__( 'Portfolio Item', 'my-content-management' ),
-		__( 'Portfolio Items', 'my-content-management' ),
-		$d_mcm_args,
-	),
-	'mcm_resources'    => array(
-		__( 'resource', 'my-content-management' ),
-		__( 'resources', 'my-content-management' ),
-		__( 'Resource', 'my-content-management' ),
-		__( 'Resources', 'my-content-management' ),
-		$d_mcm_args,
-	),
-);
+	$vars['mcm_args'] = $mcm_args;
 
-// @fields multidimensional array: array( 'Box set'=> array( array( '_name','label','type') ) ).
-// @post_type string post_type.
-// @location string side/normal/advanced.
-// add custom fields to the custom post types.
-$default_mcm_fields = array(
-	__( 'Personal Information', 'my-content-management' ) => array(
-		array( '_title', __( 'Title', 'my-content-management' ), '', 'mcm_text_field' ),
-		array( '_subtitle', __( 'Subtitle', 'my-content-management' ), '', 'mcm_text_field' ),
-		array( '_business', __( 'Business', 'my-content-management' ), '', 'mcm_text_field' ),
-		array( '_phone', __( 'Phone Number', 'my-content-management' ), '', 'tel', 'true' ),
-		array( '_email', __( 'E-mail', 'my-content-management' ), '', 'email' ),
-	),
-	__( 'Location Info', 'my-content-management' )        => array(
-		array( '_street', __( 'Street Address', 'my-content-management' ), '', 'mcm_text_field' ),
-		array( '_city', __( 'City', 'my-content-management' ), '', 'mcm_text_field' ),
-		array( '_neighborhood', __( 'Neighborhood', 'my-content-management' ), '', 'mcm_text_field' ),
-		array( '_state', __( 'State', 'my-content-management' ), '', 'mcm_text_field' ),
-		array( '_country', __( 'Country', 'my-content-management' ), '', 'mcm_text_field' ),
-		array( '_postalcode', __( 'Postal Code', 'my-content-management' ), '', 'mcm_text_field' ),
-		array( '_phone', __( 'Phone', 'my-content-management' ), '', 'tel' ),
-		array( '_fax', __( 'Fax', 'my-content-management' ), '', 'mcm_text_field' ),
-		array( '_business', __( 'Business Name', 'my-content-management' ), '', 'mcm_text_field' ),
-		array( '_email', __( 'Contact Email', 'my-content-management' ), '', 'email' ),
-	),
-	__( 'Quotation Info', 'my-content-management' )       => array(
-		array( '_url', __( 'URL', 'my-content-management' ), '', 'url' ),
-		array( '_title', __( 'Title', 'my-content-management' ), '', 'mcm_text_field' ),
-		array( '_location', __( 'Location', 'my-content-management' ), '', 'mcm_text_field' ),
-	),
-	__( 'Testimonial Info', 'my-content-management' )     => array(
-		array( '_url', __( 'URL', 'my-content-management' ), '', 'url' ),
-		array( '_title', __( 'Title', 'my-content-management' ), '', 'mcm_text_field' ),
-		array( '_location', __( 'Location', 'my-content-management' ), '', 'mcm_text_field' ),
-	),
-	__( 'Portfolio Info', 'my-content-management' )       => array(
-		array( '_medium', __( 'Medium', 'my-content-management' ), '', 'mcm_text_field' ),
-		array( '_width', __( 'Width', 'my-content-management' ), '', 'mcm_text_field' ),
-		array( '_height', __( 'Height', 'my-content-management' ), '', 'mcm_text_field' ),
-		array( '_depth', __( 'Depth', 'my-content-management' ), '', 'mcm_text_field' ),
-		array( '_price', __( 'Price', 'my-content-management' ), '', 'mcm_text_field' ),
-		array( '_year', __( 'Year', 'my-content-management' ), '', 'mcm_text_field' ),
-	),
-	__( 'Resource Info', 'my-content-management' )        => array(
-		array( '_authors', __( 'Additional Authors', 'my-content-management' ), '', 'mcm_text_field', 'true' ),
-		array( '_licensing', __( 'License Terms', 'my-content-management' ), '', 'mcm_text_area' ),
-		array( '_show', __( 'Show on', 'my-content-management' ), 'This is a label for advanced use in themes', 'mcm_text_field' ),
-	),
-);
+	// Default post types.
+	$vars['mcm_types'] = array(
+		'mcm_faq'          => array(
+			__( 'faq', 'my-content-management' ),
+			__( 'faqs', 'my-content-management' ),
+			__( 'FAQ', 'my-content-management' ),
+			__( 'FAQs', 'my-content-management' ),
+			$mcm_args,
+		),
+		'mcm_people'       => array(
+			__( 'person', 'my-content-management' ),
+			__( 'people', 'my-content-management' ),
+			__( 'Person', 'my-content-management' ),
+			__( 'People', 'my-content-management' ),
+			$mcm_args,
+		),
+		'mcm_testimonials' => array(
+			__( 'testimonial', 'my-content-management' ),
+			__( 'testimonials', 'my-content-management' ),
+			__( 'Testimonial', 'my-content-management' ),
+			__( 'Testimonials', 'my-content-management' ),
+			$mcm_args,
+		),
+		'mcm_locations'    => array(
+			__( 'location', 'my-content-management' ),
+			__( 'locations', 'my-content-management' ),
+			__( 'Location', 'my-content-management' ),
+			__( 'Locations', 'my-content-management' ),
+			$mcm_args,
+		),
+		'mcm_quotes'       => array(
+			__( 'quote', 'my-content-management' ),
+			__( 'quotes', 'my-content-management' ),
+			__( 'Quote', 'my-content-management' ),
+			__( 'Quotes', 'my-content-management' ),
+			$mcm_args,
+		),
+		'mcm_glossary'     => array(
+			__( 'glossary term', 'my-content-management' ),
+			__( 'glossary terms', 'my-content-management' ),
+			__( 'Glossary Term', 'my-content-management' ),
+			__( 'Glossary Terms', 'my-content-management' ),
+			$mcm_args,
+		),
+		'mcm_portfolio'    => array(
+			__( 'portfolio item', 'my-content-management' ),
+			__( 'portfolio items', 'my-content-management' ),
+			__( 'Portfolio Item', 'my-content-management' ),
+			__( 'Portfolio Items', 'my-content-management' ),
+			$mcm_args,
+		),
+		'mcm_resources'    => array(
+			__( 'resource', 'my-content-management' ),
+			__( 'resources', 'my-content-management' ),
+			__( 'Resource', 'my-content-management' ),
+			__( 'Resources', 'my-content-management' ),
+			$mcm_args,
+		),
+	);
 
-// Default extra field sets.
-$default_mcm_extras = array(
-	__( 'Personal Information', 'my-content-management' ) => array( 'mcm_people', 'side' ),
-	__( 'Location Info', 'my-content-management' )        => array( 'mcm_locations', 'side' ),
-	__( 'Testimonial Info', 'my-content-management' )     => array( 'mcm_testimonials', 'side' ),
-	__( 'Quotation Info', 'my-content-management' )       => array( 'mcm_quotes', 'side' ),
-	__( 'Portfolio Info', 'my-content-management' )       => array( 'mcm_portfolio', 'side' ),
-	__( 'Resource Info', 'my-content-management' )        => array( 'mcm_resources', 'side' ),
-);
+	// @fields multidimensional array: array( 'Box set'=> array( array( '_name','label','type') ) ).
+	// @post_type string post_type.
+	// @location string side/normal/advanced.
+	// add custom fields to the custom post types.
+	$vars['mcm_fields'] = array(
+		__( 'Personal Information', 'my-content-management' ) => array(
+			array( '_title', __( 'Title', 'my-content-management' ), '', 'mcm_text_field' ),
+			array( '_subtitle', __( 'Subtitle', 'my-content-management' ), '', 'mcm_text_field' ),
+			array( '_business', __( 'Business', 'my-content-management' ), '', 'mcm_text_field' ),
+			array( '_phone', __( 'Phone Number', 'my-content-management' ), '', 'tel', 'true' ),
+			array( '_email', __( 'E-mail', 'my-content-management' ), '', 'email' ),
+		),
+		__( 'Location Info', 'my-content-management' )        => array(
+			array( '_street', __( 'Street Address', 'my-content-management' ), '', 'mcm_text_field' ),
+			array( '_city', __( 'City', 'my-content-management' ), '', 'mcm_text_field' ),
+			array( '_neighborhood', __( 'Neighborhood', 'my-content-management' ), '', 'mcm_text_field' ),
+			array( '_state', __( 'State', 'my-content-management' ), '', 'mcm_text_field' ),
+			array( '_country', __( 'Country', 'my-content-management' ), '', 'mcm_text_field' ),
+			array( '_postalcode', __( 'Postal Code', 'my-content-management' ), '', 'mcm_text_field' ),
+			array( '_phone', __( 'Phone', 'my-content-management' ), '', 'tel' ),
+			array( '_fax', __( 'Fax', 'my-content-management' ), '', 'mcm_text_field' ),
+			array( '_business', __( 'Business Name', 'my-content-management' ), '', 'mcm_text_field' ),
+			array( '_email', __( 'Contact Email', 'my-content-management' ), '', 'email' ),
+		),
+		__( 'Quotation Info', 'my-content-management' )       => array(
+			array( '_url', __( 'URL', 'my-content-management' ), '', 'url' ),
+			array( '_title', __( 'Title', 'my-content-management' ), '', 'mcm_text_field' ),
+			array( '_location', __( 'Location', 'my-content-management' ), '', 'mcm_text_field' ),
+		),
+		__( 'Testimonial Info', 'my-content-management' )     => array(
+			array( '_url', __( 'URL', 'my-content-management' ), '', 'url' ),
+			array( '_title', __( 'Title', 'my-content-management' ), '', 'mcm_text_field' ),
+			array( '_location', __( 'Location', 'my-content-management' ), '', 'mcm_text_field' ),
+		),
+		__( 'Portfolio Info', 'my-content-management' )       => array(
+			array( '_medium', __( 'Medium', 'my-content-management' ), '', 'mcm_text_field' ),
+			array( '_width', __( 'Width', 'my-content-management' ), '', 'mcm_text_field' ),
+			array( '_height', __( 'Height', 'my-content-management' ), '', 'mcm_text_field' ),
+			array( '_depth', __( 'Depth', 'my-content-management' ), '', 'mcm_text_field' ),
+			array( '_price', __( 'Price', 'my-content-management' ), '', 'mcm_text_field' ),
+			array( '_year', __( 'Year', 'my-content-management' ), '', 'mcm_text_field' ),
+		),
+		__( 'Resource Info', 'my-content-management' )        => array(
+			array( '_authors', __( 'Additional Authors', 'my-content-management' ), '', 'mcm_text_field', 'true' ),
+			array( '_licensing', __( 'License Terms', 'my-content-management' ), '', 'mcm_text_area' ),
+			array( '_show', __( 'Show on', 'my-content-management' ), 'This is a label for advanced use in themes', 'mcm_text_field' ),
+		),
+	);
+
+	// Default extra field sets.
+	$vars['mcm_extras'] = array(
+		__( 'Personal Information', 'my-content-management' ) => array( 'mcm_people', 'side' ),
+		__( 'Location Info', 'my-content-management' )        => array( 'mcm_locations', 'side' ),
+		__( 'Testimonial Info', 'my-content-management' )     => array( 'mcm_testimonials', 'side' ),
+		__( 'Quotation Info', 'my-content-management' )       => array( 'mcm_quotes', 'side' ),
+		__( 'Portfolio Info', 'my-content-management' )       => array( 'mcm_portfolio', 'side' ),
+		__( 'Resource Info', 'my-content-management' )        => array( 'mcm_resources', 'side' ),
+	);
+
+	if ( $var && isset( $vars[ $var ] ) ) {
+		return $vars[ $var ];
+	}
+
+	return $vars;
+}
