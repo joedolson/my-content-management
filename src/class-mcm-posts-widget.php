@@ -28,7 +28,7 @@ class Mcm_Posts_Widget extends WP_Widget {
 	 * Construct.
 	 */
 	function __construct() {
-		parent::__construct( false, $name = __( 'Custom Post List', 'my-content-management' ), array( 'customize_selective_refresh' => true ) );
+		parent::__construct( false, $name = esc_html__( 'Custom Post List', 'my-content-management' ), array( 'customize_selective_refresh' => true ) );
 	}
 
 	/**

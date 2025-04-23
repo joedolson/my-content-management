@@ -124,7 +124,7 @@ function mcm_enqueue_admin_scripts() {
 				'post_action' => 'mcm_post_lookup',
 				'user_action' => 'mcm_user_lookup',
 				'i18n'        => array(
-					'selected' => __( 'Selected', 'my-content-management' ),
+					'selected' => esc_html__( 'Selected', 'my-content-management' ),
 				),
 			)
 		);
@@ -597,8 +597,8 @@ function mcm_add_scripts() {
 		'addfields',
 		'mcmi18n',
 		array(
-			'mcmWarning' => __( 'Fieldset titles do not support quote characters.', 'my-content-management' ),
-			'mcmOK'      => __( 'Your Fieldset title is OK!', 'my-content-management' ),
+			'mcmWarning' => esc_html__( 'Fieldset titles do not support quote characters.', 'my-content-management' ),
+			'mcmOK'      => esc_html__( 'Your Fieldset title is OK!', 'my-content-management' ),
 		)
 	);
 	wp_enqueue_script( 'mcm.tabs' );
@@ -695,7 +695,7 @@ function mcm_settings_page() {
 								$sizes = get_intermediate_image_sizes();
 								foreach ( $sizes as $size ) {
 									// Translators: Image size name.
-									echo '<dt><code>{' . $size . '}</code></dt><dd>' . sprintf( __( 'Featured image at %s size', 'my-content-management' ), $size ) . '</dd>';
+									echo '<dt><code>{' . $size . '}</code></dt><dd>' . sprintf( esc_html__( 'Featured image at %s size', 'my-content-management' ), $size ) . '</dd>';
 								}
 								?>
 
@@ -755,7 +755,7 @@ function mcm_enabler() {
 		$option['enabled'] = $enable;
 		update_option( 'mcm_options', $option );
 		flush_rewrite_rules();
-		echo "<div class='updated fade'><p>" . __( 'Enabled post types updated', 'my-content-management' ) . '</p></div>';
+		echo "<div class='updated fade'><p>" . esc_html__( 'Enabled post types updated', 'my-content-management' ) . '</p></div>';
 	}
 	$option  = get_option( 'mcm_options' );
 	$enabled = $option['enabled'];
@@ -772,11 +772,11 @@ function mcm_enabler() {
 						$checked = '';
 					}
 				}
-				$return .= "<li><input type='checkbox' value='" . esc_attr( $key ) . "' name='mcm_posttypes[]' id='mcm_" . esc_attr( $key ) . "'$checked /><label for='mcm_" . esc_attr( $key ) . "'>" . esc_html( $value[3] ) . ' (<code>' . esc_html( $key ) . "</code>)</label> <a href='" . esc_url( admin_url( "options-general.php?page=mcm_settings&mcm_edit=$key" ) ) . "'>" . __( 'Edit', 'my-content-management' ) . " '" . esc_html( $value[3] ) . "'</a> &bull; <a href='" . esc_url( admin_url( "options-general.php?page=mcm_settings&mcm_delete=$key" ) ) . "'>" . __( 'Delete', 'my-content-management' ) . "  '" . esc_html( $value[3] ) . "'</a></li>\n";
+				$return .= "<li><input type='checkbox' value='" . esc_attr( $key ) . "' name='mcm_posttypes[]' id='mcm_" . esc_attr( $key ) . "'$checked /><label for='mcm_" . esc_attr( $key ) . "'>" . esc_html( $value[3] ) . ' (<code>' . esc_html( $key ) . "</code>)</label> <a href='" . esc_url( admin_url( "options-general.php?page=mcm_settings&mcm_edit=$key" ) ) . "'>" . esc_html__( 'Edit', 'my-content-management' ) . " '" . esc_html( $value[3] ) . "'</a> &bull; <a href='" . esc_url( admin_url( "options-general.php?page=mcm_settings&mcm_delete=$key" ) ) . "'>" . esc_html__( 'Delete', 'my-content-management' ) . "  '" . esc_html( $value[3] ) . "'</a></li>\n";
 			}
 		}
 	}
-	echo '<fieldset aria-labelledby="available-post-types"><h3 id="available-post-types">' . __( 'Available Post Types', 'my-content-management' ) . "</h3><ul class='mcm_posttypes'>" . $return . '</ul></fieldset>';
+	echo '<fieldset aria-labelledby="available-post-types"><h3 id="available-post-types">' . esc_html__( 'Available Post Types', 'my-content-management' ) . "</h3><ul class='mcm_posttypes'>" . $return . '</ul></fieldset>';
 }
 
 /**
@@ -814,7 +814,7 @@ function mcm_save_updates() {
 
 			$option['types'][ $type ] = $new;
 			update_option( 'mcm_options', $option );
-			set_transient( 'mcm_update_notice', "<div class='updated fade'><p>" . __( 'Post type settings modified.', 'my-content-management' ) . '</p></div>', 10 );
+			set_transient( 'mcm_update_notice', "<div class='updated fade'><p>" . esc_html__( 'Post type settings modified.', 'my-content-management' ) . '</p></div>', 10 );
 		} else {
 			$option = get_option( 'mcm_options' );
 			$ns     = map_deep( $_POST['new'], 'sanitize_textarea_field' );
@@ -840,7 +840,7 @@ function mcm_save_updates() {
 
 			$option['types'][ $type ] = $new;
 			update_option( 'mcm_options', $option );
-			set_transient( 'mcm_update_notice', "<div class='updated fade'><p>" . __( 'Added new custom post type.', 'my-content-management' ) . '</p></div>', 10 );
+			set_transient( 'mcm_update_notice', "<div class='updated fade'><p>" . esc_html__( 'Added new custom post type.', 'my-content-management' ) . '</p></div>', 10 );
 
 		}
 		// refresh permalinks.
@@ -868,10 +868,10 @@ function mcm_updater() {
 		delete_transient( 'mcm_update_notice' );
 	}
 	// Translators: post type name.
-	$before      = "<div class='mcm_edit_post_type'><form method='post' action='" . add_query_arg( $event, $type, admin_url( 'options-general.php?page=mcm_settings' ) ) . "'><div><input type='hidden' name='_wpnonce' value='" . wp_create_nonce( 'my-content-management-nonce' ) . "' /></div><fieldset class='fields'><legend>" . sprintf( __( 'Edit "%s"', 'my-content-management' ), $type ) . '</legend>';
+	$before      = "<div class='mcm_edit_post_type'><form method='post' action='" . add_query_arg( $event, $type, admin_url( 'options-general.php?page=mcm_settings' ) ) . "'><div><input type='hidden' name='_wpnonce' value='" . wp_create_nonce( 'my-content-management-nonce' ) . "' /></div><fieldset class='fields'><legend>" . sprintf( esc_html__( 'Edit "%s"', 'my-content-management' ), $type ) . '</legend>';
 	$post_typing = "<div><input type='hidden' name='mcm_type' value='$type' /></div>";
 
-	$after  = "</fieldset><p><input type='submit' value='" . esc_attr( __( 'Edit Post Type', 'my-content-management' ) ) . "' name='mcm_updater' class='button-primary' /> <a href='" . admin_url( 'options-general.php?page=mcm_settings&mcm_add=new' ) . "'>" . __( 'Add new post type', 'my-content-management' ) . '</a>
+	$after  = "</fieldset><p><input type='submit' value='" . esc_attr( esc_html__( 'Edit Post Type', 'my-content-management' ) ) . "' name='mcm_updater' class='button-primary' /> <a href='" . admin_url( 'options-general.php?page=mcm_settings&mcm_add=new' ) . "'>" . esc_html__( 'Add new post type', 'my-content-management' ) . '</a>
 				</p>
 			</form></div>';
 	$return = '';
@@ -888,10 +888,10 @@ function mcm_updater() {
 			$return  = $before;
 			$return .= $post_typing;
 			$return .= "
-			<p><label for='pt1'>" . __( 'Singular Name, lower', 'my-content-management' ) . "</label><br /><input type='text' name='" . esc_attr( "${type}[pt1]" ) . "' id='pt1' value='" . esc_attr( $data[0] ) . "' /></p>
-			<p><label for='pt3'>" . __( 'Singular Name, upper', 'my-content-management' ) . "</label><br /><input type='text' name='" . esc_attr( "${type}[pt3]" ) . "' id='pt3' value='" . esc_attr( $data[2] ) . "' /></p>
-			<p><label for='pt2'>" . __( 'Plural Name, lower', 'my-content-management' ) . "</label><br /><input type='text' name='" . esc_attr( "${type}[pt2]" ) . "' id='pt2' value='" . esc_attr( $data[1] ) . "' /></p>
-			<p><label for='pt4'>" . __( 'Plural Name, upper', 'my-content-management' ) . "</label><br /><input type='text' name='" . esc_attr( "${type}[pt4]" ) . "' id='pt4' value='" . esc_attr( $data[3] ) . "' /></p>";
+			<p><label for='pt1'>" . esc_html__( 'Singular Name, lower', 'my-content-management' ) . "</label><br /><input type='text' name='" . esc_attr( "${type}[pt1]" ) . "' id='pt1' value='" . esc_attr( $data[0] ) . "' /></p>
+			<p><label for='pt3'>" . esc_html__( 'Singular Name, upper', 'my-content-management' ) . "</label><br /><input type='text' name='" . esc_attr( "${type}[pt3]" ) . "' id='pt3' value='" . esc_attr( $data[2] ) . "' /></p>
+			<p><label for='pt2'>" . esc_html__( 'Plural Name, lower', 'my-content-management' ) . "</label><br /><input type='text' name='" . esc_attr( "${type}[pt2]" ) . "' id='pt2' value='" . esc_attr( $data[1] ) . "' /></p>
+			<p><label for='pt4'>" . esc_html__( 'Plural Name, upper', 'my-content-management' ) . "</label><br /><input type='text' name='" . esc_attr( "${type}[pt4]" ) . "' id='pt4' value='" . esc_attr( $data[3] ) . "' /></p>";
 
 			$keys = array_keys( $data[4] );
 			if ( ! in_array( 'show_in_rest', $keys, true ) ) {
@@ -904,7 +904,7 @@ function mcm_updater() {
 					if ( 'show_in_rest' !== $key ) {
 						$return .= "<p><input type='checkbox' name='" . esc_attr( "${type}[$key]" ) . "' value='1' id='" . esc_attr( $key ) . "'$checked /> <label for='" . esc_attr( $key ) . "'>" . esc_html( ucwords( str_replace( '_', ' ', $key ) ) ) . '</label></p>';
 					} else {
-						$return .= "<p><input type='checkbox' name='" . esc_attr( "${type}[$key]" ) . "' value='1' id='" . esc_attr( $key ) . "'$checked /> <label for='" . esc_attr( $key ) . "'>" . __( 'Show in REST API and enable Block Editor', 'my-content-management' ) . '</label></p>';
+						$return .= "<p><input type='checkbox' name='" . esc_attr( "${type}[$key]" ) . "' value='1' id='" . esc_attr( $key ) . "'$checked /> <label for='" . esc_attr( $key ) . "'>" . esc_html__( 'Show in REST API and enable Block Editor', 'my-content-management' ) . '</label></p>';
 					}
 				} elseif ( is_array( $value ) ) {
 					$return  .= "<p><label for='" . esc_attr( $key ) . "'>" . esc_html( ucwords( str_replace( '_', ' ', $key ) ) ) . "</label><br /><select multiple='multiple' name='" . esc_attr( "${type}[$key][]" ) . "' id='" . esc_attr( $key ) . "'>";
@@ -928,10 +928,10 @@ function mcm_updater() {
 	if ( 'new' === $type && isset( $_GET['mcm_add'] ) && 'new' === $_GET['mcm_add'] ) {
 		$return  = $before;
 		$return .= "
-		<p><label for='pt1'>" . __( 'Singular Name, lower', 'my-content-management' ) . "</label><br /><input type='text' name='new[pt1]' id='pt1' value='' /></p>
-		<p><label for='pt3'>" . __( 'Singular Name, upper', 'my-content-management' ) . "</label><br /><input type='text' name='new[pt3]' id='pt3' value='' /></p>
-		<p><label for='pt2'>" . __( 'Plural Name, lower', 'my-content-management' ) . "</label><br /><input type='text' name='new[pt2]' id='pt2' value='' /></p>
-		<p><label for='pt4'>" . __( 'Plural Name, upper', 'my-content-management' ) . "</label><br /><input type='text' name='new[pt4]' id='pt4' value='' /></p>
+		<p><label for='pt1'>" . esc_html__( 'Singular Name, lower', 'my-content-management' ) . "</label><br /><input type='text' name='new[pt1]' id='pt1' value='' /></p>
+		<p><label for='pt3'>" . esc_html__( 'Singular Name, upper', 'my-content-management' ) . "</label><br /><input type='text' name='new[pt3]' id='pt3' value='' /></p>
+		<p><label for='pt2'>" . esc_html__( 'Plural Name, lower', 'my-content-management' ) . "</label><br /><input type='text' name='new[pt2]' id='pt2' value='' /></p>
+		<p><label for='pt4'>" . esc_html__( 'Plural Name, upper', 'my-content-management' ) . "</label><br /><input type='text' name='new[pt4]' id='pt4' value='' /></p>
 		";
 		$default_args = mcm_globals( 'mcm_args' );
 		// Set up values from default post type arguments.
@@ -941,7 +941,7 @@ function mcm_updater() {
 				if ( 'show_in_rest' !== $key ) {
 					$return .= "<p><input type='checkbox' name='new[ $key ]' value='1' id='$key'$checked /> <label for='$key'>" . ucwords( str_replace( '_', ' ', $key ) ) . '</label></p>';
 				} else {
-					$return .= "<p><input type='checkbox' name='new[ $key ]' value='1' id='$key'$checked /> <label for='$key'>" . __( 'Show in REST API and enable Block Editor', 'my-content-management' ) . '</label></p>';
+					$return .= "<p><input type='checkbox' name='new[ $key ]' value='1' id='$key'$checked /> <label for='$key'>" . esc_html__( 'Show in REST API and enable Block Editor', 'my-content-management' ) . '</label></p>';
 				}
 			} elseif ( is_array( $value ) ) {
 				$return  .= "<p><label for='$key'>" . ucwords( str_replace( '_', ' ', $key ) ) . "</label><br /><select multiple='multiple' name='new[${key}][]' id='$key'>";
@@ -957,7 +957,7 @@ function mcm_updater() {
 		}
 		$return .= "<p>
 				<input type='hidden' name='mcm_new' value='new' />
-				<input type='submit' value='" . __( 'Add New Custom Post Type', 'my-content-management' ) . "' name='mcm_updater' class='button-primary' />
+				<input type='submit' value='" . esc_attr__( 'Add New Custom Post Type', 'my-content-management' ) . "' name='mcm_updater' class='button-primary' />
 			</p>
 			</div>
 		</form></div>";
@@ -987,11 +987,11 @@ function mcm_delete_type( $type ) {
 		}
 		update_option( 'mcm_options', $options );
 		// Translators: Custom post type name.
-		return "<div class='updated fade'><p>" . sprintf( __( 'Custom post type "%1$s" has been deleted.', 'my-content-management' ), $type ) . '</p></div>';
+		return "<div class='updated fade'><p>" . sprintf( esc_html__( 'Custom post type "%1$s" has been deleted.', 'my-content-management' ), $type ) . '</p></div>';
 	}
 
 	// Translators: Post type name.
-	return "<div class='error'><p>" . sprintf( __( 'Custom post type "%1$s" was not found, and could not be deleted.', 'my-content-management' ), $type ) . '</p></div>';
+	return "<div class='error'><p>" . sprintf( esc_html__( 'Custom post type "%1$s" was not found, and could not be deleted.', 'my-content-management' ), $type ) . '</p></div>';
 }
 
 /**
@@ -1008,7 +1008,7 @@ function mcm_template_setter() {
 		$new                          = map_deep( $_POST['templates'], 'sanitize_textarea_field' );
 		$option['templates'][ $type ] = $new[ $type ];
 		update_option( 'mcm_options', $option );
-		echo "<div class='updated fade'><p>" . __( 'Post Type templates updated', 'my-content-management' ) . '</p></div>';
+		echo "<div class='updated fade'><p>" . esc_html__( 'Post Type templates updated', 'my-content-management' ) . '</p></div>';
 	}
 	$option    = get_option( 'mcm_options' );
 	$templates = $option['templates'];
@@ -1047,7 +1047,7 @@ function mcm_template_setter() {
 	if ( is_array( $enabled ) ) {
 
 		$return = "<div class='postbox' id='mcm-template-settings'>
-		<h2 class='hndle'><span>" . __( 'Template Manager', 'my-content-management' ) . "</span></h2>
+		<h2 class='hndle'><span>" . esc_html__( 'Template Manager', 'my-content-management' ) . "</span></h2>
 			<div class='inside'>";
 		$tabs   = "<ul class='tabs'>";
 		foreach ( $enabled as $value ) {
@@ -1477,17 +1477,17 @@ function mcm_get_fieldset( $fieldset = false ) {
 		$post_types .= "<input type='checkbox' $checked value='$name' name='mcm_assign_to[]' id='mcm_post_type_$name'> <label for='mcm_post_type_$name'>$label</label>\n";
 	}
 	$options = "<p>
-				<label for='mcm_fieldset_context'>" . __( 'Restrict by IDs', 'my-content-management' ) . "</label> <input class='narrow' type='text' id='mcm_fieldset_context' name='mcm_fieldset_context' aria-describedby='mcm_context_description' value='$context' /> <em id='mcm_context_descrition'>Comma-separated list of post IDs</em>
+				<label for='mcm_fieldset_context'>" . esc_html__( 'Restrict by IDs', 'my-content-management' ) . "</label> <input class='narrow' type='text' id='mcm_fieldset_context' name='mcm_fieldset_context' aria-describedby='mcm_context_description' value='$context' /> <em id='mcm_context_descrition'>Comma-separated list of post IDs</em>
 			</p>
 			<p>
-				<label for='mcm_fieldset_location'>" . __( 'Fieldset Location', 'my-content-management' ) . "</label> <select id='mcm_fieldset_location' name='mcm_fieldset_location' />
-					<option value='side'" . selected( $location, 'side', false ) . '>' . __( 'Side', 'my-content-management' ) . "</option>
-					<option value='normal'" . selected( $location, 'normal', false ) . '>' . __( 'Normal', 'my-content-management' ) . "</option>
-					<option value='advanced'" . selected( $location, 'advanced', false ) . '>' . __( 'Advanced', 'my-content-management' ) . '</option>
+				<label for='mcm_fieldset_location'>" . esc_html__( 'Fieldset Location', 'my-content-management' ) . "</label> <select id='mcm_fieldset_location' name='mcm_fieldset_location' />
+					<option value='side'" . selected( $location, 'side', false ) . '>' . esc_html__( 'Side', 'my-content-management' ) . "</option>
+					<option value='normal'" . selected( $location, 'normal', false ) . '>' . esc_html__( 'Normal', 'my-content-management' ) . "</option>
+					<option value='advanced'" . selected( $location, 'advanced', false ) . '>' . esc_html__( 'Advanced', 'my-content-management' ) . '</option>
 				</select>
 			</p>
 			<fieldset>
-				<legend>' . __( 'Attach to', 'my-content-management' ) . "</legend>
+				<legend>' . esc_html__( 'Attach to', 'my-content-management' ) . "</legend>
 				<p>
 				$post_types
 				</p>
@@ -1496,7 +1496,7 @@ function mcm_get_fieldset( $fieldset = false ) {
 	if ( ! $fieldset ) {
 		$fieldset_title = "
 			<p>
-				<label for='mcm_new_fieldset'>" . __( 'New Fieldset Title', 'my-content-management' ) . "</label> <input type='text' id='mcm_new_fieldset' name='mcm_new_fieldset' /><span id='warning' aria-live='assertive'></span>
+				<label for='mcm_new_fieldset'>" . esc_html__( 'New Fieldset Title', 'my-content-management' ) . "</label> <input type='text' id='mcm_new_fieldset' name='mcm_new_fieldset' /><span id='warning' aria-live='assertive'></span>
 			</p>
 			$options";
 	} else {
@@ -1506,7 +1506,7 @@ function mcm_get_fieldset( $fieldset = false ) {
 				$fieldset_title
 			</div>" . '<table class="widefat">
 				<thead>
-					<tr><th scope="col">' . __( 'Move', 'my-content-management' ) . '</th><th scope="col">' . __( 'Field Label', 'my-content-management' ) . '</th><th scope="col">' . __( 'Input Type', 'my-content-management' ) . '</th><th scope="col">Description/Options</th><th scope="col">' . __( 'Repeatable', 'my-content-management' ) . '</th><th scope="col">' . __( 'Delete', 'my-content-management' ) . '</th>
+					<tr><th scope="col">' . esc_html__( 'Move', 'my-content-management' ) . '</th><th scope="col">' . esc_html__( 'Field Label', 'my-content-management' ) . '</th><th scope="col">' . esc_html__( 'Input Type', 'my-content-management' ) . '</th><th scope="col">Description/Options</th><th scope="col">' . esc_html__( 'Repeatable', 'my-content-management' ) . '</th><th scope="col">' . esc_html__( 'Delete', 'my-content-management' ) . '</th>
 				</tr>
 				</thead>
 				<tbody>';
@@ -1515,22 +1515,22 @@ function mcm_get_fieldset( $fieldset = false ) {
 		$fields = ( $fieldset ) ? $option['fields'][ urldecode( $fieldset ) ] : '';
 	}
 	$field_types = array(
-		'text'          => __( 'Single line of text', 'my-content-management' ),
-		'textarea'      => __( 'Multiple lines of text', 'my-content-management' ),
-		'select'        => __( 'Select dropdown', 'my-content-management' ),
-		'checkboxes'    => __( 'Set of checkboxes', 'my-content-management' ),
-		'checkbox'      => __( 'Single checkbox', 'my-content-management' ),
-		'upload'        => __( 'File upload', 'my-content-management' ),
-		'chooser'       => __( 'Media chooser', 'my-content-management' ),
-		'richtext'      => __( 'Rich Text Editor', 'my-content-management' ),
-		'color'         => __( 'Color input', 'my-content-management' ),
-		'date'          => __( 'Date input', 'my-content-management' ),
-		'tel'           => __( 'Telephone', 'my-content-management' ),
-		'time'          => __( 'Time', 'my-content-management' ),
-		'url'           => __( 'URL', 'my-content-management' ),
-		'email'         => __( 'Email', 'my-content-management' ),
-		'post-relation' => __( 'Related Posts', 'my-content-management' ),
-		'user-relation' => __( 'Related Users', 'my-content-management' ),
+		'text'          => esc_html__( 'Single line of text', 'my-content-management' ),
+		'textarea'      => esc_html__( 'Multiple lines of text', 'my-content-management' ),
+		'select'        => esc_html__( 'Select dropdown', 'my-content-management' ),
+		'checkboxes'    => esc_html__( 'Set of checkboxes', 'my-content-management' ),
+		'checkbox'      => esc_html__( 'Single checkbox', 'my-content-management' ),
+		'upload'        => esc_html__( 'File upload', 'my-content-management' ),
+		'chooser'       => esc_html__( 'Media chooser', 'my-content-management' ),
+		'richtext'      => esc_html__( 'Rich Text Editor', 'my-content-management' ),
+		'color'         => esc_html__( 'Color input', 'my-content-management' ),
+		'date'          => esc_html__( 'Date input', 'my-content-management' ),
+		'tel'           => esc_html__( 'Telephone', 'my-content-management' ),
+		'time'          => esc_html__( 'Time', 'my-content-management' ),
+		'url'           => esc_html__( 'URL', 'my-content-management' ),
+		'email'         => esc_html__( 'Email', 'my-content-management' ),
+		'post-relation' => esc_html__( 'Related Posts', 'my-content-management' ),
+		'user-relation' => esc_html__( 'Related Users', 'my-content-management' ),
 	);
 	if ( $fieldset && isset( $option['fields'][ $fieldset ] ) ) {
 		if ( count( $fields ) > 0 ) {
@@ -1546,16 +1546,16 @@ function mcm_get_fieldset( $fieldset = false ) {
 					$field_type_select .= "<option value='$k'$selected>$v</option>\n";
 				}
 				if ( 'select' === $value[3] ) {
-					$labeled      = __( 'Options', 'my-content-management' );
+					$labeled      = esc_html__( 'Options', 'my-content-management' );
 					$choice_field = "<input type='text' name='mcm_field_options[]' id='mcm_field_options$key' value='$choices' />";
 				} elseif ( 'post-relation' === $value[3] ) {
-					$labeled      = __( 'Related post type', 'my-content-management' );
+					$labeled      = esc_html__( 'Related post type', 'my-content-management' );
 					$choice_field = mcm_post_type_relation( $key, $choices );
 				} elseif ( 'user-relation' === $value[3] ) {
-					$labeled      = __( 'Related user', 'my-content-management' );
+					$labeled      = esc_html__( 'Related user', 'my-content-management' );
 					$choice_field = mcm_user_type_relation( $key, $choices );
 				} else {
-					$labeled      = __( 'Additional Text', 'my-content-management' );
+					$labeled      = esc_html__( 'Additional Text', 'my-content-management' );
 					$choice_field = "<input type='text' name='mcm_field_options[]' id='mcm_field_options$key' value='$choices' />";
 				}
 				if ( isset( $value[4] ) && 'true' === $value[4] ) {
@@ -1566,14 +1566,14 @@ function mcm_get_fieldset( $fieldset = false ) {
 				$form .= "
 				<tr class='mcm_custom_fields_form $odd'>
 					<td>
-						<a href='#' class='up'><span>" . __( 'Move Up', 'my-content-management' ) . "</span></a> <a href='#' class='down'><span>" . __( 'Move Down', 'my-content-management' ) . "</span></a>
+						<a href='#' class='up'><span>" . esc_html__( 'Move Up', 'my-content-management' ) . "</span></a> <a href='#' class='down'><span>" . esc_html__( 'Move Down', 'my-content-management' ) . "</span></a>
 					</td>
 					<td>
 						<input type='hidden' name='mcm_field_key[]'  value='$value[0]' />
-						<label for='mcm_field_label$key'>" . __( 'Label', 'my-content-management' ) . "</label> <input type='text' name='mcm_field_label[]' id='mcm_field_label$key' value='" . esc_attr( wp_unslash( $value[1] ) ) . "' /><br /><small>{<code>$value[0]</code>}</small>
+						<label for='mcm_field_label$key'>" . esc_html__( 'Label', 'my-content-management' ) . "</label> <input type='text' name='mcm_field_label[]' id='mcm_field_label$key' value='" . esc_attr( wp_unslash( $value[1] ) ) . "' /><br /><small>{<code>$value[0]</code>}</small>
 					</td>
 					<td>
-						<label for='mcm_field_type$key'>" . __( 'Type', 'my-content-management' ) . "</label>
+						<label for='mcm_field_type$key'>" . esc_html__( 'Type', 'my-content-management' ) . "</label>
 							<select name='mcm_field_type[]' id='mcm_field_type$key'>
 							$field_type_select
 							</select>
@@ -1582,20 +1582,20 @@ function mcm_get_fieldset( $fieldset = false ) {
 						<label for='mcm_field_options$key'>$labeled</label> $choice_field
 					</td>
 					<td>
-						<label for='mcm_field_repeatable$key'>" . __( 'Repeatable', 'my-content-management' ) . "</label> <input type='checkbox' name='mcm_field_repeatable[$key]' id='mcm_field_repeatable$key' class='mcm-repeatable' value='true'$repeatability />
+						<label for='mcm_field_repeatable$key'>" . esc_html__( 'Repeatable', 'my-content-management' ) . "</label> <input type='checkbox' name='mcm_field_repeatable[$key]' id='mcm_field_repeatable$key' class='mcm-repeatable' value='true'$repeatability />
 					</td>
 					<td>
-						<label for='mcm_field_delete$key'>" . __( 'Delete', 'my-content-management' ) . "</label> <input type='checkbox' name='mcm_field_delete[$key]' id='mcm_field_delete$key' class='mcm-delete' value='delete' />
+						<label for='mcm_field_delete$key'>" . esc_html__( 'Delete', 'my-content-management' ) . "</label> <input type='checkbox' name='mcm_field_delete[$key]' id='mcm_field_delete$key' class='mcm-delete' value='delete' />
 					</td>
 				</tr>";
 				$odd   = ( 'odd' === $odd ) ? 'even' : 'odd';
 			}
 		} else {
 			// Translators: action to perform (html button).
-			echo "<div class='mcm-notice'><p>" . sprintf( __( 'This fieldset has no fields defined. Do you want to %s?', 'my-content-management' ), "<input type='submit' class='button-primary' name='mcm_custom_fieldsets' value='" . __( 'Delete the Fieldset', 'my-content-management' ) . "' />" ) . '</p></div>';
+			echo "<div class='mcm-notice'><p>" . sprintf( esc_html__( 'This fieldset has no fields defined. Do you want to %s?', 'my-content-management' ), "<input type='submit' class='button-primary' name='mcm_custom_fieldsets' value='" . __( 'Delete the Fieldset', 'my-content-management' ) . "' />" ) . '</p></div>';
 		}
 	} elseif ( $fieldset && ! isset( $option['fields'][ $fieldset ] ) ) {
-		echo "<div class='updated error'><p>" . __( 'There is no field set by that name', 'my-content-management' ) . '</p></div>';
+		echo "<div class='updated error'><p>" . esc_html__( 'There is no field set by that name', 'my-content-management' ) . '</p></div>';
 	}
 	$field_type_select = '';
 	foreach ( $field_types as $k => $v ) {
@@ -1606,25 +1606,25 @@ function mcm_get_fieldset( $fieldset = false ) {
 		<td></td>
 		<td>
 			<input type='hidden' name='mcm_field_key[]'  value='' />
-			<label for='mcm_field_label'>" . __( 'Label', 'my-content-management' ) . "</label> <input type='text' name='mcm_field_label[]' id='mcm_field_label' value='' />
+			<label for='mcm_field_label'>" . esc_html__( 'Label', 'my-content-management' ) . "</label> <input type='text' name='mcm_field_label[]' id='mcm_field_label' value='' />
 		</td>
 		<td>
-			<label for='mcm_field_type'>" . __( 'Type', 'my-content-management' ) . "</label>
+			<label for='mcm_field_type'>" . esc_html__( 'Type', 'my-content-management' ) . "</label>
 				<select name='mcm_field_type[]' id='mcm_field_type'>
 				$field_type_select
 				</select>
 		</td>
 		<td>
-			<label for='mcm_field_options'>" . __( 'Options/Additional Text', 'my-content-management' ) . "</label> <input type='text' name='mcm_field_options[]' id='mcm_field_options' value='' />
+			<label for='mcm_field_options'>" . esc_html__( 'Options/Additional Text', 'my-content-management' ) . "</label> <input type='text' name='mcm_field_options[]' id='mcm_field_options' value='' />
 		</td>
 		<td>
-			<label for='mcm_field_repeatable'>" . __( 'Repeatable', 'my-content-management' ) . "</label> <input type='checkbox' name='mcm_field_repeatable[]' id='mcm_field_repeatable' value='true' />
+			<label for='mcm_field_repeatable'>" . esc_html__( 'Repeatable', 'my-content-management' ) . "</label> <input type='checkbox' name='mcm_field_repeatable[]' id='mcm_field_repeatable' value='true' />
 		</td>
 		<td></td>
 	</tr>";
 	$form     .= '</tbody></table>';
-	$add_field = __( 'Add another field', 'my-content-management' );
-	$del_field = __( 'Remove last field', 'my-content-management' );
+	$add_field = esc_html__( 'Add another field', 'my-content-management' );
+	$del_field = esc_html__( 'Remove last field', 'my-content-management' );
 	$form     .= '<p><input type="button" class="button-secondary add_field" value="' . esc_attr( $add_field ) . '" class="button" /> <input type="button" class="button-secondary del_field" value="' . esc_attr( $del_field ) . '" class="button" /></p>';
 
 	echo $form;
@@ -1664,7 +1664,7 @@ function mcm_update_custom_fieldset( $post ) {
 		$fieldset = $fieldset . ' (2)';
 	}
 	if ( ! $fieldset ) {
-		return __( 'No custom field set was defined.', 'my-content-management' );
+		return esc_html__( 'No custom field set was defined.', 'my-content-management' );
 	} else {
 		$fieldset = urldecode( $fieldset );
 	}
@@ -1748,7 +1748,7 @@ function mcm_update_custom_fieldset( $post ) {
 	}
 	update_option( 'mcm_options', $option );
 	// Translators: 1) action taken 2) name of fieldset acted on.
-	return sprintf( __( 'You have %1$s the %2$s group of custom fields.', 'my-content-management' ), $added, wp_unslash( $fieldset ) );
+	return sprintf( esc_html__( 'You have %1$s the %2$s group of custom fields.', 'my-content-management' ), $added, wp_unslash( $fieldset ) );
 }
 
 /**
@@ -1833,8 +1833,8 @@ function mcm_styles() {
  */
 function mcm_plugin_action( $links, $file ) {
 	if ( plugin_basename( dirname( __FILE__ ) . '/my-content-management.php' ) === $file ) {
-		$links[] = "<a href='options-general.php?page=mcm_settings'>" . __( 'Settings', 'my-content-management' ) . '</a>';
-		$links[] = "<a href='http://www.joedolson.com/donate/'>" . __( 'Donate', 'my-content-management' ) . '</a>';
+		$links[] = "<a href='options-general.php?page=mcm_settings'>" . esc_html__( 'Settings', 'my-content-management' ) . '</a>';
+		$links[] = "<a href='http://www.joedolson.com/donate/'>" . esc_html__( 'Donate', 'my-content-management' ) . '</a>';
 	}
 
 	return $links;

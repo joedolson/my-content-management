@@ -27,21 +27,21 @@ function mcm_posttypes() {
 				$labels = array(
 					'name'               => $value[3],
 					'singular_name'      => $value[2],
-					'add_new'            => __( 'Add New', 'my-content-management' ),
+					'add_new'            => esc_html__( 'Add New', 'my-content-management' ),
 					// Translators: post type name.
-					'add_new_item'       => sprintf( __( 'Add New %s', 'my-content-management' ), $value[2] ),
+					'add_new_item'       => sprintf( esc_html__( 'Add New %s', 'my-content-management' ), $value[2] ),
 					// Translators: post type name.
-					'edit_item'          => sprintf( __( 'Edit %s', 'my-content-management' ), $value[2] ),
+					'edit_item'          => sprintf( esc_html__( 'Edit %s', 'my-content-management' ), $value[2] ),
 					// Translators: post type name.
-					'new_item'           => sprintf( __( 'New %s', 'my-content-management' ), $value[2] ),
+					'new_item'           => sprintf( esc_html__( 'New %s', 'my-content-management' ), $value[2] ),
 					// Translators: post type name.
-					'view_item'          => sprintf( __( 'View %s', 'my-content-management' ), $value[2] ),
+					'view_item'          => sprintf( esc_html__( 'View %s', 'my-content-management' ), $value[2] ),
 					// Translators: post type plural name.
-					'search_items'       => sprintf( __( 'Search %s', 'my-content-management' ), $value[3] ),
+					'search_items'       => sprintf( esc_html__( 'Search %s', 'my-content-management' ), $value[3] ),
 					// Translators: post type name.
-					'not_found'          => sprintf( __( 'No %s found', 'my-content-management' ), $value[1] ),
+					'not_found'          => sprintf( esc_html__( 'No %s found', 'my-content-management' ), $value[1] ),
 					// Translators: post type name.
-					'not_found_in_trash' => sprintf( __( 'No %s found in Trash', 'my-content-management' ), $value[1] ),
+					'not_found_in_trash' => sprintf( esc_html__( 'No %s found in Trash', 'my-content-management' ), $value[1] ),
 					'parent_item_colon'  => '',
 				);
 				$labels = apply_filters( 'mcm_post_type_labels', $labels, $value );
@@ -94,23 +94,23 @@ function mcm_posttypes_messages( $messages ) {
 			$messages[ $key ] = array(
 				0  => '', // Unused. Messages start at index 1.
 				// Translators: 1 Post type singular name, 2 link to listing.
-				1  => sprintf( __( '%1$s Listing updated. <a href="%2$s">View %1$s listing</a>', 'my-content-management' ), $value[2], esc_url( get_permalink( $post_ID ) ) ),
-				2  => __( 'Custom field updated.', 'my-content-management' ),
-				3  => __( 'Custom field deleted.', 'my-content-management' ),
+				1  => sprintf( esc_html__( '%1$s Listing updated. <a href="%2$s">View %1$s listing</a>', 'my-content-management' ), $value[2], esc_url( get_permalink( $post_ID ) ) ),
+				2  => esc_html__( 'Custom field updated.', 'my-content-management' ),
+				3  => esc_html__( 'Custom field deleted.', 'my-content-management' ),
 				// Translators: post type name.
-				4  => sprintf( __( '%s listing updated.', 'my-content-management' ), $value[2] ),
+				4  => sprintf( esc_html__( '%s listing updated.', 'my-content-management' ), $value[2] ),
 				// translators: Post type name, revision title.
-				5  => isset( $_GET['revision'] ) ? sprintf( __( '%1$s restored to revision from %2$ss', 'my-content-management' ), $value[2], wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
+				5  => isset( $_GET['revision'] ) ? sprintf( esc_html__( '%1$s restored to revision from %2$ss', 'my-content-management' ), $value[2], wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
 				// Translators: Post type name, link, post type lowercase name.
-				6  => sprintf( __( '%1$s published. <a href="%2$s">View %3$s listing</a>', 'my-content-management' ), $value[2], esc_url( get_permalink( $post_ID ) ), $value[0] ),
+				6  => sprintf( esc_html__( '%1$s published. <a href="%2$s">View %3$s listing</a>', 'my-content-management' ), $value[2], esc_url( get_permalink( $post_ID ) ), $value[0] ),
 				// Translators: Post type name.
-				7  => sprintf( __( '%s listing saved.', 'my-content-management' ), $value[2] ),
+				7  => sprintf( esc_html__( '%s listing saved.', 'my-content-management' ), $value[2] ),
 				// Translators: Post type name, link to preview, post type lower case name.
-				8  => sprintf( __( '%1$s listing submitted. <a target="_blank" href="%2$s">Preview %3$s listing</a>', 'my-content-management' ), $value[2], esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ), $value[0] ),
+				8  => sprintf( esc_html__( '%1$s listing submitted. <a target="_blank" href="%2$s">Preview %3$s listing</a>', 'my-content-management' ), $value[2], esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ), $value[0] ),
 				// Translators: Post type name, date scheduled, preview link, post type lowercase name.
-				9  => sprintf( __( '%1$s listing scheduled for: <strong>%2$s</strong>. <a target="_blank" href="%3$s">Preview %4$s</a>', 'my-content-management' ), $value[2], date_i18n( __( 'M j, Y @ G:i', 'my-content-management' ), strtotime( $post->post_date ) ), esc_url( get_permalink( $post_ID ) ), $value[0] ),
+				9  => sprintf( esc_html__( '%1$s listing scheduled for: <strong>%2$s</strong>. <a target="_blank" href="%3$s">Preview %4$s</a>', 'my-content-management' ), $value[2], date_i18n( esc_html__( 'M j, Y @ G:i', 'my-content-management' ), strtotime( $post->post_date ) ), esc_url( get_permalink( $post_ID ) ), $value[0] ),
 				// Translators: Post type name, preview link, post type lowercase.
-				10 => sprintf( __( '%1$s draft updated. <a target="_blank" href="%2$s">Preview %3$s listing</a>', 'my-content-management' ), $value[2], esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ), $value[0] ),
+				10 => sprintf( esc_html__( '%1$s draft updated. <a target="_blank" href="%2$s">Preview %3$s listing</a>', 'my-content-management' ), $value[2], esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ), $value[0] ),
 			);
 		}
 	}
@@ -131,7 +131,7 @@ function mcm_taxonomies() {
 			if ( is_array( $value ) && ! empty( $value ) ) {
 				$cat_key = str_replace( 'mcm_', '', sanitize_key( $key ) );
 				// translators: Name of post type.
-				$label = sprintf( apply_filters( 'mcm_tax_category_name', __( '%s Categories', 'my-content-management' ), $value[2], $cat_key ), $value[2] );
+				$label = sprintf( apply_filters( 'mcm_tax_category_name', esc_html__( '%s Categories', 'my-content-management' ), $value[2], $cat_key ), $value[2] );
 				$slug  = apply_filters( 'mcm_tax_category_slug', "$cat_key-category", $cat_key );
 				register_taxonomy(
 					"mcm_category_$cat_key", // internal name = machine-readable taxonomy name.
@@ -148,7 +148,7 @@ function mcm_taxonomies() {
 					)
 				);
 				// translators: Name of post type.
-				$type_label = sprintf( apply_filters( 'mcm_tax_type_name', __( '%s Types', 'my-content-management' ), $value[2], $cat_key ), $value[2] );
+				$type_label = sprintf( apply_filters( 'mcm_tax_type_name', esc_html__( '%s Types', 'my-content-management' ), $value[2], $cat_key ), $value[2] );
 				$slug       = apply_filters( 'mcm_tax_type_slug', "$cat_key-type", $cat_key );
 
 				register_taxonomy(
@@ -166,7 +166,7 @@ function mcm_taxonomies() {
 					)
 				);
 				// translators: Name of post type.
-				$tag_label = sprintf( apply_filters( 'mcm_tax_tag_name', __( '%s Tags', 'my-content-management' ), $value[2], $cat_key ), $value[2] );
+				$tag_label = sprintf( apply_filters( 'mcm_tax_tag_name', esc_html__( '%s Tags', 'my-content-management' ), $value[2], $cat_key ), $value[2] );
 				$slug      = apply_filters( 'mcm_tax_tag_slug', "$cat_key-tag", $cat_key );
 
 				register_taxonomy(
@@ -361,7 +361,7 @@ function mcm_upload_field( $args ) {
 			foreach ( $args[2] as $file ) {
 				if ( '' !== $file ) {
 					$short     = str_replace( site_url(), '', $file );
-					$download .= '<li><input type="checkbox" id="del-' . $args[0] . $i . '" name="mcm_delete[' . $args[0] . '][]" value="' . $file . '" /> <label for="del-' . $args[0] . $i . '">' . __( 'Delete', 'my-content-management' ) . '</label> <a href="' . esc_url( $file ) . '">' . esc_html( $short ) . '</a></li>';
+					$download .= '<li><input type="checkbox" id="del-' . $args[0] . $i . '" name="mcm_delete[' . $args[0] . '][]" value="' . $file . '" /> <label for="del-' . $args[0] . $i . '">' . esc_html__( 'Delete', 'my-content-management' ) . '</label> <a href="' . esc_url( $file ) . '">' . esc_html( $short ) . '</a></li>';
 					$i++;
 				}
 			}
@@ -375,7 +375,7 @@ function mcm_upload_field( $args ) {
 	$memory_limit = (int) ( ini_get( 'memory_limit' ) );
 	$upload_mb    = min( $max_upload, $max_post, $memory_limit );
 	// Translators: Upload limit in MB.
-	$label_format = '<div class="mcm_text_field mcm_field"><input type="hidden" name="%1$s" id="%1$s" value="%3$s" /><label for="%1$s"><strong>%2$s</strong></label><br />' . '<input type="file" name="%1$s" id="%1$s" /><br />' . sprintf( __( 'Upload limit: %s MB', 'my-content-management' ), $upload_mb );
+	$label_format = '<div class="mcm_text_field mcm_field"><input type="hidden" name="%1$s" id="%1$s" value="%3$s" /><label for="%1$s"><strong>%2$s</strong></label><br />' . '<input type="file" name="%1$s" id="%1$s" /><br />' . sprintf( esc_html__( 'Upload limit: %s MB', 'my-content-management' ), $upload_mb );
 	if ( '' !== $description ) {
 		$label_format .= '<br /><em>' . $description . '</em>';
 	}
@@ -1186,59 +1186,59 @@ function mcm_globals( $var ) {
 	// Default post types.
 	$vars['mcm_types'] = array(
 		'mcm_faq'          => array(
-			__( 'faq', 'my-content-management' ),
-			__( 'faqs', 'my-content-management' ),
-			__( 'FAQ', 'my-content-management' ),
-			__( 'FAQs', 'my-content-management' ),
+			esc_html__( 'faq', 'my-content-management' ),
+			esc_html__( 'faqs', 'my-content-management' ),
+			esc_html__( 'FAQ', 'my-content-management' ),
+			esc_html__( 'FAQs', 'my-content-management' ),
 			$mcm_args,
 		),
 		'mcm_people'       => array(
-			__( 'person', 'my-content-management' ),
-			__( 'people', 'my-content-management' ),
-			__( 'Person', 'my-content-management' ),
-			__( 'People', 'my-content-management' ),
+			esc_html__( 'person', 'my-content-management' ),
+			esc_html__( 'people', 'my-content-management' ),
+			esc_html__( 'Person', 'my-content-management' ),
+			esc_html__( 'People', 'my-content-management' ),
 			$mcm_args,
 		),
 		'mcm_testimonials' => array(
-			__( 'testimonial', 'my-content-management' ),
-			__( 'testimonials', 'my-content-management' ),
-			__( 'Testimonial', 'my-content-management' ),
-			__( 'Testimonials', 'my-content-management' ),
+			esc_html__( 'testimonial', 'my-content-management' ),
+			esc_html__( 'testimonials', 'my-content-management' ),
+			esc_html__( 'Testimonial', 'my-content-management' ),
+			esc_html__( 'Testimonials', 'my-content-management' ),
 			$mcm_args,
 		),
 		'mcm_locations'    => array(
-			__( 'location', 'my-content-management' ),
-			__( 'locations', 'my-content-management' ),
-			__( 'Location', 'my-content-management' ),
-			__( 'Locations', 'my-content-management' ),
+			esc_html__( 'location', 'my-content-management' ),
+			esc_html__( 'locations', 'my-content-management' ),
+			esc_html__( 'Location', 'my-content-management' ),
+			esc_html__( 'Locations', 'my-content-management' ),
 			$mcm_args,
 		),
 		'mcm_quotes'       => array(
-			__( 'quote', 'my-content-management' ),
-			__( 'quotes', 'my-content-management' ),
-			__( 'Quote', 'my-content-management' ),
-			__( 'Quotes', 'my-content-management' ),
+			esc_html__( 'quote', 'my-content-management' ),
+			esc_html__( 'quotes', 'my-content-management' ),
+			esc_html__( 'Quote', 'my-content-management' ),
+			esc_html__( 'Quotes', 'my-content-management' ),
 			$mcm_args,
 		),
 		'mcm_glossary'     => array(
-			__( 'glossary term', 'my-content-management' ),
-			__( 'glossary terms', 'my-content-management' ),
-			__( 'Glossary Term', 'my-content-management' ),
-			__( 'Glossary Terms', 'my-content-management' ),
+			esc_html__( 'glossary term', 'my-content-management' ),
+			esc_html__( 'glossary terms', 'my-content-management' ),
+			esc_html__( 'Glossary Term', 'my-content-management' ),
+			esc_html__( 'Glossary Terms', 'my-content-management' ),
 			$mcm_args,
 		),
 		'mcm_portfolio'    => array(
-			__( 'portfolio item', 'my-content-management' ),
-			__( 'portfolio items', 'my-content-management' ),
-			__( 'Portfolio Item', 'my-content-management' ),
-			__( 'Portfolio Items', 'my-content-management' ),
+			esc_html__( 'portfolio item', 'my-content-management' ),
+			esc_html__( 'portfolio items', 'my-content-management' ),
+			esc_html__( 'Portfolio Item', 'my-content-management' ),
+			esc_html__( 'Portfolio Items', 'my-content-management' ),
 			$mcm_args,
 		),
 		'mcm_resources'    => array(
-			__( 'resource', 'my-content-management' ),
-			__( 'resources', 'my-content-management' ),
-			__( 'Resource', 'my-content-management' ),
-			__( 'Resources', 'my-content-management' ),
+			esc_html__( 'resource', 'my-content-management' ),
+			esc_html__( 'resources', 'my-content-management' ),
+			esc_html__( 'Resource', 'my-content-management' ),
+			esc_html__( 'Resources', 'my-content-management' ),
 			$mcm_args,
 		),
 	);
@@ -1248,58 +1248,58 @@ function mcm_globals( $var ) {
 	// @location string side/normal/advanced.
 	// add custom fields to the custom post types.
 	$vars['mcm_fields'] = array(
-		__( 'Personal Information', 'my-content-management' ) => array(
-			array( '_title', __( 'Title', 'my-content-management' ), '', 'mcm_text_field' ),
-			array( '_subtitle', __( 'Subtitle', 'my-content-management' ), '', 'mcm_text_field' ),
-			array( '_business', __( 'Business', 'my-content-management' ), '', 'mcm_text_field' ),
-			array( '_phone', __( 'Phone Number', 'my-content-management' ), '', 'tel', 'true' ),
-			array( '_email', __( 'E-mail', 'my-content-management' ), '', 'email' ),
+		esc_html__( 'Personal Information', 'my-content-management' ) => array(
+			array( '_title', esc_html__( 'Title', 'my-content-management' ), '', 'mcm_text_field' ),
+			array( '_subtitle', esc_html__( 'Subtitle', 'my-content-management' ), '', 'mcm_text_field' ),
+			array( '_business', esc_html__( 'Business', 'my-content-management' ), '', 'mcm_text_field' ),
+			array( '_phone', esc_html__( 'Phone Number', 'my-content-management' ), '', 'tel', 'true' ),
+			array( '_email', esc_html__( 'E-mail', 'my-content-management' ), '', 'email' ),
 		),
-		__( 'Location Info', 'my-content-management' )        => array(
-			array( '_street', __( 'Street Address', 'my-content-management' ), '', 'mcm_text_field' ),
-			array( '_city', __( 'City', 'my-content-management' ), '', 'mcm_text_field' ),
-			array( '_neighborhood', __( 'Neighborhood', 'my-content-management' ), '', 'mcm_text_field' ),
-			array( '_state', __( 'State', 'my-content-management' ), '', 'mcm_text_field' ),
-			array( '_country', __( 'Country', 'my-content-management' ), '', 'mcm_text_field' ),
-			array( '_postalcode', __( 'Postal Code', 'my-content-management' ), '', 'mcm_text_field' ),
-			array( '_phone', __( 'Phone', 'my-content-management' ), '', 'tel' ),
-			array( '_fax', __( 'Fax', 'my-content-management' ), '', 'mcm_text_field' ),
-			array( '_business', __( 'Business Name', 'my-content-management' ), '', 'mcm_text_field' ),
-			array( '_email', __( 'Contact Email', 'my-content-management' ), '', 'email' ),
+		esc_html__( 'Location Info', 'my-content-management' )        => array(
+			array( '_street', esc_html__( 'Street Address', 'my-content-management' ), '', 'mcm_text_field' ),
+			array( '_city', esc_html__( 'City', 'my-content-management' ), '', 'mcm_text_field' ),
+			array( '_neighborhood', esc_html__( 'Neighborhood', 'my-content-management' ), '', 'mcm_text_field' ),
+			array( '_state', esc_html__( 'State', 'my-content-management' ), '', 'mcm_text_field' ),
+			array( '_country', esc_html__( 'Country', 'my-content-management' ), '', 'mcm_text_field' ),
+			array( '_postalcode', esc_html__( 'Postal Code', 'my-content-management' ), '', 'mcm_text_field' ),
+			array( '_phone', esc_html__( 'Phone', 'my-content-management' ), '', 'tel' ),
+			array( '_fax', esc_html__( 'Fax', 'my-content-management' ), '', 'mcm_text_field' ),
+			array( '_business', esc_html__( 'Business Name', 'my-content-management' ), '', 'mcm_text_field' ),
+			array( '_email', esc_html__( 'Contact Email', 'my-content-management' ), '', 'email' ),
 		),
-		__( 'Quotation Info', 'my-content-management' )       => array(
-			array( '_url', __( 'URL', 'my-content-management' ), '', 'url' ),
-			array( '_title', __( 'Title', 'my-content-management' ), '', 'mcm_text_field' ),
-			array( '_location', __( 'Location', 'my-content-management' ), '', 'mcm_text_field' ),
+		esc_html__( 'Quotation Info', 'my-content-management' )       => array(
+			array( '_url', esc_html__( 'URL', 'my-content-management' ), '', 'url' ),
+			array( '_title', esc_html__( 'Title', 'my-content-management' ), '', 'mcm_text_field' ),
+			array( '_location', esc_html__( 'Location', 'my-content-management' ), '', 'mcm_text_field' ),
 		),
-		__( 'Testimonial Info', 'my-content-management' )     => array(
-			array( '_url', __( 'URL', 'my-content-management' ), '', 'url' ),
-			array( '_title', __( 'Title', 'my-content-management' ), '', 'mcm_text_field' ),
-			array( '_location', __( 'Location', 'my-content-management' ), '', 'mcm_text_field' ),
+		esc_html__( 'Testimonial Info', 'my-content-management' )     => array(
+			array( '_url', esc_html__( 'URL', 'my-content-management' ), '', 'url' ),
+			array( '_title', esc_html__( 'Title', 'my-content-management' ), '', 'mcm_text_field' ),
+			array( '_location', esc_html__( 'Location', 'my-content-management' ), '', 'mcm_text_field' ),
 		),
-		__( 'Portfolio Info', 'my-content-management' )       => array(
-			array( '_medium', __( 'Medium', 'my-content-management' ), '', 'mcm_text_field' ),
-			array( '_width', __( 'Width', 'my-content-management' ), '', 'mcm_text_field' ),
-			array( '_height', __( 'Height', 'my-content-management' ), '', 'mcm_text_field' ),
-			array( '_depth', __( 'Depth', 'my-content-management' ), '', 'mcm_text_field' ),
-			array( '_price', __( 'Price', 'my-content-management' ), '', 'mcm_text_field' ),
-			array( '_year', __( 'Year', 'my-content-management' ), '', 'mcm_text_field' ),
+		esc_html__( 'Portfolio Info', 'my-content-management' )       => array(
+			array( '_medium', esc_html__( 'Medium', 'my-content-management' ), '', 'mcm_text_field' ),
+			array( '_width', esc_html__( 'Width', 'my-content-management' ), '', 'mcm_text_field' ),
+			array( '_height', esc_html__( 'Height', 'my-content-management' ), '', 'mcm_text_field' ),
+			array( '_depth', esc_html__( 'Depth', 'my-content-management' ), '', 'mcm_text_field' ),
+			array( '_price', esc_html__( 'Price', 'my-content-management' ), '', 'mcm_text_field' ),
+			array( '_year', esc_html__( 'Year', 'my-content-management' ), '', 'mcm_text_field' ),
 		),
-		__( 'Resource Info', 'my-content-management' )        => array(
-			array( '_authors', __( 'Additional Authors', 'my-content-management' ), '', 'mcm_text_field', 'true' ),
-			array( '_licensing', __( 'License Terms', 'my-content-management' ), '', 'mcm_text_area' ),
-			array( '_show', __( 'Show on', 'my-content-management' ), 'This is a label for advanced use in themes', 'mcm_text_field' ),
+		esc_html__( 'Resource Info', 'my-content-management' )        => array(
+			array( '_authors', esc_html__( 'Additional Authors', 'my-content-management' ), '', 'mcm_text_field', 'true' ),
+			array( '_licensing', esc_html__( 'License Terms', 'my-content-management' ), '', 'mcm_text_area' ),
+			array( '_show', esc_html__( 'Show on', 'my-content-management' ), 'This is a label for advanced use in themes', 'mcm_text_field' ),
 		),
 	);
 
 	// Default extra field sets.
 	$vars['mcm_extras'] = array(
-		__( 'Personal Information', 'my-content-management' ) => array( 'mcm_people', 'side' ),
-		__( 'Location Info', 'my-content-management' )        => array( 'mcm_locations', 'side' ),
-		__( 'Testimonial Info', 'my-content-management' )     => array( 'mcm_testimonials', 'side' ),
-		__( 'Quotation Info', 'my-content-management' )       => array( 'mcm_quotes', 'side' ),
-		__( 'Portfolio Info', 'my-content-management' )       => array( 'mcm_portfolio', 'side' ),
-		__( 'Resource Info', 'my-content-management' )        => array( 'mcm_resources', 'side' ),
+		esc_html__( 'Personal Information', 'my-content-management' ) => array( 'mcm_people', 'side' ),
+		esc_html__( 'Location Info', 'my-content-management' )        => array( 'mcm_locations', 'side' ),
+		esc_html__( 'Testimonial Info', 'my-content-management' )     => array( 'mcm_testimonials', 'side' ),
+		esc_html__( 'Quotation Info', 'my-content-management' )       => array( 'mcm_quotes', 'side' ),
+		esc_html__( 'Portfolio Info', 'my-content-management' )       => array( 'mcm_portfolio', 'side' ),
+		esc_html__( 'Resource Info', 'my-content-management' )        => array( 'mcm_resources', 'side' ),
 	);
 
 	if ( $var && isset( $vars[ $var ] ) ) {

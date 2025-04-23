@@ -296,7 +296,7 @@ function mcm_get_show_posts( $atts ) {
 				$p['date']      = get_the_time( get_option( 'date_format' ) );
 				$p['fulldate']  = get_the_time( 'F j, Y' );
 				$p['author']    = get_the_author();
-				$p['edit_link'] = get_edit_post_link( $id ) ? "<a href='" . get_edit_post_link( $id ) . "'>" . __( 'Edit', 'my-content-management' ) . '</a>' : '';
+				$p['edit_link'] = get_edit_post_link( $id ) ? "<a href='" . get_edit_post_link( $id ) . "'>" . esc_html__( 'Edit', 'my-content-management' ) . '</a>' : '';
 				$p['postclass'] = implode( ' ', get_post_class() );
 				$p['terms']     = ( 'all' !== $taxonomy ) ? get_the_term_list( $id, $taxonomy, '', ', ', '' ) : get_the_term_list( $id, "mcm_category_$primary", '', ', ', '' );
 				$custom_fields  = get_post_custom();
@@ -372,7 +372,7 @@ function mcm_get_show_posts( $atts ) {
 				$p['date']       = gmdate( get_option( 'date_format' ), strtotime( $the_post->post_date ) );
 				$p['fulldate']   = gmdate( 'F j, Y', strtotime( $the_post->post_date ) );
 				$p['author']     = get_the_author_meta( 'display_name', $the_post->post_author );
-				$p['edit_link']  = get_edit_post_link( $the_post->ID ) ? "<a href='" . get_edit_post_link( $the_post->ID ) . "'>" . __( 'Edit', 'my-content-management' ) . '</a>' : '';
+				$p['edit_link']  = get_edit_post_link( $the_post->ID ) ? "<a href='" . get_edit_post_link( $the_post->ID ) . "'>" . esc_html__( 'Edit', 'my-content-management' ) . '</a>' : '';
 				$p['postclass']  = implode( ' ', get_post_class( '', $the_post->ID ) );
 				$p['terms']      = ( 'all' !== $taxonomy ) ? get_the_term_list( $the_post->ID, $taxonomy, '', ', ', '' ) : get_the_term_list( $id, "mcm_category_$primary", '', ', ', '' );
 				$custom_fields   = get_post_custom( $the_post->ID );
@@ -862,7 +862,7 @@ function mcm_search_form( $post_type ) {
 			<input type='hidden' name='customsearch' value='" . esc_attr( $post_type ) . "' />
 			</div>
 			<label for='csearch'>Search</label> <input type='text' class='text' name='s' id='csearch' value='" . esc_attr( wp_unslash( $s ) ) . "' />
-			<input type='submit' value='" . __( 'Search', 'my-content-management' ) . "' class='btn' />
+			<input type='submit' value='" . esc_attr__( 'Search', 'my-content-management' ) . "' class='btn' />
 		</form>
 	</div>";
 

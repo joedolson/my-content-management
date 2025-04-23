@@ -30,9 +30,9 @@ class Mcm_Meta_Widget extends WP_Widget {
 	function __construct() {
 		parent::__construct(
 			false,
-			$name = __( 'Custom Post Data', 'my-content-management' ),
+			$name = esc_html__( 'Custom Post Data', 'my-content-management' ),
 			array(
-				'description'              => __( 'Widget displaying data entered in a specific fieldset.', 'my-content-management' ),
+				'description'              => esc_html__( 'Widget displaying data entered in a specific fieldset.', 'my-content-management' ),
 				'customize_select_refresh' => true,
 			)
 		);
@@ -52,8 +52,8 @@ class Mcm_Meta_Widget extends WP_Widget {
 		$widget_title = empty( $the_title ) ? '' : $the_title;
 		$widget_title = ( '' !== $widget_title ) ? $args['before_title'] . $widget_title . $args['after_title'] : '';
 
-		$left_column  = isset( $instance['left_column'] ) ? $instance['left_column'] : __( 'Label', 'my-content-management' );
-		$right_column = isset( $instance['right_column'] ) ? $instance['right_column'] : __( 'Value', 'my-content-management' );
+		$left_column  = isset( $instance['left_column'] ) ? $instance['left_column'] : esc_html__( 'Label', 'my-content-management' );
+		$right_column = isset( $instance['right_column'] ) ? $instance['right_column'] : esc_html__( 'Value', 'my-content-management' );
 
 		$custom_template = isset( $instance['custom_template'] ) ? $instance['custom_template'] : false;
 
