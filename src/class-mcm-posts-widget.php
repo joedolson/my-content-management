@@ -118,16 +118,16 @@ class Mcm_Posts_Widget extends WP_Widget {
 		<p>
 			<label for="<?php echo esc_attr( $this->get_field_id( 'mcm_posts_widget_post_type' ) ); ?>"><?php esc_html_e( 'Post type to list', 'my-content-management' ); ?></label> <select id="<?php echo esc_attr( $this->get_field_id( 'mcm_posts_widget_post_type' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'mcm_posts_widget_post_type' ) ); ?>">
 			<?php
-			$posts      = get_post_types(
+			$posts = get_post_types(
 				array(
 					'public' => 'true',
 				),
 				'object'
 			);
 			foreach ( $posts as $v ) {
-				$name        = $v->name;
-				$label       = $v->labels->name;
-				$selected    = ( $post_type === $name ) ? ' selected="selected"' : '';
+				$name     = $v->name;
+				$label    = $v->labels->name;
+				$selected = ( $post_type === $name ) ? ' selected="selected"' : '';
 				echo "<option value='" . esc_attr( $name ) . "'$selected>" . esc_html( wp_unslash( $label ) ) . "</option>\n";
 			}
 			?>
