@@ -101,13 +101,15 @@ $mcm_extras    = $mcm_options['extras'];
  * Enqueue admin scripts & styles used in post meta fields.
  */
 function mcm_enqueue_admin_scripts() {
-	$screen = get_current_screen();
+	$version = get_option( 'mcm_version' );
+	$version = ( SCRIPT_DEBUG ) ? $version . '-' . wp_rand( 10000, 99999 ) : $version;
+	$screen  = get_current_screen();
 	if ( 'post' === $screen->base ) {
 		if ( function_exists( 'wp_enqueue_media' ) && ! did_action( 'wp_enqueue_media' ) ) {
 			wp_enqueue_media();
 		}
 		wp_enqueue_style( 'mcm-posts', plugins_url( 'css/mcm-post.css', __FILE__ ) );
-		wp_enqueue_script( 'mcm-admin-script', plugins_url( 'js/uploader.js', __FILE__ ), array( 'jquery' ) );
+		wp_enqueue_script( 'mcm-admin-script', plugins_url( 'js/uploader.js', __FILE__ ), array( 'jquery' ), $version );
 		wp_localize_script(
 			'mcm-admin-script',
 			'mcm_images',
@@ -116,7 +118,7 @@ function mcm_enqueue_admin_scripts() {
 			)
 		);
 		wp_enqueue_script( 'jquery-ui-autocomplete' );
-		wp_enqueue_script( 'mcm.autocomplete', plugins_url( 'js/autocomplete.js', __FILE__ ), array( 'jquery', 'jquery-ui-autocomplete' ) );
+		wp_enqueue_script( 'mcm.autocomplete', plugins_url( 'js/autocomplete.js', __FILE__ ), array( 'jquery', 'jquery-ui-autocomplete' ), $version );
 		wp_localize_script(
 			'mcm.autocomplete',
 			'mcm_ac',
