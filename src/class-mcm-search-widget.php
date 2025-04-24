@@ -62,11 +62,11 @@ class Mcm_Search_Widget extends WP_Widget {
 		$title     = isset( $instance['title'] ) ? esc_attr( $instance['title'] ) : '';
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php esc_html_e( 'Title', 'my-content-management' ); ?>:</label><br />
-			<input class="widefat" type="text" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" value="<?php echo esc_attr( $title ); ?>"/>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title', 'my-content-management' ); ?>:</label><br />
+			<input class="widefat" type="text" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" value="<?php echo esc_attr( $title ); ?>"/>
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'mcm_widget_post_type' ); ?>"><?php esc_html_e( 'Post type to search', 'my-content-management' ); ?></label> <select id="<?php echo $this->get_field_id( 'mcm_widget_post_type' ); ?>" name="<?php echo $this->get_field_name( 'mcm_widget_post_type' ); ?>">
+			<label for="<?php echo esc_attr( $this->get_field_id( 'mcm_widget_post_type' ) ); ?>"><?php esc_html_e( 'Post type to search', 'my-content-management' ); ?></label> <select id="<?php echo esc_attr( $this->get_field_id( 'mcm_widget_post_type' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'mcm_widget_post_type' ) ); ?>">
 			<?php
 			$posts      = get_post_types(
 				array(

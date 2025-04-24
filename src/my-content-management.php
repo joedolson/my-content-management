@@ -651,7 +651,7 @@ function mcm_settings_page() {
 						<h2 class='hndle'><?php esc_html_e( 'Enable Custom Post Types', 'my-content-management' ); ?></h2>
 						<div class="inside">
 						<form method='post' action='<?php echo esc_url( admin_url( 'options-general.php?page=mcm_settings' ) ); ?>'>
-							<div><input type='hidden' name='_wpnonce' value='<?php echo wp_create_nonce( 'my-content-management-nonce' ); ?>' /></div>
+							<div><input type='hidden' name='_wpnonce' value='<?php echo esc_attr( wp_create_nonce( 'my-content-management-nonce' ) ); ?>' /></div>
 							<div>
 							<?php mcm_enabler(); ?>
 							<p>
@@ -695,7 +695,7 @@ function mcm_settings_page() {
 								$sizes = get_intermediate_image_sizes();
 								foreach ( $sizes as $size ) {
 									// Translators: Image size name.
-									echo '<dt><code>{' . esc_html( $size ) . '}</code></dt><dd>' . sprintf( esc_html__( 'Featured image at %s size', 'my-content-management' ), $size ) . '</dd>';
+									echo '<dt><code>{' . esc_html( $size ) . '}</code></dt><dd>' . sprintf( esc_html__( 'Featured image at %s size', 'my-content-management' ), esc_html( $size ) ) . '</dd>';
 								}
 								?>
 
@@ -761,7 +761,7 @@ function mcm_enabler() {
 	$enabled = $option['enabled'];
 	$types   = $option['types'];
 	$checked = '';
-	$return  = '';
+	echo '<fieldset aria-labelledby="available-post-types"><h3 id="available-post-types">' . esc_html__( 'Available Post Types', 'my-content-management' ) . "</h3><ul class='mcm_posttypes'>"
 	if ( is_array( $types ) ) {
 		foreach ( $types as $key => $value ) {
 			if ( $key && ! is_int( $key ) ) {
@@ -772,11 +772,11 @@ function mcm_enabler() {
 						$checked = '';
 					}
 				}
-				$return .= "<li><input type='checkbox' value='" . esc_attr( $key ) . "' name='mcm_posttypes[]' id='mcm_" . esc_attr( $key ) . "'$checked /><label for='mcm_" . esc_attr( $key ) . "'>" . esc_html( $value[3] ) . ' (<code>' . esc_html( $key ) . "</code>)</label> <a href='" . esc_url( admin_url( "options-general.php?page=mcm_settings&mcm_edit=$key" ) ) . "'>" . esc_html__( 'Edit', 'my-content-management' ) . " '" . esc_html( $value[3] ) . "'</a> &bull; <a href='" . esc_url( admin_url( "options-general.php?page=mcm_settings&mcm_delete=$key" ) ) . "'>" . esc_html__( 'Delete', 'my-content-management' ) . "  '" . esc_html( $value[3] ) . "'</a></li>\n";
+				echo "<li><input type='checkbox' value='" . esc_attr( $key ) . "' name='mcm_posttypes[]' id='mcm_" . esc_attr( $key ) . "'$checked /><label for='mcm_" . esc_attr( $key ) . "'>" . esc_html( $value[3] ) . ' (<code>' . esc_html( $key ) . "</code>)</label> <a href='" . esc_url( admin_url( "options-general.php?page=mcm_settings&mcm_edit=$key" ) ) . "'>" . esc_html__( 'Edit', 'my-content-management' ) . " '" . esc_html( $value[3] ) . "'</a> &bull; <a href='" . esc_url( admin_url( "options-general.php?page=mcm_settings&mcm_delete=$key" ) ) . "'>" . esc_html__( 'Delete', 'my-content-management' ) . "  '" . esc_html( $value[3] ) . "'</a></li>\n";
 			}
 		}
 	}
-	echo '<fieldset aria-labelledby="available-post-types"><h3 id="available-post-types">' . esc_html__( 'Available Post Types', 'my-content-management' ) . "</h3><ul class='mcm_posttypes'>" . $return . '</ul></fieldset>';
+	echo '</ul></fieldset>';
 }
 
 /**
@@ -814,7 +814,7 @@ function mcm_save_updates() {
 
 			$option['types'][ $type ] = $new;
 			update_option( 'mcm_options', $option );
-			set_transient( 'mcm_update_notice', "<div class='updated fade'><p>" . esc_html__( 'Post type settings modified.', 'my-content-management' ) . '</p></div>', 10 );
+			set_transient( 'mcm_update_notice', __( 'Post type settings modified.', 'my-content-management' ), 10 );
 		} else {
 			$option = get_option( 'mcm_options' );
 			$ns     = map_deep( $_POST['new'], 'sanitize_textarea_field' );
@@ -840,7 +840,7 @@ function mcm_save_updates() {
 
 			$option['types'][ $type ] = $new;
 			update_option( 'mcm_options', $option );
-			set_transient( 'mcm_update_notice', "<div class='updated fade'><p>" . esc_html__( 'Added new custom post type.', 'my-content-management' ) . '</p></div>', 10 );
+			set_transient( 'mcm_update_notice', __( 'Added new custom post type.', 'my-content-management' ), 10 );
 
 		}
 		// refresh permalinks.
@@ -864,7 +864,7 @@ function mcm_updater() {
 	}
 	$notice = get_transient( 'mcm_update_notice' );
 	if ( $notice ) {
-		echo $notice;
+		wp_admin_notice( $notice );
 		delete_transient( 'mcm_update_notice' );
 	}
 	// Translators: post type name.
@@ -1799,7 +1799,7 @@ function mcm_configure_custom_fields() {
 							<p><?php esc_html_e( 'If the input type is a Select box, enter the selectable options as a comma-separated list in the Description/Options field.', 'my-content-management' ); ?></p>
 							<?php echo $fields; ?>
 							<form method='post' action='<?php echo esc_url( admin_url( "options-general.php?page=mcm_custom_fields$append" ) ); ?>'>
-								<div><input type='hidden' name='_wpnonce' value='<?php echo wp_create_nonce( 'my-content-management-nonce' ); ?>' /></div>
+								<div><input type='hidden' name='_wpnonce' value='<?php echo esc_attr( wp_create_nonce( 'my-content-management-nonce' ) ); ?>' /></div>
 								<div>
 								<?php mcm_fields_updater(); ?>
 								<p>

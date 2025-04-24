@@ -124,14 +124,12 @@ class Mcm_Posts_Widget extends WP_Widget {
 				),
 				'object'
 			);
-			$post_types = '';
 			foreach ( $posts as $v ) {
 				$name        = $v->name;
 				$label       = $v->labels->name;
 				$selected    = ( $post_type === $name ) ? ' selected="selected"' : '';
-				$post_types .= "<option value='" . esc_attr( $name ) . "'$selected>" . esc_html( wp_unslash( $label ) ) . "</option>\n";
+				echo "<option value='" . esc_attr( $name ) . "'$selected>" . esc_html( wp_unslash( $label ) ) . "</option>\n";
 			}
-			echo $post_types;
 			?>
 			</select>
 		</p>

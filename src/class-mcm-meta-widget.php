@@ -90,11 +90,11 @@ class Mcm_Meta_Widget extends WP_Widget {
 		$custom_template = isset( $instance['custom_template'] ) ? $instance['custom_template'] : '';
 		?>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php esc_html_e( 'Title', 'my-content-management' ); ?>:</label><br />
-			<input class="widefat" type="text" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" value="<?php echo wp_unslash( esc_attr( $title ) ); ?>"/>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>"><?php esc_html_e( 'Title', 'my-content-management' ); ?>:</label><br />
+			<input class="widefat" type="text" id="<?php echo esc_attr( $this->get_field_id( 'title' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'title' ) ); ?>" value="<?php echo wp_unslash( esc_attr( $title ) ); ?>"/>
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'fieldset' ); ?>"><?php esc_html_e( 'Fieldset to display', 'my-content-management' ); ?></label> <select id="<?php echo $this->get_field_id( 'fieldset' ); ?>" name="<?php echo $this->get_field_name( 'fieldset' ); ?>">
+			<label for="<?php echo esc_attr( $this->get_field_id( 'fieldset' ) ); ?>"><?php esc_html_e( 'Fieldset to display', 'my-content-management' ); ?></label> <select id="<?php echo esc_attr( $this->get_field_id( 'fieldset' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'fieldset' ) ); ?>">
 			<?php
 			$fieldsets = '';
 			foreach ( $types as $v ) {
@@ -108,7 +108,7 @@ class Mcm_Meta_Widget extends WP_Widget {
 			</select>
 		</p>
 		<p>
-			<label for="<?php echo $this->get_field_id( 'display' ); ?>"><?php esc_html_e( 'Display style', 'my-content-management' ); ?></label> <select id="<?php echo $this->get_field_id( 'display' ); ?>" name="<?php echo $this->get_field_name( 'display' ); ?>">
+			<label for="<?php echo esc_attr( $this->get_field_id( 'display' ) ); ?>"><?php esc_html_e( 'Display style', 'my-content-management' ); ?></label> <select id="<?php echo esc_attr( $this->get_field_id( 'display' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'display' ) ); ?>">
 				<option value='list'<?php selected( $display, 'list' ); ?>><?php esc_html_e( 'List', 'my-content-management' ); ?></option>
 				<option value='table'<?php selected( $display, 'table' ); ?>><?php esc_html_e( 'Table', 'my-content-management' ); ?></option>
 				<option value='custom'<?php selected( $display, 'custom' ); ?>><?php esc_html_e( 'Custom', 'my-content-management' ); ?></option>
@@ -118,20 +118,20 @@ class Mcm_Meta_Widget extends WP_Widget {
 		if ( 'table' === $display ) {
 			?>
 			<p>
-			<label for="<?php echo $this->get_field_id( 'left_column' ); ?>"><?php esc_html_e( 'Left column header', 'my-content-management' ); ?>:</label><br />
-			<input class="widefat" type="text" id="<?php echo $this->get_field_id( 'left_column' ); ?>" name="<?php echo $this->get_field_name( 'left_column' ); ?>" value="<?php echo wp_unslash( esc_attr( $left_column ) ); ?>"/>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'left_column' ) ); ?>"><?php esc_html_e( 'Left column header', 'my-content-management' ); ?>:</label><br />
+			<input class="widefat" type="text" id="<?php echo esc_attr( $this->get_field_id( 'left_column' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'left_column' ) ); ?>" value="<?php echo esc_attr( wp_unslash( $left_column ) ); ?>"/>
 			</p>
 			<p>
-			<label for="<?php echo $this->get_field_id( 'right_column' ); ?>"><?php esc_html_e( 'Right column header', 'my-content-management' ); ?>:</label><br />
-			<input class="widefat" type="text" id="<?php echo $this->get_field_id( 'right_column' ); ?>" name="<?php echo $this->get_field_name( 'right_column' ); ?>" value="<?php echo wp_unslash( esc_attr( $right_column ) ); ?>"/>
+			<label for="<?php echo esc_attr( $this->get_field_id( 'right_column' ) ); ?>"><?php esc_html_e( 'Right column header', 'my-content-management' ); ?>:</label><br />
+			<input class="widefat" type="text" id="<?php echo esc_attr( $this->get_field_id( 'right_column' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'right_column' ) ); ?>" value="<?php echo esc_attr( wp_unslash( $right_column ) ); ?>"/>
 			</p>
 			<?php
 		}
 		if ( 'custom' === $display ) {
 			?>
 			<p>
-				<label for="<?php echo $this->get_field_id( 'custom_template' ); ?>"><?php esc_html_e( 'Template', 'my-content-management' ); ?>:</label><br />
-				<textarea class="widefat" cols="70" rows="6" id="<?php echo $this->get_field_id( 'custom_template' ); ?>" name="<?php echo $this->get_field_name( 'custom_template' ); ?>"><?php echo wp_unslash( esc_textarea( $custom_template ) ); ?></textarea>
+				<label for="<?php echo esc_attr( $this->get_field_id( 'custom_template' ) ); ?>"><?php esc_html_e( 'Template', 'my-content-management' ); ?>:</label><br />
+				<textarea class="widefat" cols="70" rows="6" id="<?php echo esc_attr( $this->get_field_id( 'custom_template' ) ); ?>" name="<?php echo esc_attr( $this->get_field_name( 'custom_template' ) ); ?>"><?php echo esc_textarea( wp_unslash( $custom_template ) ); ?></textarea>
 			</p>
 			<?php
 		}
