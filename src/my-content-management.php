@@ -108,7 +108,7 @@ function mcm_enqueue_admin_scripts() {
 		if ( function_exists( 'wp_enqueue_media' ) && ! did_action( 'wp_enqueue_media' ) ) {
 			wp_enqueue_media();
 		}
-		wp_enqueue_style( 'mcm-posts', plugins_url( 'css/mcm-post.css', __FILE__ ) );
+		wp_enqueue_style( 'mcm-posts', plugins_url( 'css/mcm-post.css', __FILE__ ), array(), $version );
 		wp_enqueue_script( 'mcm-admin-script', plugins_url( 'js/uploader.js', __FILE__ ), array( 'jquery' ), $version );
 		wp_localize_script(
 			'mcm-admin-script',
