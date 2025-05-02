@@ -124,11 +124,11 @@ function mcm_format_fieldset( $values, $display, $headers, $fieldset, $template 
 		// work out a custom mechanism.
 		$list = apply_filters( 'mcm_custom_widget_data', $list, $values, $headers, $fieldset );
 		if ( WP_DEBUG && ! $list ) {
-			$list .= '<p>' . __( "You've selected a custom view. Here is the data you're working with on this post:", 'my-content-management' ) . '</p>';
+			$list .= '<p>' . esc_html__( "You've selected a custom view. Here is the data you're working with on this post:", 'my-content-management' ) . '</p>';
 			$list .= '<pre>';
 			$list .= print_r( $values, 1 );
 			$list .= '</pre>';
-			$list .= '<p>' . __( 'Use the filter <code>mcm_custom_widget_data</code> to create a custom view.', 'my-content-management' ) . '</p>';
+			$list .= '<p>' . esc_html__( 'Use the filter <code>mcm_custom_widget_data</code> to create a custom view.', 'my-content-management' ) . '</p>';
 		}
 	}
 
