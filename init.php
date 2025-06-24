@@ -4,7 +4,7 @@
  *
  * @package     MyContentManagement
  * @author      Joe Dolson
- * @copyright   2011-2023 Joe Dolson
+ * @copyright   2011-2025 Joe Dolson
  * @license     GPL-2.0+
  *
  * @wordpress-plugin

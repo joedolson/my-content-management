@@ -56,6 +56,24 @@ The "id" attribute is not supported in the [my_archive] shortcode. (That would b
 
 == Changelog ==
 
+= 1.7.11 =
+
+* Move readme and updater to root directory.
+* Alter filters on taxonomy names.
+* Add translator comments.
+* Fix PHP 8+ error in vsprintf.
+* Move `mcm_delete` action to a context that executes.
+* Remove submenu page for selecting fieldsets.
+* Add filter to change display titles of meta boxes.
+* Make taxonomy slugs filterable.
+* Fix error if attachment is non-numeric.
+* Move global variables into function calls to remove i18n errors.
+* Replace stripslashes with wp_unslash.
+* Fix missing textdomain.
+* Hardening with escaped translation functions.
+* Add versions to scripts.
+* Misc. other minor changes.
+
 = 1.7.9 =
 
 * Test updating when running from init.
