@@ -975,7 +975,7 @@ function mcm_sanitize( $name, $type, $post = array() ) {
 		default:
 			$value = sanitize_text_field( $value );
 	}
-	$return = apply_filters( 'mcm_filter_saved_data', $value, $custom_field_name, $custom_field_type, $post );
+	$return = apply_filters( 'mcm_filter_saved_data', $value, $name, $type, $post );
 
 	return $return;
 }
