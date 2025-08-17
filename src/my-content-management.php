@@ -763,7 +763,7 @@ function mcm_enabler() {
 	$enabled = $option['enabled'];
 	$types   = $option['types'];
 	$checked = '';
-	echo '<fieldset aria-labelledby="available-post-types"><h3 id="available-post-types">' . esc_html__( 'Available Post Types', 'my-content-management' ) . "</h3><ul class='mcm_posttypes'>"
+	echo '<fieldset aria-labelledby="available-post-types"><h3 id="available-post-types">' . esc_html__( 'Available Post Types', 'my-content-management' ) . "</h3><ul class='mcm_posttypes'>";
 	if ( is_array( $types ) ) {
 		foreach ( $types as $key => $value ) {
 			if ( $key && ! is_int( $key ) ) {
@@ -890,10 +890,10 @@ function mcm_updater() {
 			$return  = $before;
 			$return .= $post_typing;
 			$return .= "
-			<p><label for='pt1'>" . esc_html__( 'Singular Name, lower', 'my-content-management' ) . "</label><br /><input type='text' name='" . esc_attr( "${type}[pt1]" ) . "' id='pt1' value='" . esc_attr( $data[0] ) . "' /></p>
-			<p><label for='pt3'>" . esc_html__( 'Singular Name, upper', 'my-content-management' ) . "</label><br /><input type='text' name='" . esc_attr( "${type}[pt3]" ) . "' id='pt3' value='" . esc_attr( $data[2] ) . "' /></p>
-			<p><label for='pt2'>" . esc_html__( 'Plural Name, lower', 'my-content-management' ) . "</label><br /><input type='text' name='" . esc_attr( "${type}[pt2]" ) . "' id='pt2' value='" . esc_attr( $data[1] ) . "' /></p>
-			<p><label for='pt4'>" . esc_html__( 'Plural Name, upper', 'my-content-management' ) . "</label><br /><input type='text' name='" . esc_attr( "${type}[pt4]" ) . "' id='pt4' value='" . esc_attr( $data[3] ) . "' /></p>";
+			<p><label for='pt1'>" . esc_html__( 'Singular Name, lower', 'my-content-management' ) . "</label><br /><input type='text' name='" . esc_attr( "{$type}[pt1]" ) . "' id='pt1' value='" . esc_attr( $data[0] ) . "' /></p>
+			<p><label for='pt3'>" . esc_html__( 'Singular Name, upper', 'my-content-management' ) . "</label><br /><input type='text' name='" . esc_attr( "{$type}[pt3]" ) . "' id='pt3' value='" . esc_attr( $data[2] ) . "' /></p>
+			<p><label for='pt2'>" . esc_html__( 'Plural Name, lower', 'my-content-management' ) . "</label><br /><input type='text' name='" . esc_attr( "{$type}[pt2]" ) . "' id='pt2' value='" . esc_attr( $data[1] ) . "' /></p>
+			<p><label for='pt4'>" . esc_html__( 'Plural Name, upper', 'my-content-management' ) . "</label><br /><input type='text' name='" . esc_attr( "{$type}[pt4]" ) . "' id='pt4' value='" . esc_attr( $data[3] ) . "' /></p>";
 
 			$keys = array_keys( $data[4] );
 			if ( ! in_array( 'show_in_rest', $keys, true ) ) {
@@ -904,12 +904,12 @@ function mcm_updater() {
 				if ( is_bool( $value ) ) {
 					$checked = ( true === (bool) $value ) ? ' checked="checked"' : '';
 					if ( 'show_in_rest' !== $key ) {
-						$return .= "<p><input type='checkbox' name='" . esc_attr( "${type}[$key]" ) . "' value='1' id='" . esc_attr( $key ) . "'$checked /> <label for='" . esc_attr( $key ) . "'>" . esc_html( ucwords( str_replace( '_', ' ', $key ) ) ) . '</label></p>';
+						$return .= "<p><input type='checkbox' name='" . esc_attr( "{$type}[$key]" ) . "' value='1' id='" . esc_attr( $key ) . "'$checked /> <label for='" . esc_attr( $key ) . "'>" . esc_html( ucwords( str_replace( '_', ' ', $key ) ) ) . '</label></p>';
 					} else {
-						$return .= "<p><input type='checkbox' name='" . esc_attr( "${type}[$key]" ) . "' value='1' id='" . esc_attr( $key ) . "'$checked /> <label for='" . esc_attr( $key ) . "'>" . esc_html__( 'Show in REST API and enable Block Editor', 'my-content-management' ) . '</label></p>';
+						$return .= "<p><input type='checkbox' name='" . esc_attr( "{$type}[$key]" ) . "' value='1' id='" . esc_attr( $key ) . "'$checked /> <label for='" . esc_attr( $key ) . "'>" . esc_html__( 'Show in REST API and enable Block Editor', 'my-content-management' ) . '</label></p>';
 					}
 				} elseif ( is_array( $value ) ) {
-					$return  .= "<p><label for='" . esc_attr( $key ) . "'>" . esc_html( ucwords( str_replace( '_', ' ', $key ) ) ) . "</label><br /><select multiple='multiple' name='" . esc_attr( "${type}[$key][]" ) . "' id='" . esc_attr( $key ) . "'>";
+					$return  .= "<p><label for='" . esc_attr( $key ) . "'>" . esc_html( ucwords( str_replace( '_', ' ', $key ) ) ) . "</label><br /><select multiple='multiple' name='" . esc_attr( "{$type}[$key][]" ) . "' id='" . esc_attr( $key ) . "'>";
 					$supports = array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'trackbacks', 'custom-fields', 'comments', 'revisions', 'page-attributes', 'post-formats', 'publicize' );
 					foreach ( $supports as $s ) {
 						$selected = ( in_array( $s, $value, true ) ) ? ' selected="selected"' : '';
@@ -921,7 +921,7 @@ function mcm_updater() {
 					if ( ! $value && in_array( $type, $defaults, true ) && 'menu_icon' === $key ) {
 						$value = plugins_url( 'images', __FILE__ ) . "/$type.png";
 					}
-					$return .= "<p><label for='" . esc_attr( $key ) . "'>" . esc_html( ucwords( str_replace( '_', ' ', $key ) ) ) . "</label> <input type='text' name='" . esc_attr( "${type}[$key]" ) . "' size='32' value='" . esc_attr( $value ) . "' /></p>";
+					$return .= "<p><label for='" . esc_attr( $key ) . "'>" . esc_html( ucwords( str_replace( '_', ' ', $key ) ) ) . "</label> <input type='text' name='" . esc_attr( "{$type}[$key]" ) . "' size='32' value='" . esc_attr( $value ) . "' /></p>";
 				}
 			}
 			$return .= $after;
@@ -947,7 +947,7 @@ function mcm_updater() {
 					$return .= "<p><input type='checkbox' name='new[" . esc_attr( $key ) . "]' value='1' id='" . esc_attr( $key ) . "'$checked /> <label for='" . esc_attr( $key ) . "'>" . esc_html__( 'Show in REST API and enable Block Editor', 'my-content-management' ) . '</label></p>';
 				}
 			} elseif ( is_array( $value ) ) {
-				$return  .= "<p><label for='" . esc_attr( $key ) . "'>" . ucwords( str_replace( '_', ' ', $key ) ) . "</label><br /><select multiple='multiple' name='new[${key}][]' id='" . esc_attr( $key ) . "'>";
+				$return  .= "<p><label for='" . esc_attr( $key ) . "'>" . ucwords( str_replace( '_', ' ', $key ) ) . "</label><br /><select multiple='multiple' name='new[{$key}][]' id='" . esc_attr( $key ) . "'>";
 				$supports = array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'trackbacks', 'custom-fields', 'comments', 'revisions', 'page-attributes', 'post-formats', 'publicize' );
 				foreach ( $supports as $s ) {
 					$selected = ( in_array( $s, $value, true ) ) ? ' selected="selected"' : '';
