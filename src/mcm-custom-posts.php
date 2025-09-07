@@ -192,8 +192,11 @@ function mcm_taxonomies() {
  * Set up post meta boxes.
  */
 function mcm_add_custom_boxes() {
+	$option = get_option( 'mcm_options' );
 	$fields = mcm_globals( 'mcm_fields' );
+	$fields = ( is_array( $option['fields'] ) ) ? array_merge( $fields, $option['fields'] ) : $fields;
 	$extras = mcm_globals( 'mcm_extras' );
+	$extras = ( is_array( $option['extras'] ) ) ? array_merge( $extras, $option['extras'] ) : $extras;
 	if ( is_array( $fields ) ) {
 		foreach ( $fields as $key => $value ) {
 			if ( isset( $extras[ $key ] ) && is_array( $extras[ $key ][0] ) ) {
