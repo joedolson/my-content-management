@@ -287,12 +287,12 @@ function mcm_build_custom_box( $post, $fields ) {
 	static $nonce_flag = false;
 	// Run once.
 	$id = addslashes( $fields['args']['group'] );
-	echo "<div class='mcm_post_fields'>";
 	if ( ! $nonce_flag ) {
 		mcm_echo_nonce();
 		$nonce_flag = true;
 	}
 	mcm_echo_hidden( $fields['args'][ $id ], $id );
+	echo "<div class='mcm_post_fields'>";
 	// Generate box contents.
 	echo apply_filters( 'mcm_build_custom_box', '', $post, $fields );
 	$i = 0;
@@ -784,7 +784,7 @@ function mcm_rich_text_area( $args ) {
 		),
 		$args
 	);
-	echo "<div class='mcm_rich_text_area'><label for='" . esc_attr( $id ) . "'><strong>" . esc_html( $args[1] ) . '</strong></label><br /><em>' . esc_html( wp_unslash( $description ) ) . '</em>';
+	echo "<div class='mcm_rich_text_area mcm_field'><label for='" . esc_attr( $id ) . "'><strong>" . esc_html( $args[1] ) . '</strong></label><br /><em>' . esc_html( wp_unslash( $description ) ) . '</em>';
 	wp_editor( $meta, $id, $editor_args );
 	echo '</div>';
 }

@@ -1,4 +1,5 @@
-#normal-sortables .mcm_field { float: left; width:50%; }
+.mcm_post_fields { display: flex; flex-wrap: wrap; column-gap: 30px; row-gap: 10px; }
+#normal-sortables .mcm_field { width:600px; max-width: 100%; }
 #normal-sortables .mcm_post_fields .wp-editor-wrap { float: none; clear: both; }
 .mcm_post_fields .mcm-chooser-image { display: inline-block; position: relative; }
 .mcm_post_fields .mcm-delete { display: inline-block; background-color: rgba( 255, 255, 255, .7 ); padding: 2px; outline: 1px solid #fff; line-height: 1; }
