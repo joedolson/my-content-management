@@ -7,7 +7,7 @@ Tested up to: 6.8
 License: GPLv2 or later
 Text domain: my-content-management
 Update URI: https://www.joedolson.com
-Stable tag: 1.7.12
+Stable tag: 1.7.13
 
 Creates common custom post types for advanced content management: FAQ, Testimonials, people (staff, contributors, etc.), and others!
 
@@ -55,6 +55,11 @@ Create a site map for a specific post type and taxonomy using the [my_archive ty
 The "id" attribute is not supported in the [my_archive] shortcode. (That would be silly.) The [my_archive] shortcode does support a "show_links" attribute which will turn on a navigation list to navigate to each displayed category.
 
 == Changelog ==
+
+= 1.7.13 =
+
+* Bug fix: Custom post meta groups were not registered with posts.
+* Change: Updates to post meta box styles.
 
 = 1.7.12 =
 
