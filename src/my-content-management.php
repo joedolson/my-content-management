@@ -18,7 +18,7 @@
  * License URI: http://www.gnu.org/license/gpl-2.0.txt
  * Domain Path: lang
  * Update URI:  https://www.joedolson.com/my-content-management/
- * Version:     1.7.13
+ * Version:     1.7.14
  */
 
 /*
@@ -43,7 +43,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$mcm_version = '1.7.13';
+$mcm_version = '1.7.14';
 /**
  * Enable internationalisation
  */
@@ -855,7 +855,8 @@ add_action( 'admin_init', 'mcm_save_updates' );
  * Update post type settings.
  */
 function mcm_updater() {
-	$types   = mcm_globals( 'mcm_types' );
+	$options = get_option( 'mcm_options' );
+	$types   = $options['types'];
 	$checked = '';
 	if ( isset( $_GET['mcm_edit'] ) ) {
 		$type  = sanitize_key( $_GET['mcm_edit'] );

@@ -18,7 +18,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function mcm_posttypes() {
 	global $mcm_enabled;
-	$types   = mcm_globals( 'mcm_types' );
+	$options = get_option( 'mcm_options' );
+	$types   = $options['types'];
 	$enabled = $mcm_enabled;
 	if ( is_array( $enabled ) ) {
 		foreach ( $enabled as $key ) {
@@ -86,7 +87,8 @@ function mcm_posttypes() {
  */
 function mcm_posttypes_messages( $messages ) {
 	global $post, $post_ID, $mcm_enabled;
-	$types   = mcm_globals( 'mcm_types' );
+	$options = get_option( 'mcm_options' );
+	$types   = $options['types'];
 	$enabled = $mcm_enabled;
 	if ( is_array( $enabled ) ) {
 		foreach ( $enabled as $key ) {
@@ -123,7 +125,8 @@ function mcm_posttypes_messages( $messages ) {
  */
 function mcm_taxonomies() {
 	global $mcm_enabled;
-	$types   = mcm_globals( 'mcm_types' );
+	$options = get_option( 'mcm_options' );
+	$types   = $options['types'];
 	$enabled = $mcm_enabled;
 	if ( is_array( $enabled ) ) {
 		foreach ( $enabled as $key ) {
