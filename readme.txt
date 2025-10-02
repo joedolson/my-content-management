@@ -58,7 +58,7 @@ The "id" attribute is not supported in the [my_archive] shortcode. (That would b
 
 = 1.7.14 =
 
-
+* Fix a couple calls to globals that needed to be calls to options.
 
 = 1.7.13 =
 
