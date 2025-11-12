@@ -875,14 +875,14 @@ function mcm_search_form( $post_type ) {
  * @param object $query WP Query.
  */
 function mcm_searchfilter( $query ) {
-	if ( isset( $_GET['customsearch'] ) ) {
-		if ( $query->is_search ) {
-			// Insert the specific post type you want to search.
-			$post_type = sanitize_text_field( $_GET['customsearch'] );
-			$query->set( 'post_type', $post_type );
+	if ( ! is_admin() ) {
+		if ( isset( $_GET['customsearch'] ) ) {
+			if ( $query->is_search ) {
+				// Insert the specific post type you want to search.
+				$post_type = sanitize_text_field( $_GET['customsearch'] );
+				$query->set( 'post_type', $post_type );
+			}
 		}
-
-		return $query;
 	}
 }
 
