@@ -18,7 +18,7 @@
  * License URI: http://www.gnu.org/license/gpl-2.0.txt
  * Domain Path: lang
  * Update URI:  https://www.joedolson.com/my-content-management/
- * Version:     1.7.14
+ * Version:     1.7.15
  */
 
 /*
@@ -43,7 +43,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$mcm_version = '1.7.14';
+$mcm_version = '1.7.15';
 /**
  * Enable internationalisation
  */
