@@ -807,7 +807,8 @@ function mcm_save_postdata( $post_id, $post ) {
 		return;
 	}
 
-	$fields = mcm_globals( 'mcm_fields' );
+	$options = get_option( 'mcm_options' );
+	$fields  = $options['fields'];
 	// verify this came from our screen and with proper authorization.
 	// because save_post can be triggered at other times.
 	if ( isset( $_POST['mcm_nonce_name'] ) ) {
