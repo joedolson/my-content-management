@@ -96,7 +96,7 @@ function mcm_posttypes_messages( $messages ) {
 			$messages[ $key ] = array(
 				0  => '', // Unused. Messages start at index 1.
 				// Translators: 1 Post type singular name, 2 link to listing.
-				1  => sprintf( esc_html__( '%1$s Listing updated. <a href="%2$s">View %1$s listing</a>', 'my-content-management' ), $value[2], esc_url( get_permalink( $post_ID ) ) ),
+				1  => sprintf( wp_kses_post( '%1$s Listing updated. <a href="%2$s">View %1$s listing</a>', 'my-content-management' ), $value[2], esc_url( get_permalink( $post_ID ) ) ),
 				2  => esc_html__( 'Custom field updated.', 'my-content-management' ),
 				3  => esc_html__( 'Custom field deleted.', 'my-content-management' ),
 				// Translators: post type name.
@@ -104,15 +104,15 @@ function mcm_posttypes_messages( $messages ) {
 				// translators: Post type name, revision title.
 				5  => isset( $_GET['revision'] ) ? sprintf( esc_html__( '%1$s restored to revision from %2$ss', 'my-content-management' ), $value[2], wp_post_revision_title( (int) $_GET['revision'], false ) ) : false,
 				// Translators: Post type name, link, post type lowercase name.
-				6  => sprintf( esc_html__( '%1$s published. <a href="%2$s">View %3$s listing</a>', 'my-content-management' ), $value[2], esc_url( get_permalink( $post_ID ) ), $value[0] ),
+				6  => sprintf( wp_kses_post( '%1$s published. <a href="%2$s">View %3$s listing</a>', 'my-content-management' ), $value[2], esc_url( get_permalink( $post_ID ) ), $value[0] ),
 				// Translators: Post type name.
 				7  => sprintf( esc_html__( '%s listing saved.', 'my-content-management' ), $value[2] ),
 				// Translators: Post type name, link to preview, post type lower case name.
-				8  => sprintf( esc_html__( '%1$s listing submitted. <a target="_blank" href="%2$s">Preview %3$s listing</a>', 'my-content-management' ), $value[2], esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ), $value[0] ),
+				8  => sprintf( wp_kses_post( '%1$s listing submitted. <a target="_blank" href="%2$s">Preview %3$s listing</a>', 'my-content-management' ), $value[2], esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ), $value[0] ),
 				// Translators: Post type name, date scheduled, preview link, post type lowercase name.
-				9  => sprintf( esc_html__( '%1$s listing scheduled for: <strong>%2$s</strong>. <a target="_blank" href="%3$s">Preview %4$s</a>', 'my-content-management' ), $value[2], date_i18n( esc_html__( 'M j, Y @ G:i', 'my-content-management' ), strtotime( $post->post_date ) ), esc_url( get_permalink( $post_ID ) ), $value[0] ),
+				9  => sprintf( wp_kses_post( '%1$s listing scheduled for: <strong>%2$s</strong>. <a target="_blank" href="%3$s">Preview %4$s</a>', 'my-content-management' ), $value[2], date_i18n( esc_html__( 'M j, Y @ G:i', 'my-content-management' ), strtotime( $post->post_date ) ), esc_url( get_permalink( $post_ID ) ), $value[0] ),
 				// Translators: Post type name, preview link, post type lowercase.
-				10 => sprintf( esc_html__( '%1$s draft updated. <a target="_blank" href="%2$s">Preview %3$s listing</a>', 'my-content-management' ), $value[2], esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ), $value[0] ),
+				10 => sprintf( wp_kses_post( '%1$s draft updated. <a target="_blank" href="%2$s">Preview %3$s listing</a>', 'my-content-management' ), $value[2], esc_url( add_query_arg( 'preview', 'true', get_permalink( $post_ID ) ) ), $value[0] ),
 			);
 		}
 	}
