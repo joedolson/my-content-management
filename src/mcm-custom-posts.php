@@ -47,10 +47,13 @@ function mcm_posttypes() {
 				);
 				$labels = apply_filters( 'mcm_post_type_labels', $labels, $value );
 				$raw    = $value[4];
-				$slug   = ( ! isset( $raw['slug'] ) || '' === $raw['slug'] ) ? $key : $raw['slug'];
-				$icon   = ( is_ssl() ) ? str_replace( 'http://', 'https://', $raw['menu_icon'] ) : $raw['menu_icon'];
-				$icon   = ( null === $raw['menu_icon'] ) ? plugins_url( 'images', __FILE__ ) . "/$key.png" : $icon;
-				$args   = array(
+				// Ensure menu icon has a value.
+				$raw['menu_icon'] = ( $raw['menu_icon'] ) ?? 'dashicons-post';
+
+				$slug = ( ! isset( $raw['slug'] ) || '' === $raw['slug'] ) ? $key : $raw['slug'];
+				$icon = ( is_ssl() ) ? str_replace( 'http://', 'https://', $raw['menu_icon'] ) : $raw['menu_icon'];
+				$icon = ( null === $raw['menu_icon'] ) ? plugins_url( 'images', __FILE__ ) . "/$key.png" : $icon;
+				$args = array(
 					'labels'              => $labels,
 					'public'              => $raw['public'],
 					'publicly_queryable'  => $raw['publicly_queryable'],
